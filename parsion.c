@@ -1,35 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   codexion.h                                         :+:      :+:    :+:   */
+/*   parsion.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: santoos <santoos@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/17 22:12:03 by santoos           #+#    #+#             */
-/*   Updated: 2026/03/23 19:37:38 by santoos          ###   ########.fr       */
+/*   Created: 2026/03/23 19:30:09 by santoos           #+#    #+#             */
+/*   Updated: 2026/03/23 19:39:01 by santoos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
-#include <string.h>
-#include <ctype.h>
-#include <stdlib.h>
+#include "codexion.h"
 
 
-
-typedef struct s_config
+int parsion(char **argv)
 {
-    int number_of_coders;
-    int time_to_burnout;
-    int time_to_compile;
-    int time_to_debug;
-    int time_to_refactor;
-    int number_of_compiles_required;
-    int dongle_cooldown;
-    char *scheduler;
-} t_config;
-
-
-int parsion(char **argv);
-
+    for(int i = 1;i < 9;i++)
+    {
+        printf("s\n");
+        char *arg = argv[i];
+        for(int j = 0; arg[j] != '\0'; j++)
+        {
+            if(!isdigit(arg[j]))
+                return (1);
+        }
+    }
+    return(0);   
+}
