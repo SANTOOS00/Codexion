@@ -6,7 +6,7 @@
 /*   By: santoos <santoos@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 19:30:09 by santoos           #+#    #+#             */
-/*   Updated: 2026/03/23 19:39:01 by santoos          ###   ########.fr       */
+/*   Updated: 2026/03/24 19:55:58 by santoos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 
 int parsion(char **argv)
+
 {
     for(int i = 1;i < 9;i++)
     {
-        printf("s\n");
         char *arg = argv[i];
         for(int j = 0; arg[j] != '\0'; j++)
         {
