@@ -3,27 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   parsion.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: santoos <santoos@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/23 19:30:09 by santoos           #+#    #+#             */
-/*   Updated: 2026/03/24 19:55:58 by santoos          ###   ########.fr       */
+/*   Created: 2026/04/02 03:32:29 by moerrais          #+#    #+#             */
+/*   Updated: 2026/04/02 05:10:40 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
+
 #include "codexion.h"
 
-
-int parsion(char **argv)
-
+int ft_isdigit(char c)
 {
-    for(int i = 1;i < 9;i++)
+    if (c >= 48 && c <= 57)
+        return 0;
+    return 1;
+}
+int parsion(char **argv)
+{
+    int i = 1;
+    while(i < 9)
     {
         char *arg = argv[i];
-        for(int j = 0; arg[j] != '\0'; j++)
+        int j = 0;
+        while(arg[j] != '\0')
         {
-            if(!isdigit(arg[j]))
+            if(ft_isdigit(arg[j]))
                 return (1);
+            j++;
         }
+        i++;
     }
     return(0);   
 }
