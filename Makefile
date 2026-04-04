@@ -3,7 +3,7 @@ NAME_PROGRAM = codexion
 CC = cc
 # FLAGS = -Wall -Wextra -Werror
 
-SRC_FILE = main.c parsion.c
+SRC_FILE = main.c parsion.c ft_atoi_int.c ft_atoi_long.c
 
 OBJ = $(SRC_FILE:.c=.o)
 
