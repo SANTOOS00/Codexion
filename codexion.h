@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 03:32:13 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/04 18:25:19 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/04 19:57:17 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <pthread.h
 
 // int parsion(char **argv, t_config *data_config);
 int ft_atoi_int(char *num_str);

@@ -15,5 +15,9 @@ $(NAME_PROGRAM): $(OBJ)
 %.o: %.c codexion.h
 	$(CC)  -c $< -o $@
 
-fclean:
+clean:
 	rm -f $(OBJ)
+
+
+fclean: clean
+	rm -f $(NAME_PROGRAM)
