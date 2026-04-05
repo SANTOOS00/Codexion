@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsion.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: santoos <santoos@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 03:32:29 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/05 05:58:09 by santoos          ###   ########.fr       */
+/*   Updated: 2026/04/05 16:25:44 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 // }
 int parsion(int argc, char **argv, t_config *config)
 {
-    config->number_of_coders = 10000;
+    config->number_of_coders = 2;
     config->time_to_burnout = 100;
     config->time_to_compile = 100;
     config->time_to_debug = 12;

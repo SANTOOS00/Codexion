@@ -3,17 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: santoos <santoos@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 03:32:23 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/05 05:54:15 by santoos          ###   ########.fr       */
+/*   Updated: 2026/04/05 17:38:54 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 
 #include "codexion.h"
-
+int 
+void *routine()
+{
+    mutex_lock;
+    int i = 0;
+    printf("test from  threads \n");
+    conut++;
+    i++;
+    mutex_unlock;
+}
+int main(int argc, char **argv)
+{
+    int i, j;
+    i = 0;
+    j = 0;
+    t_config data_config;
+    parsion(argc, argv, &data_config);
+    
+    pthread_t threads[data_config.number_of_coders];
+    while(data_config.number_of_coders > i)
+    {
+        printf("%d", pthread_create(&threads[i], NULL, &routine, NULL));
+        i++;
+    }
+    while(data_config.number_of_coders > j)
+    {
+        printf("%d", pthread_join(threads[j], NULL));
+        j++;
+    }
+    return 0;
+}
 // int ft_isdigit(char c)
 // {
 //     if (c >= '0' && c <= '9')
@@ -52,14 +82,6 @@
 //     return 0;
 // }
 
-int main(int argc, char **argv)
-{
-    t_config data_config;
-
-    parsion(argc, argv, &data_config);
-    printf("%d", data_config.number_of_coders);
-    return 0;
-}
 // if(argc != 9)
 // {
 //     write(2, "Error: invalid number of arguments\n", 35);
