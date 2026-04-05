@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
+/*   By: santoos <santoos@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 03:32:23 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/04 18:12:30 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/05 05:54:15 by santoos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,17 @@ int main(int argc, char **argv)
 {
     t_config data_config;
 
-    if(argc != 9)
-    {
-        write(2, "Error: invalid number of arguments\n", 35);
-        return 1;
-    }
-    if(parsion(argv, &data_config) == 1)
-    {
-        write(2, "Error: invalid argument format\n", 31);
-        return 1;
-    }
-    printf("%ld\n", data_config.time_to_burnout);
+    parsion(argc, argv, &data_config);
+    printf("%d", data_config.number_of_coders);
     return 0;
 }
+// if(argc != 9)
+// {
+//     write(2, "Error: invalid number of arguments\n", 35);
+//     return 1;
+// }
+// if(parsion(argv, &data_config) == 1)
+// {
+//     write(2, "Error: invalid argument format\n", 31);
+//     return 1;
+// }

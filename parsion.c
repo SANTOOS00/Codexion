@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parsion.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
+/*   By: santoos <santoos@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 03:32:29 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/04 19:56:45 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/05 05:58:09 by santoos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <codexion.h>
+#include "codexion.h"
 
 // int ft_isdigit(char c)
 // {
@@ -22,23 +22,32 @@
 // {
 //     data_config->number_of_coders = 12
 // }
-t_config parsion(char **argv, t_config *data_config)
+int parsion(int argc, char **argv, t_config *config)
 {
-    int i = 1;
-    while(i < 9)
-    {
-        char *arg = argv[i];
-        int j = 0;
-        if (arg[j] == '-' || arg[i] == '+')
-            j++;
-        while(arg[j] != '\0')
-        {
-            if(ft_isdigit(arg[j]))
-                return (1);
-            j++;
-        }
-        i++;
-    }
-    save_data(data_config)
-    return(0);   
+    config->number_of_coders = 10000;
+    config->time_to_burnout = 100;
+    config->time_to_compile = 100;
+    config->time_to_debug = 12;
+    config->time_to_refactor = 12;
+    config->number_of_compiles_required = 12;
+    config->dongle_cooldown = 12;
+    config->scheduler = FIFO;
+    return 0; 
+    // int i = 1;
+    // while(i < 9)
+    // {
+    //     char *arg = argv[i];
+    //     int j = 0;
+    //     if (arg[j] == '-' || arg[i] == '+')
+    //         j++;
+    //     while(arg[j] != '\0')
+    //     {
+    //         if(ft_isdigit(arg[j]))
+    //             return (1);
+    //         j++;
+    //     }
+    //     i++;
+    // }
+    // save_data(data_config)
+    // return(0);   
 }

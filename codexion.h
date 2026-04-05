@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
+/*   By: santoos <santoos@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 03:32:13 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/04 19:57:17 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/05 05:57:36 by santoos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <limits.h>
-#include <pthread.h
-
-// int parsion(char **argv, t_config *data_config);
-int ft_atoi_int(char *num_str);
-int ft_atoi_long(char *num_str);
-
+#include <pthread.h>
 
 typedef enum e_scheduler
 {
@@ -32,7 +27,7 @@ typedef enum e_scheduler
 
 typedef struct s_config
 {
-    int number_of_coders;        //  The number of coders and also the number of dongles.
+    int number_of_coders;      //  The number of coders and also the number of dongles.
     long time_to_burnout;        //(in milliseconds): If a coder did not start compiling within
     long time_to_compile;        // الوقت اللي كيحتاج coder باش يدير compile
     long time_to_debug;          // الوقت ديال debug
@@ -41,3 +36,7 @@ typedef struct s_config
     long dongle_cooldown;        // الوقت اللي خاص dongle يستنى قبل ما يتستعمل مرة أخرى
     t_scheduler scheduler;       // FIFO ولا EDF
 } t_config;
+int parsion(int argc, char **argv, t_config *data_config);
+// int ft_atoi_int(char *num_str);
+// int ft_atoi_long(char *num_str);
+
