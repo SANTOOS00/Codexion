@@ -3,14 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: santoos <santoos@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/09 16:12:23 by santoos           #+#    #+#             */
-/*   Updated: 2026/04/09 16:38:03 by santoos          ###   ########.fr       */
+/*   Created: 2026/04/10 21:48:31 by moerrais          #+#    #+#             */
+/*   Updated: 2026/04/10 22:16:00 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #include <pthread.h>
 #include <stdio.h>
@@ -33,3 +31,7 @@ typedef struct s_condif{
     size_t dongle_cooldown;
     t_scheduler scheduler;
 } t_config;
+
+typedef struct s_threads_id {
+    pthread_t *thread_id;
+} t_threads_id;
