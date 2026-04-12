@@ -6,13 +6,16 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 21:48:31 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/10 22:16:00 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/11 00:07:08 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pthread.h>
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
+#include <stdlib.h>
+
 
 typedef enum e_config
 {
@@ -31,6 +34,7 @@ typedef struct s_condif{
     size_t dongle_cooldown;
     t_scheduler scheduler;
 } t_config;
+
 
 typedef struct s_threads_id {
     pthread_t *thread_id;

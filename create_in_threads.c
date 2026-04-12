@@ -6,34 +6,60 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 22:25:04 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/10 23:05:34 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/12 01:29:21 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-
+pthread_mutex_t mutex;
 void *test()
 {
-	printf("ss")
-}
-
-void *create_in_threads(size_t number_of_coders, t_threads_id *is_threads)
-{
-	is_ths->thread_id = (t_threads_id)malloc(sizeof(is_threads) * number_of_codres);
-	if (is_ths->thread_id)
+	int i = 0;
+	
+	if (mtex.__data.__lock == 1)
 	{
-		return NULL; 
-		// 5asni xi tari9a kifax n3la servec in create storj in memory
 		
+	}
+	else
+	{
+	    pthread_mutex_lock(&mutex);
+	    
+	    // mutex.__data.__lock = 1;
+	    printf("winer in thread == %d\n", mutex.__data.__lock);
+	    while(i < 5)
+	    {
+	    	printf("owner in thread ==> %d\n", mutex.__data.__owner);
+	    	i++;
+	    	sleep(5);
+	    }
+	    // mutex.__data.__lock = 0;
+	    pthread_mutex_unlock(&mutex);
+	    printf("winer in thread == %d\n", mutex.__data.__lock);	
+	}
+	
+	return NULL;
+}
+void *join_in_threads(size_t number_of_numbers, pthread_t *threads);
+void *create_in_threads(size_t number_of_coders, t_threads_id *id_ths)
+{
+	id_ths->thread_id = malloc(sizeof(pthread_t) * number_of_coders);
+	if (!id_ths->thread_id)
+	{
+		return NULL;
+		// 5asni xi tari9a kifax n3la servec in create storj in memory
 	}
 	int i;
 
 	i = 0;
-	while(number_of_coders > i)
+	while(number_of_coders > (size_t)i)
 	{
-		if(pthread_create(&is_ths->thread_id[i], NULL, &test, NULL) != 0)
+		if(pthread_create(&id_ths->thread_id[i], NULL, &test, NULL) != 0)
 			printf("error in create thread in number %d", i);
 		i++;
 	}
-	return;
+    join_in_threads(number_of_coders, id_ths->thread_id);
+	return NULL;
 }
+
+
+

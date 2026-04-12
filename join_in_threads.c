@@ -6,23 +6,25 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 22:38:22 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/10 23:05:40 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/12 01:07:22 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
 
-void *join_in_theads(size_t number_of_codres, t_threads_id *id_ths)
+void *join_in_threads(size_t number_of_coders, pthread_t *threads)
 {
 	int i;
+	int retrun_val;
 
 	i = 0;
-	while(number_of_codres > i)
+	while(number_of_coders > (size_t)i)
 	{
-		if(pthread_join(id_ths[i++], NULL))
-			printf("is ful in thread for join number of coders %d", i);
+		retrun_val = pthread_join(threads[i], NULL);
+		if(retrun_val != 0)
+			printf("is ful in thread for join number of coders %d\n", i);
 		i++;
 	}
-	return ;
+	return NULL;
 }
