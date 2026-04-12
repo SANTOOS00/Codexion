@@ -6,40 +6,26 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 22:25:04 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/12 01:29:21 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/12 14:39:45 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 pthread_mutex_t mutex;
+int i = 0;
 void *test()
 {
-	int i = 0;
-	
-	if (mtex.__data.__lock == 1)
+	pthread_mutex_lock(&mutex);
+	i++;
+	printf("task is thread  %d\n", mutex.__data.__lock);
+	pthread_mutex_unlock(&mutex);
+	if (i == 2)
 	{
-		
+		// printf("ss\n");
+		return NULL;
 	}
-	else
-	{
-	    pthread_mutex_lock(&mutex);
-	    
-	    // mutex.__data.__lock = 1;
-	    printf("winer in thread == %d\n", mutex.__data.__lock);
-	    while(i < 5)
-	    {
-	    	printf("owner in thread ==> %d\n", mutex.__data.__owner);
-	    	i++;
-	    	sleep(5);
-	    }
-	    // mutex.__data.__lock = 0;
-	    pthread_mutex_unlock(&mutex);
-	    printf("winer in thread == %d\n", mutex.__data.__lock);	
-	}
-	
-	return NULL;
+	return (void *)1;
 }
-void *join_in_threads(size_t number_of_numbers, pthread_t *threads);
 void *create_in_threads(size_t number_of_coders, t_threads_id *id_ths)
 {
 	id_ths->thread_id = malloc(sizeof(pthread_t) * number_of_coders);
@@ -58,6 +44,7 @@ void *create_in_threads(size_t number_of_coders, t_threads_id *id_ths)
 		i++;
 	}
     join_in_threads(number_of_coders, id_ths->thread_id);
+	free(id_ths->thread_id);
 	return NULL;
 }
 

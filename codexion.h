@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 21:48:31 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/11 00:07:08 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/12 10:35:23 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,3 +39,6 @@ typedef struct s_condif{
 typedef struct s_threads_id {
     pthread_t *thread_id;
 } t_threads_id;
+
+
+void *join_in_threads(size_t number_of_numbers, pthread_t *threads);
