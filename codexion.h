@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 21:48:31 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/12 10:35:23 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/12 17:14:39 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <sys/time.h>
 
 
 typedef enum e_config
