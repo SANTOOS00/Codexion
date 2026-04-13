@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
+/*   By: santoos <santoos@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 21:48:31 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/12 17:14:39 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/13 20:20:38 by santoos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,12 @@ typedef struct s_condif{
     t_scheduler scheduler;
 } t_config;
 
+
+typedef struct s_malloc
+{
+    void *ptr;
+    struct s_malloc *next;
+} t_malloc;
 
 typedef struct s_threads_id {
     pthread_t *thread_id;
