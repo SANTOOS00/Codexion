@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 21:48:31 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/14 08:16:47 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/14 12:14:13 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,3 +54,5 @@ typedef struct s_threads_id
 
 void	*join_in_threads(size_t number_of_numbers, pthread_t *threads);
 void	*manger_malloc(size_t size_byte, t_action action);
+int		parse_args(int argc, char **argv, t_config *config);
+void	*create_in_threads(t_config config, t_threads_id *id_ths);
