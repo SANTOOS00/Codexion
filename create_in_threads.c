@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 22:25:04 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/14 08:17:02 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/14 08:33:30 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,8 @@ void	*test(void *arg)
 {
 	int	*x;
 
-	x = (int *) arg;
-	printf("%d\n", *x);
-	return (NULL);
+	x = (int *)arg;
+	return NULL;
 }
 
 void	*create_in_threads(size_t number_of_coders, t_threads_id *id_ths)

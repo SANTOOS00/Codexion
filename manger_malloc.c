@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 06:27:50 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/14 08:17:25 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/14 08:34:22 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	add_node(t_malloc **nodes, t_malloc *node)
 
 	if (!(*nodes))
 	{
-		printf("if  ======  \n");
 		(*nodes) = node;
 		i++;
 		return ;
@@ -27,7 +26,6 @@ void	add_node(t_malloc **nodes, t_malloc *node)
 	head_node = *nodes;
 	while (head_node->next)
 	{
-		printf("while ===== \n");
 		head_node = head_node->next;
 	}
 	head_node->next = node;
