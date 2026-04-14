@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   create_in_threads.c                                :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: santoos <santoos@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/10 22:25:04 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/13 20:13:50 by santoos          ###   ########.fr       */
+/*                                                       :::      ::::::::    */
+/*   create_in_threads.c                               :+:      :+:    :+:    */
+/*                                                   +:+ +:+         +:+      */
+/*   By: username <username@student.42tokyo.jp>    #+#  +:+       +#+         */
+/*                                               +#+#+#+#+#+   +#+            */
+/*   Created: 2026/04/10 22:25:04 by username         #+#    #+#              */
+/*   Updated: 2026/04/14 06:43:57 by username        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 // pthread_mutex_t mutex;
-	
+
 // int i = 0;
 // void *compile(size_t time_of_comple)
 // {
@@ -31,27 +31,25 @@
 // 	sleep(time_of_comple);
 // 	return NULL;
 // }
-void *create_in_threads(size_t number_of_coders, t_threads_id *id_ths)
+
+void	*create_in_threads(size_t number_of_coders, t_threads_id *id_ths)
 {
 	id_ths->thread_id = malloc(sizeof(pthread_t) * number_of_coders);
 	if (!id_ths->thread_id)
 	{
-		return NULL;
+		return (NULL);
 		// 5asni xi tari9a kifax n3la servec in create storj in memory
 	}
-	int i;
+	int	i;
 
 	i = 0;
-	while(number_of_coders > (size_t)i)
+	while (number_of_coders > (size_t) i)
 	{
-		if(pthread_create(&id_ths->thread_id[i], NULL, &test, NULL) != 0)
+		if (pthread_create(&id_ths->thread_id[i], NULL, &test, NULL) != 0)
 			printf("error in create thread in number %d", i);
 		i++;
 	}
-    join_in_threads(number_of_coders, id_ths->thread_id);
+	join_in_threads(number_of_coders, id_ths->thread_id);
 	free(id_ths->thread_id);
-	return NULL;
+	return (NULL);
 }
-
-
-
