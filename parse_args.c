@@ -15,7 +15,7 @@ int parse_args(int argc, char **argv, t_config *config)
 {
     (void)argc;
     (void)**argv;
-    config->number_of_coders = 4;
+    config->number_of_coders = 100;
     config->time_to_burnout = 200;
     config->time_to_compile = 200;
     config->time_to_debug = 200;

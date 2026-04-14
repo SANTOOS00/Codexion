@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 21:48:31 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/14 12:14:13 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/14 13:07:30 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <stdlib.h>
 #include <sys/time.h>
 
-typedef enum e_config
+typedef enum e_scheduler
 {
 	FIFO,
 	EDF

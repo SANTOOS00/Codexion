@@ -5,7 +5,7 @@ NAME_PROGRAN = codexion
 
 CC = cc
 
-FLAGS = -Wall -Wextra -Werror -pthread -g
+FLAGS = -Wall -Wextra -Werror -pthread
 
 SRC = main.c parse_args.c create_in_threads.c join_in_threads.c manger_malloc.c
 
