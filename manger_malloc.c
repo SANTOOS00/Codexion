@@ -6,13 +6,13 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 06:27:50 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/14 08:34:22 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/14 16:16:59 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-void	add_node(t_malloc **nodes, t_malloc *node)
+void	puch_stack(t_malloc **nodes, t_malloc *node)
 {
 	t_malloc	*head_node;
 	static int	i = 0;
@@ -27,14 +27,14 @@ void	add_node(t_malloc **nodes, t_malloc *node)
 	while (head_node->next)
 	{
 		head_node = head_node->next;
-	}
+	}// radi t9ad ba9i hadi anaho puch maxi nhtha flawl ok oki ok ok ok ok ok ok ok 
 	head_node->next = node;
 	i++;
 	printf("%d\n", i);
 	return ;
 }
 
-void	free_node(t_malloc **nodes)
+void	pull_stack(t_malloc **nodes)
 {
 	void	*temp_node;
 
@@ -42,6 +42,7 @@ void	free_node(t_malloc **nodes)
 	{
 		temp_node = (*nodes)->next;
 		free((*nodes)->ptr);
+		if(nodes->)
 		free(*nodes);
 		*nodes = temp_node;
 	}

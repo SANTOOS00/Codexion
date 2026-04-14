@@ -6,34 +6,34 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 22:25:04 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/14 13:26:11 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/14 16:26:29 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 // pthread_mutex_t mutex;
 
-// void *compile(size_t time_of_comple)
-// {
-// 	printf("")
-// 	return NULL;
-// }
-// void *debug(size_t time_of_debug)
-// {
-// 	return NULL;
-// }
-// void *refactor(size_t time_of_refactor)
-// {
-// 	return NULL;
-// }
-
-void *coders_alternatively()
+void *compile(size_t time_of_comple)
 {
-	// (t_config *)config;
-	// printf("sss\n");
-	// compile(config.time_of_comple);
-	// compile(config.time_of_debug);
-	// compile(config.time_of_refactor);
+	printf("")
+	return NULL;
+}
+void *debug(size_t time_of_debug)
+{
+	return NULL;
+}
+void *refactor(size_t time_of_refactor)
+{
+	pthread_mutex_t *mutex;
+	mutex = malloc(sizeof(mutex))
+	return NULL;
+}
+
+void *coders_alternatively(t_config *config)
+{
+	compile(config.time_of_comple);
+	compile(config.time_of_debug);
+	compile(config.time_of_refactor);
 	return NULL;
 }
 void	*create_in_threads(t_config config, t_threads_id *id_ths)
@@ -49,7 +49,7 @@ void	*create_in_threads(t_config config, t_threads_id *id_ths)
 	i = 0;
 	while (config.number_of_coders > (size_t) i)
 	{
-		if (pthread_create(&id_ths->thread_id[i], NULL, &coders_alternatively, NULL) != 0)
+		if (pthread_create(&id_ths->thread_id[i], NULL, &coders_alternatively, config) != 0)
 			printf("error in create thread in number %d", i);
 		printf("==> id %lu\n", id_ths->thread_id[i]);
 			i++;

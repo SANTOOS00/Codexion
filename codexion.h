@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 21:48:31 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/14 13:07:30 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/14 16:16:33 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,15 @@ typedef struct s_condif
 typedef struct s_malloc
 {
 	char			*ptr;
+	void *func;
 	struct s_malloc	*next;
 }	t_malloc;
 
 typedef struct s_threads_id
 {
 	pthread_t	*thread_id;
+	(int) (*ft_mutex_destroy)(pthread_mutesx_t);
+	(int) (*ft_cond_destroy)(pthread_cond_t);
 }	t_threads_id;
 
 void	*join_in_threads(size_t number_of_numbers, pthread_t *threads);
