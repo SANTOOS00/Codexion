@@ -6,7 +6,7 @@
 /*   By: username <username@student.42tokyo.jp>    #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/04/14 06:27:50 by username         #+#    #+#              */
-/*   Updated: 2026/04/14 07:12:51 by username        ###   ########.fr        */
+/*   Updated: 2026/04/14 07:32:21 by username        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	add_node(t_malloc **nodes, t_malloc *node)
 	t_malloc	*head_node;
 	static int	i = 0;
 
-	head_node = *nodes;
 	if (!(*nodes))
 	{
 		printf("if  ======  \n");
@@ -25,6 +24,7 @@ void	add_node(t_malloc **nodes, t_malloc *node)
 		i++;
 		return ;
 	}
+	head_node = *nodes;
 	while (head_node->next)
 	{
 		printf("while ===== \n");
@@ -77,4 +77,5 @@ void	*manger_malloc(size_t size_byte, t_action action)
 		free_node(&nodes);
 		return (0);
 	}
+	return (NULL);
 }

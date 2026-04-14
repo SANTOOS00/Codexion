@@ -6,7 +6,7 @@
 /*   By: username <username@student.42tokyo.jp>    #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/04/10 21:48:31 by username         #+#    #+#              */
-/*   Updated: 2026/04/14 07:10:29 by username        ###   ########.fr        */
+/*   Updated: 2026/04/14 07:13:34 by username        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,3 +53,4 @@ typedef struct s_threads_id
 }	t_threads_id;
 
 void	*join_in_threads(size_t number_of_numbers, pthread_t *threads);
+void	*manger_malloc(size_t size_byte, t_action action);

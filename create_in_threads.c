@@ -6,7 +6,7 @@
 /*   By: username <username@student.42tokyo.jp>    #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/04/10 22:25:04 by username         #+#    #+#              */
-/*   Updated: 2026/04/14 06:43:57 by username        ###   ########.fr        */
+/*   Updated: 2026/04/14 07:30:03 by username        ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,25 @@
 // 	return NULL;
 // }
 
+void	*test(void *arg)
+{
+	int	*x;
+
+	x = (int *) arg;
+	printf("%d\n", *x);
+	return (NULL);
+}
+
 void	*create_in_threads(size_t number_of_coders, t_threads_id *id_ths)
 {
-	id_ths->thread_id = malloc(sizeof(pthread_t) * number_of_coders);
+	int		i;
+	size_t	size_byte = (size_t) sizeof(pthread_t) *number_of_coders;
+
+	id_ths->thread_id = (pthread_t *) manger_malloc(size_byte, ALLOC);
 	if (!id_ths->thread_id)
 	{
 		return (NULL);
-		// 5asni xi tari9a kifax n3la servec in create storj in memory
 	}
-	int	i;
-
 	i = 0;
 	while (number_of_coders > (size_t) i)
 	{

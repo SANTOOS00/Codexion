@@ -7,7 +7,7 @@ CC = cc
 
 FLAGS = -Wall -Wextra -Werror -pthread
 
-SRC = main.c parse_args.c create_in_threads.c join_in_threads.c
+SRC = main.c parse_args.c create_in_threads.c join_in_threads.c manger_malloc.c
 
 OBG = $(SRC:.c=.o)
 
