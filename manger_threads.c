@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   join_in_threads.c                                  :+:      :+:    :+:   */
+/*   manger_threads.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/10 22:38:22 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/14 08:31:19 by moerrais         ###   ########.fr       */
+/*   Created: 2026/04/15 17:40:21 by moerrais          #+#    #+#             */
+/*   Updated: 2026/04/15 17:54:27 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-
-void *join_in_threads(size_t number_of_coders, pthread_t *threads)
+int manger_threads(t_config config)
 {
 	int i;
-	void *res;
+
 	i = 0;
-	while(number_of_coders > (size_t)i)
+	while(config.number_of_coders > i)
 	{
-		if(pthread_join(threads[i], &res) != 0)
-			printf("is ful in thread for join number of coders %d\n", i);
-		i++;
+		if (create_thread())
 	}
-	return NULL;
 }

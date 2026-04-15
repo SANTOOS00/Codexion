@@ -7,7 +7,7 @@ CC = cc
 
 FLAGS =  -pthread
 
-SRC = main.c parse_args.c create_in_threads.c join_in_threads.c
+SRC = main.c parse_args.c manger_threads.c
 
 OBG = $(SRC:.c=.o)
 

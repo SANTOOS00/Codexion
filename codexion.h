@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 21:48:31 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/15 11:34:54 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/15 18:21:55 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,20 @@
 #include <stdlib.h>
 #include <sys/time.h>
 
+
 typedef enum e_scheduler
 {
 	FIFO,
 	EDF
 }	t_scheduler;
 
+
 typedef enum e_action
 {
 	ALLOC,
 	FREE
 }	t_action;
-
+// cc main1.c -pthread -fsanitize=thread -g3
 typedef struct s_condif
 {
 	size_t		number_of_coders;
@@ -41,17 +43,14 @@ typedef struct s_condif
 	t_scheduler	scheduler;
 }	t_config;
 
-typedef struct s_malloc
-{
-	struct s_malloc	*next;
-}	t_malloc;
 
-typedef struct s_threads_id
-{
-	pthread_t *thread_id;
-} t_threads_id;
 
-void	*join_in_threads(size_t number_of_numbers, pthread_t *threads);
-void	*manger_malloc(size_t size_byte, t_action action);
-int		parse_args(int argc, char **argv, t_config *config);
-void	*create_in_threads(t_config config, t_threads_id *id_ths);
+typedef struct s_config_coders
+{
+	pthread_t *coders;
+	unsigned long *key_coders;
+	int number_coders;
+	pthread_mutex_t mutex;
+	pthread_cond_t cond;
+} t_condig_coders
+int parse_args(int argc, char **argv, t_config *config);
