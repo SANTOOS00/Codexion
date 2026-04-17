@@ -5,9 +5,9 @@ NAME_PROGRAN = codexion
 
 CC = cc
 
-FLAGS =  -pthread
+FLAGS =  -pthread -fsanitize=thread -g3
 
-SRC = main.c parse_args.c manger_threads.c
+SRC = main.c parse_args.c manger_threads.c coders_registry.c
 
 OBG = $(SRC:.c=.o)
 
