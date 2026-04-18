@@ -3,11 +3,11 @@
 
 NAME_PROGRAN = codexion
 
-CC = cc
+CC = gcc
 
 FLAGS =  -pthread -fsanitize=thread -g3
 
-SRC = main.c parse_args.c manger_threads.c coders_registry.c
+SRC = main.c parse_args.c
 
 OBG = $(SRC:.c=.o)
 

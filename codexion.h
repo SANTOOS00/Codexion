@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 21:48:31 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/17 00:32:47 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/18 03:27:01 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <sys/time.h>
+#include <stdbool.h>
 
 
 typedef enum e_scheduler
@@ -25,11 +26,11 @@ typedef enum e_scheduler
 }	t_scheduler;
 
 
-typedef enum e_action
-{
-	FREE_0,
-	FREE_1
-}	t_action;
+// typedef enum e_action
+// {
+// 	FREE_0,
+// 	FREE_1
+// }	t_action;
 // cc main1.c -pthread -fsanitize=thread -g3
 typedef struct s_condif
 {
@@ -44,33 +45,25 @@ typedef struct s_condif
 }	t_config;
 
 
-
-typedef struct s_codre
+typedef struct s_dongle
 {
+	bool available;
+	unsigned long dongle_cooldown;
+	pthread_mutex_t mutex;
+	pthread_cond_t cond;
+} t_dongle;
+
+typedef struct s_coder
+{
+	bool active_wait;
 	int id;
-	pthread_t coder;
-	pthread_cond_t *cond;
-	pthread_mutex_t *mutex;
+	t_dongle *left;
+	t_dongle *right;
+	pthread_t th;
+	size_t number_compiles;
+	long time_create;
+	size_t time_compile;
 } t_coder;
 
-typedef struct s_manger_coder
-{
-	pthread_mutex_t *mutex;
-	pthread_cond_t *cond;
-	t_coder coders;
-} t_manager_coder;
 
-
-// typedef struct s_malloc
-// {
-// 	void *save;
-// 	struct Node* next;
-// } t_malloc;
-
-int manger_threads(t_config config);
 int parse_args(int argc, char **argv, t_config *config);
-t_manager_coder *allocate_coders(int number_of_coders);
-t_manager_coder *get_or_create_manger_coders();
-int destroy_manger_coders(t_action action);
-t_action create_threads(t_config config);
-t_action join_threads(t_config config);
