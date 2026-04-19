@@ -7,7 +7,7 @@ CC = gcc
 
 FLAGS =  -pthread -fsanitize=thread -g3
 
-SRC = main.c parse_args.c
+SRC = main.c parse_args.c get_time.c
 
 OBG = $(SRC:.c=.o)
 
