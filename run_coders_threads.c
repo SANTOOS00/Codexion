@@ -1,34 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   assign_dongles_to_coders.c                         :+:      :+:    :+:   */
+/*   run_coders_threads.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/20 18:04:01 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/20 18:53:14 by moerrais         ###   ########.fr       */
+/*   Created: 2026/04/20 18:55:57 by moerrais          #+#    #+#             */
+/*   Updated: 2026/04/20 20:00:34 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-t_action assign_dongles_to_coders(t_config config)
-{
-	t_dongle	*dongles;
-	t_coder		**coders;
-	int			i;
 
-	i = 0;
+void *coder_routine(void *arg)
+{
+	t_coder *coder;
+
+	coder = (t_coder *)arg;
+	printf("%p %d left %p right %p\n", coder, coder->id, coder->left, coder->right);
+	return NULL;
+}
+
+t_action	run_coders_threads(t_config config)
+{
+	t_coder **coders;
+	int i;
+
 	coders = get_or_create_coders(config);
-	if (!coders)
-		return (fail);
-	dongles = get_or_create_dongles(config);
-	if (!dongles)
-		return (free_memory(fail));
-	while (i < config.number_of_coders)
+	i = 0;
+
+	while(i < config.number_of_coders)
 	{
-		coders[i]->left = &dongles[i];
-		coders[i]->right = &dongles[(i + 1) % config.number_of_coders];
-		coders[i]->id = i;
+		if (pthread_create(&coders[i]->thread, NULL, coder_routine, coders[i]) != 0)
+    		return(free_memory(fail));
 		i++;
 	}
 	return success;

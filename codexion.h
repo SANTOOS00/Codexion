@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/10 21:48:31 by username          #+#    #+#             */
-/*   Updated: 2026/04/20 18:06:44 by moerrais         ###   ########.fr       */
+/*   Created: 2026/04/10 21:48:31 by moerrais          #+#    #+#             */
+/*   Updated: 2026/04/20 18:56:57 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,11 @@ typedef struct s_stack
 
 t_config	parse_args(int ac, char **av);
 t_dongle	*get_or_create_dongles(t_config config);
-t_coder	**get_or_create_coders(t_config config);
-int assign_dongles_to_coders(t_config config);
-t_stack	*push_stack(void *arg);
+t_coder		**get_or_create_coders(t_config config);
+t_action	assign_dongles_to_coders(t_config config);
+t_stack		*push_stack(void *arg);
+t_action	free_memory(t_action action);
+t_action	run_coders_threads(t_config config);
 
 // void push(struct Node * *head_ref,
 // 	int	new_data)

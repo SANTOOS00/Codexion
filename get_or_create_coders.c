@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 18:02:21 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/20 18:02:34 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/20 19:57:33 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,15 @@ t_coder	**get_or_create_coders(t_config config)
 	if (coders == NULL)
 	{
 		coders = malloc(sizeof(t_coder **) * config.number_of_coders);
+		if (!coders)
+			return NULL;
 		while (i < config.number_of_coders)
-			coders[i++] = malloc(sizeof(t_coder));
-		// coders[i] = NULL;
+		{
+			coders[i] = malloc(sizeof(t_coder));
+			if (!coders[i])
+				return (NULL);
+			i++;
+		}
 	}
 	return (coders);
 }
