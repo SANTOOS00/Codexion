@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: santoos <santoos@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 21:48:31 by username          #+#    #+#             */
-/*   Updated: 2026/04/20 14:46:57 by santoos          ###   ########.fr       */
+/*   Updated: 2026/04/20 18:06:44 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,13 @@ typedef enum e_scheduler
 	FIFO,
 	EDF
 }	t_scheduler;
+
+
+typedef enum e_action
+{
+	success,
+	fail,
+} t_action;
 
 typedef struct s_condif
 {
@@ -56,6 +63,10 @@ typedef struct s_stack
 }	t_stack;
 
 t_config	parse_args(int ac, char **av);
+t_dongle	*get_or_create_dongles(t_config config);
+t_coder	**get_or_create_coders(t_config config);
+int assign_dongles_to_coders(t_config config);
+t_stack	*push_stack(void *arg);
 
 // void push(struct Node * *head_ref,
 // 	int	new_data)
