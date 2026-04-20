@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 21:48:31 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/20 18:56:57 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/20 22:43:03 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <sys/time.h>
+#include <stdbool.h>
 
 typedef enum e_scheduler
 {
@@ -23,7 +24,11 @@ typedef enum e_scheduler
 	EDF
 }	t_scheduler;
 
-
+typedef enum e_con_or_mutex
+{
+	cond,
+	mutex
+} t_con_or_mutex;
 typedef enum e_action
 {
 	success,
@@ -50,10 +55,12 @@ typedef struct s_dongle
 
 typedef struct s_coder
 {
+	bool check_wait;
 	int			id;
 	pthread_t	thread;
 	t_dongle	*left;
 	t_dongle	*right;
+	pthread_cond_t cond_coder;
 }	t_coder;
 
 typedef struct s_stack
@@ -69,9 +76,9 @@ t_action	assign_dongles_to_coders(t_config config);
 t_stack		*push_stack(void *arg);
 t_action	free_memory(t_action action);
 t_action	run_coders_threads(t_config config);
-
+void *manger_monitor(void *arg);
 // void push(struct Node * *head_ref,
-// 	int	new_data)
+//int	new_data)
 // {
 // 	// 1. Allocate node
 // 	struct Node	*new_node =

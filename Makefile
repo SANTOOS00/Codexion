@@ -1,11 +1,7 @@
-
-
-
 NAME_PROGRAN = codexion
-
 CC = cc
 
-FLAGS =  -pthread -g3 
+FLAGS = -pthread -g3
 //-fsanitize=thread -g3
 SRC = main.c\
       parse_args.c\
@@ -14,7 +10,8 @@ SRC = main.c\
 	  assign_dongles_to_coders.c\
 	  push_stack.c\
 	  run_coders_threads.c\
-	  free_memory.c
+	  free_memory.c\
+	  manger_monitor.c
 
 OBG = $(SRC:.c=.o)
 
