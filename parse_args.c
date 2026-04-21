@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 13:03:45 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/20 18:44:43 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/21 20:46:12 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_config	parse_args(int ac, char **av)
 {
 	t_config	config;
 
-	config.number_of_coders = 5;
+	config.number_of_coders = 10;
 	config.time_to_compile = 200;
 	config.time_to_debug = 200;
 	config.time_to_refactor = 200;
