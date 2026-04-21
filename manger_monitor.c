@@ -28,7 +28,7 @@ void *manger_monitor(void *arg)
 	// 	i++;
 	// }
 	// printf("%d\n", i);
-	coders[2]->check_wait = true;
-	pthread_cond_signal(&coders[2]->cond_coder);
+	// coders[2]->check_wait = true;
+	// pthread_cond_signal(&coders[2]->cond_coder);
 	return NULL;
 }

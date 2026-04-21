@@ -1,5 +1,5 @@
 NAME_PROGRAN = codexion
-CC = cc
+CC = gcc
 
 FLAGS = -pthread -g3
 //-fsanitize=thread -g3

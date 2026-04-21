@@ -29,8 +29,8 @@ t_action assign_dongles_to_coders(t_config config)
 		coders[i]->left = &dongles[i];
 		coders[i]->right = &dongles[(i + 1) % config.number_of_coders];
 		coders[i]->id = i;
-		pthread_mutex_init(&coders[i]->left->mutex, NULL);
-		pthread_cond_init(&coders[i]->left->cond, NULL);
+		pthread_mutex_init(&dongles[i].mutex, NULL);
+		pthread_cond_init(&dongles[i].'cond, NULL);
 		coders[i]->check_wait = false;
 		i++;
 	}
