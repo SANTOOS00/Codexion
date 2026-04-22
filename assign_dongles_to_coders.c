@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "codexion.h"
+
 t_action assign_dongles_to_coders(t_config config)
 {
 	t_dongle	*dongles;

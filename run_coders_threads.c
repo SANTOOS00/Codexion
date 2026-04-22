@@ -27,7 +27,8 @@ void *coder_routine(void *arg)
 		pthread_cond_wait(&coder->cond_coder, &coder->left->mutex);
 	pthread_mutex_unlock(&coder->left->mutex);
 	printf("coder id %d\n", coder->id);
-	return NULL;
+	void *ss = &coder->id;
+	return ss;
 }
 
 t_action	run_coders_threads(t_config config)
@@ -49,7 +50,10 @@ t_action	run_coders_threads(t_config config)
 	    return (free_memory(fail));
 	while(i < config.number_of_coders)
 	{
-		pthread_join(coders[i]->thread, NULL);
+		void *is;
+		pthread_join(coders[i]->thread, &is);
+		printf("%d\n", (int *)&is);
+
 		i++;
 	}
 	if (pthread_join(monitor, NULL) != 0)

@@ -15,5 +15,6 @@
 
 t_action free_memory(t_action action)
 {
-	return fail;
+	
+	return action;
 }

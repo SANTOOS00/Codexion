@@ -12,25 +12,33 @@
 
 #include "codexion.h"
 
+
+
+pthread_mutex_t mute;
 void *manger_monitor(void *arg)
 {
 	t_config *config;
 	t_stack *stack;
 
 	usleep(1000);
+	usleep(1000);
 	config = (t_config *)arg;
 	t_stack *nodes = push_stack(NULL);
 	int i = 0;
 	t_coder **coders = get_or_create_coders(*config);
-	
-	while (nodes && nodes->next)
+	t_coder *coder = (t_coder *)nodes->arry_key_coders;
+	while (i < 10)
 	{
-		i++;
-		t_coder *coder = (t_coder *)nodes->arry_key_coders;
+		t_coder *code = (t_coder *)nodes->arry_key_coders;
+		
+		printf("id thread in monitor => %d\n", code->id);
+		pthread_mutex_lock(&coders[code->id]->left->mutex);
+		coders[code->id]->check_wait = false;
+		pthread_mutex_unlock(&coders[code->id]->left->mutex);
+		pthread_cond_broadcast(&coders[code->id]->cond_coder);
 		nodes = nodes->next;
-		coder->check_wait = false;
-		pthread_cond_broadcast(&coder->cond_coder);
-		usleep(1000);
+		usleep(10);
+		i++;
 	}
 
 	
