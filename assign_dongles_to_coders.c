@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 18:04:01 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/21 19:55:59 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/24 08:32:58 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_action assign_dongles_to_coders(t_config config)
 	dongles = get_or_create_dongles(config);
 	if (!dongles)
 		return (free_memory(fail));
+	// t_source_monitor *s = malloc (sizeof(t_source_monitor) * config.number_of_coders);
 	while (i < config.number_of_coders)
 	{
 		coders[i]->left = &dongles[i];
@@ -32,6 +33,9 @@ t_action assign_dongles_to_coders(t_config config)
 		coders[i]->id = i;
 		pthread_mutex_init(&dongles[i].mutex, NULL);
 		pthread_cond_init(&dongles[i].cond, NULL);
+		// coders[i]->source = &s[i];
+		// pthread_mutex_init(&coders[i]->source->mutex, NULL);
+		// pthread_cond_init(&coders[i]->source->cond, NULL);
 		coders[i]->check_wait = true;
 		i++;
 	}

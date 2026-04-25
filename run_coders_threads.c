@@ -6,38 +6,57 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 18:55:57 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/21 20:52:54 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/25 14:56:09 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-pthread_mutex_t mutex_pushf;
-int i = 0;
+
+
+pthread_mutex_t ss;
+void push_queue(t_coder *coder)
+{
+	// printf("%d", coder->id);
+	pthread_mutex_lock(&ss);
+    t_queue **queue;
+    int i = 0;
+    queue = get_or_create_queue(20);	
+    while (queue[i] != NULL)
+		i++;
+	printf("ss\n");
+    if (queue[i] == NULL)
+    {
+		queue[i] = malloc(sizeof(t_queue));
+        if (!queue[i])
+		return;
+        queue[i]->coder = NULL;
+    }
+	
+    queue[i]->coder = coder;
+	pthread_mutex_unlock(&ss);
+}
 void *coder_routine(void *arg)
 {
+	
 	t_coder *coder = (t_coder *)arg;
-	pthread_mutex_lock(&mutex_pushf);
-	i++;
-	// printf("%d", i);
-	push_stack((void *)coder);
-	pthread_mutex_unlock(&mutex_pushf);
-
-	pthread_mutex_lock(&coder->left->mutex);
+	pthread_mutex_lock(&coder->mutex);
+	push_queue(coder);
 	while(coder->check_wait)
-		pthread_cond_wait(&coder->cond_coder, &coder->left->mutex);
-	pthread_mutex_unlock(&coder->left->mutex);
-	printf("coder id %d\n", coder->id);
-	void *ss = &coder->id;
-	return ss;
+		pthread_cond_wait(&coder->cond, &coder->mutex);
+	pthread_mutex_unlock(&coder->mutex);
+	return NULL;
 }
 
 t_action	run_coders_threads(t_config config)
 {
 	t_coder **coders;
-	pthread_t monitor;
-	int i;
+	t_monitor monitor;
 
+
+	monitor.mutex = 
+	int i;
 	coders = get_or_create_coders(config);
+	get_or_create_queue(config.number_of_coders);
 	i = 0;
 	while(i < config.number_of_coders)
 	{
@@ -48,15 +67,12 @@ t_action	run_coders_threads(t_config config)
 	i = 0;
 	if (pthread_create(&monitor, NULL, manger_monitor, &config) != 0)
 	    return (free_memory(fail));
-	while(i < config.number_of_coders)
-	{
-		void *is;
-		pthread_join(coders[i]->thread, &is);
-		printf("%d\n", (int *)&is);
-
-		i++;
-	}
 	if (pthread_join(monitor, NULL) != 0)
 		return (free_memory(fail));
+	// while(i < config.number_of_coders)
+	// {
+	// 	pthread_join(coders[i]->thread, NULL);
+	// 	i++;
+	// }
 	return success;
 }

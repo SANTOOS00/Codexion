@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 21:48:31 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/20 22:43:03 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/25 15:02:20 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ typedef enum e_scheduler
 	EDF
 }	t_scheduler;
 
-typedef enum e_con_or_mutex
-{
-	cond,
-	mutex
-} t_con_or_mutex;
+// typedef enum e_con_or_mutex
+// {
+// 	cond,
+// 	mutex
+// } t_con_or_mutex;
 typedef enum e_action
 {
 	success,
@@ -48,10 +48,11 @@ typedef struct s_condif
 }	t_config;
 
 typedef struct s_dongle
-{
+{	
 	pthread_mutex_t	mutex;
 	pthread_cond_t	cond;
 }	t_dongle;
+
 
 typedef struct s_coder
 {
@@ -60,23 +61,35 @@ typedef struct s_coder
 	pthread_t	thread;
 	t_dongle	*left;
 	t_dongle	*right;
-	pthread_cond_t cond_coder;
+	pthread_mutex_t *mutex;
+	pthread_cond_t *cond;
 }	t_coder;
 
-typedef struct s_stack
+typedef struct s_varaible
 {
-	void			*arry_key_coders;
-	struct s_stack	*next;
-}	t_stack;
+	pthread_mutex_t mutex;
+	pthread_cond_t cond;
+} t_varaible;
+typedef struct s_monitor
+{
+	pthread_t thread;
+	pthread_mutex_t *mutex;
+} t_monitor;
+
+typedef struct s_queue
+{
+	t_coder *coder;
+	t_config config;
+} t_queue;
 
 t_config	parse_args(int ac, char **av);
 t_dongle	*get_or_create_dongles(t_config config);
 t_coder		**get_or_create_coders(t_config config);
 t_action	assign_dongles_to_coders(t_config config);
-t_stack		*push_stack(void *arg);
 t_action	free_memory(t_action action);
 t_action	run_coders_threads(t_config config);
-void *manger_monitor(void *arg);
+void		*manger_monitor(void *arg);
+t_queue		**get_or_create_queue(int number_of_coders);
 // void push(struct Node * *head_ref,
 //int	new_data)
 // {
