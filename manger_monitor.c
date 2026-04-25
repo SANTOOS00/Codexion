@@ -22,6 +22,7 @@ void *manger_monitor(void *arg)
 
 	monitor = (t_monitor *)arg;
 	pthread_mutex_lock(monitor->mutex);
+	sleep(1);
 	queue = get_or_create_queue(10);
 	pthread_mutex_unlock(monitor->mutex);
 	printf("%p \n", queue);

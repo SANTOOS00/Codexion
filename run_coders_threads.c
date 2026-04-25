@@ -69,10 +69,10 @@ t_action	run_coders_threads(t_config config)
 	    return (free_memory(fail));
 	if (pthread_join(monitor.thread, NULL) != 0)
 		return (free_memory(fail));
-	// while(i < config.number_of_coders)
-	// {
-	// 	pthread_join(coders[i]->thread, NULL);
-	// 	i++;
-	// }
+	while(i < config.number_of_coders)
+	{
+		pthread_join(coders[i]->thread, NULL);
+		i++;
+	}
 	return success;
 }
