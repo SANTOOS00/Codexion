@@ -14,24 +14,53 @@
 
 
 
-pthread_mutex_t mute;
+void ft_fifo(t_queue **queue, t_config config)
+{
+	int i = 0;
+	printf("%p \n", queue);
+	while(queue[i])
+	{
+		printf("pointeur %d => %p\n", queue[i]->coder->id, queue[i]);
+		i++;
+	}
+	return ;
+}
+
+void ft_edf(t_queue **queue, t_config config)
+{
+	int i;
+	printf("%p \n", queue);
+	
+	i = 0;
+	while(queue[i])
+	{
+		printf("pointeur %d => %p\n", queue[i]->coder->id, queue[i]);
+		i++;
+	}
+	return ;
+}
+
+
 void *manger_monitor(void *arg)
 {
 	t_queue **queue;
 	t_monitor *monitor;
-
 	monitor = (t_monitor *)arg;
-	pthread_mutex_lock(monitor->mutex);
-	sleep(1);
-	queue = get_or_create_queue(10);
-	pthread_mutex_unlock(monitor->mutex);
-	printf("%p \n", queue);
 	int i = 0;
-	while(queue[i] != NULL)
+	printf("%p \n", queue);
+	// printf("%p \n", queue);
+	// printf("%p \n", queue);
+	pthread_mutex_lock(monitor->mutex);
+	queue = get_or_create_queue(0);
+	pthread_mutex_unlock(monitor->mutex);
+	while(queue[i])
 	{
-		printf("coders id  =>%d \n", queue[i]->coder->id);
+		printf("pointeur %d => %p\n", queue[i]->coder->id, queue[i]);
 		i++;
 	}
-	printf("%d", i);
+	if (monitor->config.scheduler == FIFO)
+		ft_fifo(queue, monitor->config);
+	if (monitor->config.scheduler == FIFO)
+		ft_edf(queue, monitor->config);
 	return NULL;
 }

@@ -71,6 +71,8 @@ typedef struct s_monitor
 {
 	pthread_t thread;
 	pthread_mutex_t *mutex;
+	t_config config;
+	t_action action;
 } t_monitor;
 
 typedef struct s_queue
@@ -85,7 +87,7 @@ t_coder		**get_or_create_coders(t_config config);
 t_action	assign_dongles_to_coders(t_config config);
 t_action	free_memory(t_action action);
 t_action	run_coders_threads(t_config config);
-void		*manger_monitor(void *arg);
+void	*manger_monitor(void *arg);
 t_queue		**get_or_create_queue(int number_of_coders);
 // void push(struct Node * *head_ref,
 //int	new_data)

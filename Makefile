@@ -1,8 +1,9 @@
 NAME_PROGRAN = codexion
 CC = cc
 
-FLAGS = -pthread 
+FLAGS = -pthread
 #-g3 -fsanitize=thread
+
 SRC = main.c\
       parse_args.c\
 	  get_or_create_dongles.c\

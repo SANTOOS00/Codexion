@@ -16,13 +16,12 @@
 
 t_action	manger_threads(t_config config)
 {
-	if (assign_dongles_to_coders(config))
+	if (assign_dongles_to_coders(config) == fail)
 	    return (fail);
-	if (run_coders_threads(config))
+	if (run_coders_threads(config) == fail)
 	    return (fail);
 	return (success);
 }
-
 
 int	main(int ac, char **av)
 {

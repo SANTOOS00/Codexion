@@ -13,17 +13,14 @@
 #include "codexion.h"
 
 
-pthread_mutex_t ss;
 void push_queue(t_coder *coder)
 {
-	// printf("%d", coder->id);
 	pthread_mutex_lock(coder->mu_monitor);
     t_queue **queue;
     int i = 0;
     queue = get_or_create_queue(20);	
     while (queue[i] != NULL)
 		i++;
-	printf("ss\n");
     if (queue[i] == NULL)
     {
 		queue[i] = malloc(sizeof(t_queue));
@@ -54,8 +51,12 @@ t_action	run_coders_threads(t_config config)
 	int i;
 
 	monitor.mutex = malloc(sizeof(pthread_mutex_t));
+	pthread_mutex_init(monitor.mutex, NULL);
+	monitor.config = config;
+
 	coders = get_or_create_coders(config);
 	get_or_create_queue(config.number_of_coders);
+
 	i = 0;
 	while(i < config.number_of_coders)
 	{
@@ -74,5 +75,5 @@ t_action	run_coders_threads(t_config config)
 		pthread_join(coders[i]->thread, NULL);
 		i++;
 	}
-	return success;
+	return monitor.action;
 }
