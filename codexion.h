@@ -61,15 +61,12 @@ typedef struct s_coder
 	pthread_t	thread;
 	t_dongle	*left;
 	t_dongle	*right;
-	pthread_mutex_t *mutex;
-	pthread_cond_t *cond;
-}	t_coder;
-
-typedef struct s_varaible
-{
 	pthread_mutex_t mutex;
 	pthread_cond_t cond;
-} t_varaible;
+	pthread_mutex_t *mu_monitor;
+}	t_coder;
+
+
 typedef struct s_monitor
 {
 	pthread_t thread;

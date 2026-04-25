@@ -18,9 +18,12 @@ pthread_mutex_t mute;
 void *manger_monitor(void *arg)
 {
 	t_queue **queue;
-	// pthread_mutex_lock(&mute);
+	t_monitor *monitor;
+
+	monitor = (t_monitor *)arg;
+	pthread_mutex_lock(monitor->mutex);
 	queue = get_or_create_queue(10);
-	// pthread_mutex_unlock(&mute);
+	pthread_mutex_unlock(monitor->mutex);
 	printf("%p \n", queue);
 	int i = 0;
 	while(queue[i] != NULL)

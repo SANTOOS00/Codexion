@@ -17,7 +17,7 @@ pthread_mutex_t ss;
 void push_queue(t_coder *coder)
 {
 	// printf("%d", coder->id);
-	pthread_mutex_lock(&ss);
+	pthread_mutex_lock(coder->mu_monitor);
     t_queue **queue;
     int i = 0;
     queue = get_or_create_queue(20);	
@@ -33,7 +33,7 @@ void push_queue(t_coder *coder)
     }
 	
     queue[i]->coder = coder;
-	pthread_mutex_unlock(&ss);
+	pthread_mutex_unlock(coder->mu_monitor);
 }
 void *coder_routine(void *arg)
 {
@@ -51,23 +51,23 @@ t_action	run_coders_threads(t_config config)
 {
 	t_coder **coders;
 	t_monitor monitor;
-
-
-	monitor.mutex = 
 	int i;
+
+	monitor.mutex = malloc(sizeof(pthread_mutex_t));
 	coders = get_or_create_coders(config);
 	get_or_create_queue(config.number_of_coders);
 	i = 0;
 	while(i < config.number_of_coders)
 	{
+		coders[i]->mu_monitor = monitor.mutex;
 		if (pthread_create(&coders[i]->thread, NULL, coder_routine, coders[i]) != 0)
     		return(free_memory(fail));
 		i++;
 	}
 	i = 0;
-	if (pthread_create(&monitor, NULL, manger_monitor, &config) != 0)
+	if (pthread_create(&monitor.thread, NULL, manger_monitor, &monitor) != 0)
 	    return (free_memory(fail));
-	if (pthread_join(monitor, NULL) != 0)
+	if (pthread_join(monitor.thread, NULL) != 0)
 		return (free_memory(fail));
 	// while(i < config.number_of_coders)
 	// {
