@@ -89,6 +89,8 @@ t_action	free_memory(t_action action);
 t_action	run_coders_threads(t_config config);
 void	*manger_monitor(void *arg);
 t_queue		**get_or_create_queue(int number_of_coders);
+void ft_fifo(t_queue **queue, t_config config);
+void ft_edf(t_queue **queue, t_config config);
 // void push(struct Node * *head_ref,
 //int	new_data)
 // {

@@ -12,7 +12,9 @@ SRC = main.c\
 	  run_coders_threads.c\
 	  free_memory.c\
 	  manger_monitor.c\
-	  get_or_create_queue.c
+	  get_or_create_queue.c\
+	  fifo.c\
+	  edf.c
 
 OBG = $(SRC:.c=.o)
 
