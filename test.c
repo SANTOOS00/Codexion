@@ -1,51 +1,89 @@
+
+
+
+#include <sys/time.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <pthread.h>
 
-typedef struct s_coder
+// unsigned long	ft_gettime_ms(void)
+// {
+	// 	struct timeval	new;
+	
+	// 	gettimeofday(&new , NULL);
+	// 	return ((new.tv_sec * 1000) + (new.tv_usec / 1000));
+	// }
+	
+	// unsigned long	ft_gettime(unsigned long time_create_coder)
+	// {
+		// 	return (ft_gettime_ms() - time_create_coder);
+		// }
+		
+typedef struct s_data
 {
-	pthread_cond_t cond;
-	pthread_mutex_t mutex;
-	int id;
-	pthread_t thread;
-}t_coder;
+	int val_randm;
+} t_data;
 
-int i = 0;
 
-void *test1(void *arg)
+void swap_pointers(void **ptr_addr_a, void **ptr_addr_b)
 {
-	t_coder *coder;
+    void *temp_ptr;
 
-	i++;
-	coder = (t_coder *)arg;
-	printf("i = %d || id coder = %d\n", i, coder);
-	return NULL;
+    temp_ptr = *ptr_addr_a;
+    *ptr_addr_a = *ptr_addr_b;
+    *ptr_addr_b = temp_ptr;
+}
+
+int get_index_parent(int index)
+{
+	return (index - 1) / 2;
+}
+
+int left_cheld(int index)
+{
+	return (index * 2) + 1;
+}
+
+int right_cheld(int index)
+{
+	return (index * 2) + 2;
+}
+
+void test(int index, t_data **arry)
+{
+	while(index == 0 && arry[get_index_parent(index)]->val_randm  < arry[index]->val_randm)
+	{
+		swap_pointers((void *)&arry[get_index_parent(index)], (void *)&arry[index]);
+		index = get_index_parent(index);
+	}
+	return ;
 }
 
 int main()
 {
-	t_coder **coders;
+	t_data **arry;
+	
+	arry = malloc(sizeof(t_data **) * 8);
 	int i = 0;
-	coders = malloc(sizeof(t_coder) * 5);
-	while(i < 5)
+	int tb[] = {2, 8, 5, 0, 3, 9, -1, 55};
+	while(i < 8)
 	{
-		coders[i] = malloc(sizeof(t_coder));
-		pthread_mutex_init(&coders[i]->mutex, NULL);
-		pthread_cond_init(&coders[i]->cond, NULL);
-		coders[i]->id = i;
+		puts("here");
+		arry[i] = malloc(sizeof(t_data));
+		arry[i]->val_randm = tb[i];
+		test(i, arry);
 		i++;
 	}
 	i = 0;
-	while(i < 5)
-	{
-		pthread_create(&coders[i]->thread, NULL, test1, &coders[i]);
-		i++;
-	}
-	i = 0;
-	while(i < 5)
-	{
-		pthread_join(coders[i]->thread, NULL);
-		i++;
-	}
-	return 0;
+	while(i < 8)
+		{printf("%d \n", arry[i]->val_randm);i++;}
+	return (0);
 }
+
+
+
+// void push_arry(void **point, int index, t_data **arry)
+// {
+// 	arry[index] = *point;
+// 	sort(index, arry);
+// 	return ;
+// }
