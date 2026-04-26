@@ -33,7 +33,6 @@ t_action assign_dongles_to_coders(t_config config)
 		coders[i]->id = i;
 		pthread_mutex_init(&dongles[i].mutex, NULL);
 		pthread_cond_init(&dongles[i].cond, NULL);
-		// coders[i]->source = &s[i];
 		// pthread_mutex_init(&coders[i]->source->mutex, NULL);
 		// pthread_cond_init(&coders[i]->source->cond, NULL);
 		coders[i]->check_wait = true;

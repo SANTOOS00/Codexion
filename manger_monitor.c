@@ -22,22 +22,14 @@ void *manger_monitor(void *arg)
 {
 	t_queue **queue;
 	t_monitor *monitor;
+
 	monitor = (t_monitor *)arg;
-	int i = 0;
-	printf("%p \n", queue);
-	// printf("%p \n", queue);
-	// printf("%p \n", queue);
 	pthread_mutex_lock(monitor->mutex);
 	queue = get_or_create_queue(0);
 	pthread_mutex_unlock(monitor->mutex);
-	while(queue[i])
-	{
-		printf("pointeur %d => %p\n", queue[i]->coder->id, queue[i]);
-		i++;
-	}
 	if (monitor->config.scheduler == FIFO)
 		ft_fifo(queue, monitor->config);
-	if (monitor->config.scheduler == FIFO)
+	if (monitor->config.scheduler == EDF)
 		ft_edf(queue, monitor->config);
 	return NULL;
 }
