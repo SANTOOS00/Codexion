@@ -50,8 +50,10 @@ int right_cheld(int index)
 
 void test(int index, t_data **arry)
 {
-	while(index == 0 && arry[get_index_parent(index)]->val_randm  < arry[index]->val_randm)
+	printf("sdsd\n");
+	while(index != 0 && arry[get_index_parent(index)]->val_randm  > arry[index]->val_randm)
 	{
+		printf("sdsd\n");
 		swap_pointers((void *)&arry[get_index_parent(index)], (void *)&arry[index]);
 		index = get_index_parent(index);
 	}
@@ -62,19 +64,22 @@ int main()
 {
 	t_data **arry;
 	
-	arry = malloc(sizeof(t_data **) * 8);
+	arry = malloc(sizeof(t_data **) * 9);
 	int i = 0;
 	int tb[] = {2, 8, 5, 0, 3, 9, -1, 55};
 	while(i < 8)
 	{
-		puts("here");
 		arry[i] = malloc(sizeof(t_data));
-		arry[i]->val_randm = tb[i];
+    	arry[i]->val_randm = tb[i];
 		test(i, arry);
 		i++;
 	}
+
+	arry[i] = malloc(sizeof(t_data));
+	arry[i]->val_randm = 6.7;
+	test(i, arry);
 	i = 0;
-	while(i < 8)
+	while(i < 9)
 		{printf("%d \n", arry[i]->val_randm);i++;}
 	return (0);
 }
