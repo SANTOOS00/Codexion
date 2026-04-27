@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 18:55:57 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/25 14:56:09 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/27 17:21:12 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,20 +35,45 @@ void push_queue(t_coder *coder)
 
 
 
+struct timespec get_timespec()
+{
+    struct timespec spec;
+    clock_gettime(CLOCK_THREAD_CPUTIME_ID, &spec);
+    return spec;
+}
+// void ft_debug(t_coder *coder)
+// {
+// 	ft_refactor(coder);
+// }
+
+// void ft_comple(t_coder *coder)
+// {
+// 	pthread_mutex_lock(&coder->mutex);
+// 	while (coder->check_wait)
+// 		pthread_cond_wait(&coder->cond, &coder->mutex);
+// 	pthread_mutex_unlock(&coder->mutex);
+	
+// 	ft_debug(coder);
+// }
+
 void coder_worker(t_coder *coder)
 {
-	return;
+	
+	printf("coder id -> %d || number complr %d\n", coder->id, coder->config.number_of_compiles_required);
 }
 void *coder_block_until_scheduled(void *arg)
 {	
 	t_coder *coder = (t_coder *)arg;
-
-	push_queue(coder);
-	pthread_mutex_lock(&coder->mutex);
-	while(coder->check_wait)
-		pthread_cond_wait(&coder->cond, &coder->mutex);
-	pthread_mutex_unlock(&coder->mutex);
-	coder_worker(coder);
+	while(coder->config.number_of_compiles_required)
+	{
+		coder->config.number_of_compiles_required--;
+		push_queue(coder);
+		pthread_mutex_lock(&coder->mutex);
+		while(coder->check_wait)
+			pthread_cond_wait(&coder->cond, &coder->mutex);
+		pthread_mutex_unlock(&coder->mutex);
+		coder_worker(coder);
+	}
 	return NULL;
 }
 
@@ -69,6 +94,7 @@ t_action	run_coders_threads(t_config config)
 	while(i < config.number_of_coders)
 	{
 		coders[i]->mu_monitor = monitor.mutex;
+		coders[i]->config = config;
 		if (pthread_create(&coders[i]->thread, NULL, coder_block_until_scheduled, coders[i]) != 0)
     		return(free_memory(fail));
 		i++;

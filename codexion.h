@@ -6,16 +6,18 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 21:48:31 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/26 23:00:56 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/27 17:16:08 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#define _GNU_SOURCE
 #include <pthread.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <sys/time.h>
+#include <time.h>
 #include <stdbool.h>
 
 typedef enum e_scheduler
@@ -53,7 +55,6 @@ typedef struct s_dongle
 	pthread_cond_t	cond;
 }	t_dongle;
 
-
 typedef struct s_coder
 {
 	bool check_wait;
@@ -64,6 +65,7 @@ typedef struct s_coder
 	pthread_mutex_t mutex;
 	pthread_cond_t cond;
 	pthread_mutex_t *mu_monitor;
+	t_config config;
 }	t_coder;
 
 
