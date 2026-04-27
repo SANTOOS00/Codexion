@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 21:48:31 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/27 17:16:08 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/27 17:47:36 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ void	*manger_monitor(void *arg);
 t_queue		**get_or_create_queue(int number_of_coders);
 void ft_fifo(t_queue **queue, t_config config);
 void ft_edf(t_queue **queue, t_config config);
+unsigned long	ft_gettime_ms(void);
+unsigned long	ft_gettime(unsigned long time_create_coder);
 // void push(struct Node * *head_ref,
 //int	new_data)
 // {

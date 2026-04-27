@@ -1,7 +1,7 @@
 NAME_PROGRAN = codexion
 CC = cc
 
-FLAGS = -pthread -g3 -fsanitize=thread -std=c89
+FLAGS = -pthread -g3 -fsanitize=thread
 
 SRC = main.c\
       parse_args.c\
@@ -13,7 +13,8 @@ SRC = main.c\
 	  manger_monitor.c\
 	  get_or_create_queue.c\
 	  fifo.c\
-	  edf.c
+	  edf.c\
+	  manger_time.c
 
 OBG = $(SRC:.c=.o)
 

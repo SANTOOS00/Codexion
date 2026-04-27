@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 18:44:29 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/20 18:44:32 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/27 19:06:25 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,5 @@ unsigned long	ft_gettime_ms(void)
 
 unsigned long	ft_gettime(unsigned long time_create_coder)
 {
-	return (ft_gettime_ms() - time_create_coder);
+	return (ft_gettime_ms() - 	);
 }

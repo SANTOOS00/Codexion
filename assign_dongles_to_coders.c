@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 18:04:01 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/27 15:55:11 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/27 18:18:42 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ t_action assign_dongles_to_coders(t_config config)
 		pthread_cond_init(&dongles[i].cond, NULL);
 		// pthread_mutex_init(&coders[i]->source->mutex, NULL);
 		// pthread_cond_init(&coders[i]->source->cond, NULL);
-		coders[i]->check_wait = true;
 		i++;
 	}
 	return success;
