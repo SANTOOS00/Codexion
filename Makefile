@@ -1,7 +1,8 @@
 NAME_PROGRAN = codexion
 CC = cc
 
-FLAGS = -pthread -g3 -fsanitize=thread
+FLAGS = -pthread
+#-g3 -fsanitize=thread
 
 SRC = main.c\
       parse_args.c\

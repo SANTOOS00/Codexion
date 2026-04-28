@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 21:29:02 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/28 13:31:22 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/28 15:16:27 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,25 @@
 
 
 
-// void time_coder_init(t_queue **queue)
-// {
-	
-// }
-
-
-void *manger_monitor(void *arg)
+void time_coder_init(t_queue **queue)
 {
 	struct timeval new;
 	int i;
 	i = 0;
 	gettimeofday(&new, NULL);
+	while(queue[i])
+		queue[i++]->coder->time_coder = new;
+}
+
+
+void *manger_monitor(void *arg)
+{
 	t_queue **queue;
 	t_monitor *monitor;
 	monitor = (t_monitor *)arg;
 	pthread_mutex_lock(monitor->mutex);
 	queue = get_or_create_queue(0);
-	printf("%ld\n", new.tv_sec);
-	while(queue[i])
-	    queue[i++]->coder->time_coder = new;
+	time_coder_init(queue);
 	pthread_mutex_unlock(monitor->mutex);
 	if (monitor->config.scheduler == FIFO)
 		ft_fifo(queue, monitor->config);
