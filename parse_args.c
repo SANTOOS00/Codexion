@@ -20,7 +20,7 @@ t_config	parse_args(int ac, char **av)
 	config.time_to_compile = 20;
 	config.time_to_debug = 20;
 	config.time_to_refactor = 20;
-	config.number_of_compiles_required = 10;
+	config.number_of_compiles_required = 2
 	config.dongle_cooldown = 20;
 	config.scheduler = FIFO;
 	return (config);

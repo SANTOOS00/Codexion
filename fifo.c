@@ -14,15 +14,16 @@
 void ft_fifo(t_queue **queue, t_config config)
 {
 	int i;
-	sleep(1);
-	i = 2;
-	// while(queue[i])
-	// {
-	pthread_mutex_lock(&queue[i]->coder->mutex);
-	queue[i]->coder->check_wait = false;
-	pthread_mutex_unlock(&queue[i]->coder->mutex);
-	pthread_cond_broadcast(&queue[i]->coder->cond);
-	// }
+
+	i = 0;
+	while(queue[i])
+	{
+        pthread_mutex_lock(&queue[i]->coder->mutex);
+		// pop_queue(queue[i]);
+        queue[i]->coder->check_wait = false;
+        pthread_mutex_unlock(&queue[i]->coder->mutex);
+        pthread_cond_broadcast(&queue[i++]->coder->cond);
+	}
 	return ;
 }
 

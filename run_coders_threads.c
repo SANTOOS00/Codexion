@@ -21,15 +21,14 @@ void push_queue(t_coder *coder)
     queue = get_or_create_queue(20);	
     while (queue[i] != NULL)
 		i++;
-    if (queue[i] == NULL)
+    if (queue[i] == NULL && i != )
     {
 		queue[i] = malloc(sizeof(t_queue));
         if (!queue[i])
 			return;
-        queue[i]->coder = NULL;
-    }
-	
-    queue[i]->coder = coder;
+	}
+	queue[i]->coder = coder;
+    queue[i]->coder = NULL;
 	pthread_mutex_unlock(coder->mu_monitor);
 }
 
@@ -62,7 +61,7 @@ void coder_worker(t_coder *coder)
 void *coder_block_until_scheduled(void *arg)
 {	
 	t_coder *coder = (t_coder *)arg;
-	while(coder->config.number_of_compiles_required)
+	while(coder->bool_finich)
 	{
 		coder->config.number_of_compiles_required--;
 		push_queue(coder);
@@ -92,7 +91,6 @@ t_action	run_coders_threads(t_config config)
 	i = 0;
 	while(i < config.number_of_coders)
 	{
-		coders[i]->mu_monitor = monitor.mutex;
 		coders[i]->config = config;
 		if (pthread_create(&coders[i]->thread, NULL, coder_block_until_scheduled, coders[i]) != 0)
     		return(free_memory(fail));

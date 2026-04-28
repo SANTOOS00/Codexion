@@ -51,16 +51,16 @@ typedef struct s_dongle
 
 typedef struct s_coder
 {
-	bool check_wait;
-	int			id;
-	pthread_t	thread;
-	t_dongle	*left;
-	t_dongle	*right;
+	bool 			check_wait;
+	int				id;
+	pthread_t		thread;
+	t_dongle		*left;
+	t_dongle		*right;
 	pthread_mutex_t mutex;
-	pthread_cond_t cond;
-	pthread_mutex_t *mu_monitor;
-	t_config config;
-	struct timeval time_coder;
+	pthread_cond_t 	cond;
+	t_config		config;
+	struct timeval	time_coder;
+	bool			bool_finich;
 }	t_coder;
 
 
@@ -77,6 +77,13 @@ typedef struct s_queue
 	t_coder *coder;
 	t_config config;
 } t_queue;
+
+typedef struct s_time_compler
+{
+	size_t		time_to_compile;
+	size_t		time_to_debug;
+	size_t		time_to_refactor;
+} t_time_compler;
 
 t_config	parse_args(int ac, char **av);
 t_dongle	*get_or_create_dongles(t_config config);

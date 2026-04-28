@@ -30,11 +30,12 @@ void *manger_monitor(void *arg)
 {
 	t_queue **queue;
 	t_monitor *monitor;
+	usleep(1);
 	monitor = (t_monitor *)arg;
-	pthread_mutex_lock(monitor->mutex);
+	// pthread_mutex_lock(monitor->mutex);
 	queue = get_or_create_queue(0);
 	time_coder_init(queue);
-	pthread_mutex_unlock(monitor->mutex);
+	// pthread_mutex_unlock(monitor->mutex);
 	if (monitor->config.scheduler == FIFO)
 		ft_fifo(queue, monitor->config);
 	if (monitor->config.scheduler == EDF)

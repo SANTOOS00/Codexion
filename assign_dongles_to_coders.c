@@ -23,6 +23,7 @@ t_action assign_dongles_to_coders(t_config config)
 	if (!coders)
 		return (fail);
 	dongles = get_or_create_dongles(config);
+
 	if (!dongles)
 		return (free_memory(fail));
 	while (i < config.number_of_coders)
@@ -30,6 +31,7 @@ t_action assign_dongles_to_coders(t_config config)
 		coders[i]->left = &dongles[i];
 		coders[i]->right = &dongles[(i + 1) % config.number_of_coders];
 		coders[i]->id = i;
+		coders[i]->bool_finich = true;
 		pthread_mutex_init(&dongles[i].mutex, NULL);
 		pthread_cond_init(&dongles[i].cond, NULL);
 		i++;
