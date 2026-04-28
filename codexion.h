@@ -6,11 +6,10 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 21:48:31 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/27 17:47:36 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/28 13:28:02 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#define _GNU_SOURCE
 #include <pthread.h>
 #include <stdio.h>
 #include <string.h>
@@ -26,11 +25,6 @@ typedef enum e_scheduler
 	EDF
 }	t_scheduler;
 
-// typedef enum e_con_or_mutex
-// {
-// 	cond,
-// 	mutex
-// } t_con_or_mutex;
 typedef enum e_action
 {
 	success,
@@ -66,6 +60,7 @@ typedef struct s_coder
 	pthread_cond_t cond;
 	pthread_mutex_t *mu_monitor;
 	t_config config;
+	struct timeval time_coder;
 }	t_coder;
 
 
@@ -93,8 +88,7 @@ void	*manger_monitor(void *arg);
 t_queue		**get_or_create_queue(int number_of_coders);
 void ft_fifo(t_queue **queue, t_config config);
 void ft_edf(t_queue **queue, t_config config);
-unsigned long	ft_gettime_ms(void);
-unsigned long	ft_gettime(unsigned long time_create_coder);
+unsigned long	ft_gettime_ms(struct timeval *start);
 // void push(struct Node * *head_ref,
 //int	new_data)
 // {

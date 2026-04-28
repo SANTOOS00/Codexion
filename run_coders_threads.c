@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 18:55:57 by moerrais          #+#    #+#             */
-/*   Updated: 2026/04/27 18:50:18 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/04/28 13:48:38 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,43 +33,38 @@ void push_queue(t_coder *coder)
 	pthread_mutex_unlock(coder->mu_monitor);
 }
 
-struct timespec get_timespec()
+void ft_compile(t_coder *coder)
 {
-    struct timespec spec;
-    clock_gettime(CLOCK_REALTIME, &spec);
-    return spec;
+	usleep(coder->config.time_to_compile * 1000);
+	printf("%ld\n", coder->config.time_to_compile);
+	long time = ft_gettime_ms(&coder->time_coder);
+	printf("time %ld coder id => %d\n", time, coder->id);
+}
+void ft_debug(t_coder *coder)
+{
+	usleep(coder->config.time_to_compile);
+	printf("%ld\n", coder->time_coder.tv_sec);
+	printf("time %ld coder id => %d\n", ft_gettime_ms(&coder->time_coder), coder->id);
+	
+}
+void ft_refactor(t_coder *coder)
+{
+	struct timeval start;
+	gettimeofday(&start, NULL);
+	
+	usleep(coder->config.time_to_compile);
+	struct timeval end;
+	gettimeofday(&end, NULL);
+	long time = (((long)end.tv_sec * 1000L) + (end.tv_usec / 1000L)) - (((long)start.tv_sec * 1000L) + (start.tv_usec / 1000L));
+	printf("time %ld coder id => %d\n", time, coder->id);
 }
 
-// void coder_worker(t_coder *coder)
-// {
-// 	struct timespec t = get_timespec();
-// 	t.tv_nsec += coder->config.time_to_compile * 1000000;
-//     if (t.tv_nsec >= 1000000000)
-//     {
-// 		t.tv_sec += t.tv_nsec / 1000000000;
-//         t.tv_nsec %= 1000000000;
-//     }
-// 	unsigned long start = ft_gettime_ms();
-// 	pthread_mutex_lock(&coder->mutex);
-// 	printf("%ld || %d", ft_gettime(start), coder->id);
-// 	pthread_cond_timedwait(&coder->cond, &coder->mutex, &t);
-// 	pthread_mutex_unlock(&coder->mutex);
-// 	return ;
-// }
 void coder_worker(t_coder *coder)
-{
-    unsigned long start = ft_gettime_ms();
-    struct timespec t = get_timespec();
-    pthread_mutex_lock(&coder->mutex);
-    t.tv_nsec += coder->config.time_to_compile * 1000000;
-    if (t.tv_nsec >= 1000000000)
-    {
-        t.tv_sec += t.tv_nsec / 1000000000;
-        t.tv_nsec %= 1000000000;
-    }
-    printf("%ld || %d\n", ft_gettime(start), coder->id);
-    pthread_cond_timedwait(&coder->cond, &coder->mutex, &t);
-    pthread_mutex_unlock(&coder->mutex);
+{	
+	ft_compile(coder);
+	ft_debug(coder);
+	ft_refactor(coder);
+	return ;
 }
 
 void *coder_block_until_scheduled(void *arg)
@@ -77,7 +72,6 @@ void *coder_block_until_scheduled(void *arg)
 	t_coder *coder = (t_coder *)arg;
 	while(coder->config.number_of_compiles_required)
 	{
-		// printf("Ss\n");
 		coder->config.number_of_compiles_required--;
 		push_queue(coder);
 		pthread_mutex_lock(&coder->mutex);
@@ -102,12 +96,14 @@ t_action	run_coders_threads(t_config config)
 
 	coders = get_or_create_coders(config);
 	get_or_create_queue(config.number_of_coders);
-
+	
 	i = 0;
+	// struct timeval new = ft_gettime();
 	while(i < config.number_of_coders)
 	{
 		coders[i]->mu_monitor = monitor.mutex;
 		coders[i]->config = config;
+		// coders[i]->time_coder = new;
 		if (pthread_create(&coders[i]->thread, NULL, coder_block_until_scheduled, coders[i]) != 0)
     		return(free_memory(fail));
 		i++;
@@ -117,10 +113,10 @@ t_action	run_coders_threads(t_config config)
 	    return (free_memory(fail));
 	if (pthread_join(monitor.thread, NULL) != 0)
 		return (free_memory(fail));
-	// while(i < config.number_of_coders)
-	// {
-	// 	pthread_join(coders[i]->thread, NULL);
-	// 	i++;
-	// }
+	while(i < config.number_of_coders)
+	{
+		pthread_join(coders[i]->thread, NULL);
+		i++;
+	}
 	return monitor.action;
 }

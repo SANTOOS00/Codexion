@@ -109,3 +109,31 @@
 
 //     return 0;
 // }
+
+#include <sys/time.h>
+#include <time.h>
+
+struct timeval	ft_gettime(void)
+{
+	struct timeval	new;
+
+	gettimeofday(&new, NULL);
+	return (new);
+}
+
+unsigned long ft_gettime_ms(struct timeval start)
+{
+	struct timeval end;
+
+	end = ft_gettime();
+	return (((end.tv_sec * 1000) + (end.tv_usec / 1000)) - ((start.tv_sec * 1000 ) + (start.tv_usec / 1000)));
+}
+int main()
+{
+	struct timeval start;
+	start = ft_gettime();
+	// struct timeval end;
+	sleep(2);
+	printf("%ld\n", ft_gettime_ms(start));
+
+}
