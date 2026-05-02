@@ -12,66 +12,60 @@
 
 #include "codexion.h"
 
-
-void push_queue(t_coder *coder)
+void push_queue_start(t_coder *coder)
 {
-	pthread_mutex_lock(coder->mu_monitor);
-    t_queue **queue;
-    int i = 0;
-    queue = get_or_create_queue(20);	
-    while (queue[i] != NULL)
+	int i = 0;
+	t_queue *queue = get_or_create_queue(0);
+	pthread_mutex_lock(&queue->mutex);
+	while(queue->coder[i])
 		i++;
-    if (queue[i] == NULL && i != )
-    {
-		queue[i] = malloc(sizeof(t_queue));
-        if (!queue[i])
-			return;
+	queue->coder[i] = coder;
+	if (i + 1 == coder->config.number_of_coders)
+	{
+		pthread_cond_broadcast(coder->singl_monitor);
+		printf("sims");
 	}
-	queue[i]->coder = coder;
-    queue[i]->coder = NULL;
-	pthread_mutex_unlock(coder->mu_monitor);
+	pthread_mutex_unlock(&queue->mutex);
+	return ;
 }
 
-void ft_compile(t_coder *coder)
-{
-	usleep(coder->config.time_to_compile * 1000);
-	printf("%ld %d is compiling\n", ft_gettime_ms(&coder->time_coder), coder->id);
-}
-void ft_debug(t_coder *coder)
-{
-	usleep(coder->config.time_to_debug * 1000);
-	printf("%ld %d is debugging\n", ft_gettime_ms(&coder->time_coder), coder->id);
+// void ft_compile(t_coder *coder)
+// {
+// 	usleep(coder->config.time_to_compile * 1000);
+// 	printf("%ld %d is compiling\n", ft_gettime_ms(&coder->time_coder), coder->id);
+// }
+// void ft_debug(t_coder *coder)
+// {
+// 	usleep(coder->config.time_to_debug * 1000);
+// 	printf("%ld %d is debugging\n", ft_gettime_ms(&coder->time_coder), coder->id);
 	
-}
-void ft_refactor(t_coder *coder)
-{
+// }
+// void ft_refactor(t_coder *coder)
+// {
 	
-	usleep(coder->config.time_to_refactor * 1000);
-	printf("%ld %d is refactoring\n", ft_gettime_ms(&coder->time_coder), coder->id);
-}
+// 	usleep(coder->config.time_to_refactor * 1000);
+// 	printf("%ld %d is refactoring\n", ft_gettime_ms(&coder->time_coder), coder->id);
+// }
  
 void coder_worker(t_coder *coder)
 {	
-	ft_compile(coder);
-	ft_debug(coder);
-	ft_refactor(coder);
+	pthread_mutex_lock(&coder->mutex_cd);
+	coder->check_wait = true;
+	while(coder->check_wait)
+		pthread_cond_wait(&coder->cond_cd, &coder->mutex_cd);
+	pthread_mutex_unlock(&coder->mutex_cd);
+	// ft_compile(coder);
+	// ft_debug(coder);
+	// ft_refactor(coder);
 	return ;
 }
 
 void *coder_block_until_scheduled(void *arg)
 {	
 	t_coder *coder = (t_coder *)arg;
-	while(coder->bool_finich)
-	{
-		coder->config.number_of_compiles_required--;
-		push_queue(coder);
-		pthread_mutex_lock(&coder->mutex);
-		coder->check_wait = true;
-		while(coder->check_wait)
-			pthread_cond_wait(&coder->cond, &coder->mutex);
-		pthread_mutex_unlock(&coder->mutex);
-		coder_worker(coder);
-	}
+
+	push_queue_start(coder);
+	coder_worker(coder);
 	return NULL;
 }
 
@@ -81,17 +75,14 @@ t_action	run_coders_threads(t_config config)
 	t_monitor monitor;
 	int i;
 
-	monitor.mutex = malloc(sizeof(pthread_mutex_t));
-	pthread_mutex_init(monitor.mutex, NULL);
-	monitor.config = config;
 
 	coders = get_or_create_coders(config);
-	get_or_create_queue(config.number_of_coders);
-	
+	t_queue *queue = get_or_create_queue(0);
 	i = 0;
 	while(i < config.number_of_coders)
 	{
 		coders[i]->config = config;
+		coders[i]->singl_monitor = queue->cond_monitor;
 		if (pthread_create(&coders[i]->thread, NULL, coder_block_until_scheduled, coders[i]) != 0)
     		return(free_memory(fail));
 		i++;

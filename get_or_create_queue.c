@@ -12,16 +12,19 @@
 
 #include "codexion.h"
 
-t_queue **get_or_create_queue(int number_of_coders)
+t_queue *get_or_create_queue(int number_of_coders)
 {
-	static t_queue **heap;
+	static t_queue *queue;
 	
-	if (heap == NULL)
+	if (queue == NULL)
 	{
-		heap = malloc(sizeof(t_queue **) * number_of_coders);
-		if (!heap)
+		queue = malloc(sizeof(t_queue));
+		if (!queue)
 			return (NULL);
-		// memset(heap, 0, sizeof(t_queue) * number_of_coders);
+		queue->coder = malloc(sizeof(t_coder) * number_of_coders);
+		if (queue->coder)
+			return	NULL;
 	}
-	return heap;
+	return queue;
 }
+-

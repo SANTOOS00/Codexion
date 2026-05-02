@@ -34,12 +34,12 @@ typedef enum e_action
 typedef struct s_condif
 {
 	int			number_of_coders;
-	size_t		time_to_burnout;
-	size_t		time_to_compile;
-	size_t		time_to_debug;
-	size_t		time_to_refactor;
-	size_t		number_of_compiles_required;
-	size_t		dongle_cooldown;
+	long		time_to_burnout;
+	long		time_to_compile;
+	long		time_to_debug;
+	long		time_to_refactor;
+	long		number_of_compiles_required;
+	long		dongle_cooldown;
 	t_scheduler	scheduler;
 }	t_config;
 
@@ -56,43 +56,39 @@ typedef struct s_coder
 	pthread_t		thread;
 	t_dongle		*left;
 	t_dongle		*right;
-	pthread_mutex_t mutex;
-	pthread_cond_t 	cond;
 	t_config		config;
-	struct timeval	time_coder;
-	bool			bool_finich;
+	pthread_cond_t *singl_monitor;
+	pthread_mutex_t mutex_cd;
+	pthread_cond_t cond_cd;
 }	t_coder;
 
 
 typedef struct s_monitor
 {
+	bool cheack;
 	pthread_t thread;
-	pthread_mutex_t *mutex;
 	t_config config;
 	t_action action;
+	pthread_mutex_t mutex;
+	pthread_cond_t cond;
 } t_monitor;
 
 typedef struct s_queue
 {
-	t_coder *coder;
+	t_coder **coder;
 	t_config config;
+	pthread_mutex_t mutex;
+	pthread_cond_t *cond_monitor;
 } t_queue;
-
-typedef struct s_time_compler
-{
-	size_t		time_to_compile;
-	size_t		time_to_debug;
-	size_t		time_to_refactor;
-} t_time_compler;
 
 t_config	parse_args(int ac, char **av);
 t_dongle	*get_or_create_dongles(t_config config);
 t_coder		**get_or_create_coders(t_config config);
+t_queue		*get_or_create_queue(int number_of_coders);
 t_action	assign_dongles_to_coders(t_config config);
 t_action	free_memory(t_action action);
 t_action	run_coders_threads(t_config config);
 void	*manger_monitor(void *arg);
-t_queue		**get_or_create_queue(int number_of_coders);
 void ft_fifo(t_queue **queue, t_config config);
 void ft_edf(t_queue **queue, t_config config);
 unsigned long	ft_gettime_ms(struct timeval *start);

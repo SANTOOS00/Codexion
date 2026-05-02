@@ -12,33 +12,15 @@
 
 #include "codexion.h"
 
-
-
-
-void time_coder_init(t_queue **queue)
-{
-	struct timeval new;
-	int i;
-	i = 0;
-	gettimeofday(&new, NULL);
-	while(queue[i])
-		queue[i++]->coder->time_coder = new;
-}
-
-
 void *manger_monitor(void *arg)
 {
-	t_queue **queue;
 	t_monitor *monitor;
-	usleep(1);
+
 	monitor = (t_monitor *)arg;
-	// pthread_mutex_lock(monitor->mutex);
-	queue = get_or_create_queue(0);
-	time_coder_init(queue);
-	// pthread_mutex_unlock(monitor->mutex);
-	if (monitor->config.scheduler == FIFO)
-		ft_fifo(queue, monitor->config);
-	if (monitor->config.scheduler == EDF)
-		ft_edf(queue, monitor->config);
+	pthread_mutex_lock(&monitor->mutex);
+	while(monitor->cheack)
+		pthread_cond_wait(&monitor->cond, &monitor->mutex);
+	pthread_mutex_unlock(&monitor->mutex);
+	printf("sims");
 	return NULL;
 }

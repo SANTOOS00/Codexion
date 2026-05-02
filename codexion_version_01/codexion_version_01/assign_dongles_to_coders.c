@@ -12,29 +12,23 @@
 
 #include "codexion.h"
 
-t_action assign_dongles_to_coders(t_config config)
+void assign_dongles_to_coders(int number_of_coders)
 {
 	t_dongle	*dongles;
 	t_coder		**coders;
 	int			i;
 
 	i = 0;
-	coders = get_or_create_coders(config);
-	if (!coders)
-		return (fail);
-	dongles = get_or_create_dongles(config);
-	if (!dongles)
-		return (fail);
-	if(get_or_create_queue(config.number_of_coders))
-		return (fail);
-	while (i < config.number_of_coders)
+	coders = initialize_coders(0);
+	dongles = initialize_dongles(0);
+	while (i < number_of_coders)
 	{
 		coders[i]->left = &dongles[i];
-		coders[i]->right = &dongles[(i + 1) % config.number_of_coders];
+		coders[i]->right = &dongles[(i + 1) % number_of_coders];
 		coders[i]->id = i;
 		pthread_mutex_init(&dongles[i].mutex, NULL);
 		pthread_cond_init(&dongles[i].cond, NULL);
 		i++;
 	}
-	return success;
+	return ;
 }
