@@ -7,8 +7,10 @@ void push_queue(t_coder *coder)
 {
     int i;
     t_queue **queue;
+    queue = initialize_queue(0);
 
-    queue = initialize_queue(0); 
+    printf("%d\n", coder->id);
+
     return ;
 }
 
@@ -21,9 +23,9 @@ void *coder_block_until_scheduled(void *arg)
     coder = (t_coder *)arg;
     pthread_mutex_lock(coder->mutex);
     push_queue(coder);
-    // coder->check_wait = true;
-    // while (coder->check_wait)
-    //     pthread_cond_wait(&coder->cond, coder->mutex);
+    coder->check_wait = true;
+    while (coder->check_wait)
+        pthread_cond_wait(&coder->cond, coder->mutex);
     pthread_mutex_unlock(coder->mutex);
     return NULL;
 }
@@ -35,7 +37,7 @@ void exit_threads(int number_coder_creates)
     return ;
 }
 
-t_action run_threads(t_config config)
+t_action run_coders_threads(t_config config)
 {
     t_coder **coders;
     int i;
@@ -49,8 +51,8 @@ t_action run_threads(t_config config)
         i++;
     }
     i = 0;
-    // while (i < config.number_of_coders)
-    //     pthread_join(coders[i++]->thread, NULL);
+    while (i < config.number_of_coders)
+        pthread_join(coders[i++]->thread, NULL);
     return success;
 }
 
