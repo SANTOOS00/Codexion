@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   initialize_queue.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/02 16:54:31 by moerrais          #+#    #+#             */
+/*   Updated: 2026/05/02 18:40:55 by moerrais         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "codexion.h"
 
 static void free_coders(int i, t_queue **queue)
@@ -12,15 +24,14 @@ static void free_coders(int i, t_queue **queue)
 
 static t_action initialize(int number_of_coders, t_queue **queue)
 {
-    int i = 0;
+    int i;
     pthread_mutex_t *mutex;
 
     mutex = malloc(sizeof(pthread_mutex_t));
     if (!mutex)
         return fail;
-
     pthread_mutex_init(mutex, NULL);
-
+    i = 0;
     while (i < number_of_coders)
     {
         queue[i] = malloc(sizeof(t_queue));
@@ -32,7 +43,10 @@ static t_action initialize(int number_of_coders, t_queue **queue)
             return fail;
         }
         queue[i]->mutex = mutex;
+        queue[i]->index_coder = -1;
         i++;
+        if (i == number_of_coders)
+            queue[number_of_coders] = NULL;
     }
     return success;
 }
@@ -40,7 +54,7 @@ static t_action initialize(int number_of_coders, t_queue **queue)
 
 t_queue **initialize_queue(int number_of_coders)
 {
-    static t_queue **queue;
+    static t_queue **queue = NULL;
     
     if (queue == NULL)
     {

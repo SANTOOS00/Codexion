@@ -10,11 +10,9 @@ static void free_coders(int number_of_dongles)
 
     i = 0;
     coders = initialize_coders(0);
+    free(coders[i]->mutex);
     while (i < number_of_dongles)
-    {
-        free(coders[i]->mutex);
         free(coders[i++]);
-    }
     free(coders);
     return ;
 }
@@ -41,11 +39,9 @@ void free_queue(int number_of_dongles)
 
     i = 0;
     queue = initialize_queue(0);
+    free(queue[i]->mutex);
     while(i < number_of_dongles)
-    {
-        free(queue[i]->mutex);
         free(queue[i++]);
-    }
         
     free(queue);
     return ;

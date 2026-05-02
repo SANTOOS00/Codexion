@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   initialize_coders.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/02 16:54:48 by moerrais          #+#    #+#             */
+/*   Updated: 2026/05/02 18:40:43 by moerrais         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "codexion.h"
 
 
@@ -43,7 +55,7 @@ t_action initialize(int number_of_coders, t_coder **coders)
 }
 t_coder **initialize_coders(int number_of_coders)
 {
-    static t_coder **coders;
+    static t_coder **coders = NULL;
 
     if (coders == NULL)
     {

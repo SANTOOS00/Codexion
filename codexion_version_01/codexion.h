@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   codexion.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
+/*   Updated: 2026/05/02 18:37:59 by moerrais         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <pthread.h>
 #include <stdio.h>
 #include <string.h>
@@ -13,6 +25,11 @@ typedef enum e_scheduler
 	EDF
 }	t_scheduler;
 
+typedef enum e_queue_state
+{
+    QUEUE_INCOMPLETE,
+    QUEUE_COMPLETE
+}   t_queue_state;
 
 typedef enum e_action
 {
@@ -75,3 +92,13 @@ void free_source(t_action action, int number_of_coders);
 t_coder		**initialize_coders(int number_of_coders);
 t_dongle	*initialize_dongles(int number_of_coders);
 t_queue		**initialize_queue(int number_of_coders);
+
+
+
+
+void push_queue(t_coder *coder);
+
+
+
+// is queue full
+void is_queue_full(int number_of_coders);
