@@ -12,16 +12,14 @@
 
 #include "codexion.h"
 
-t_config	parse_args(int ac, char **av)
+bool	parse_args(int ac, char **av, t_config *config)
 {
-	t_config	config;
-
-	config.number_of_coders = 20;
-	config.time_to_compile = 20;
-	config.time_to_debug = 20;
-	config.time_to_refactor = 20;
-	config.number_of_compiles_required = 2;
-	config.dongle_cooldown = 20;
-	config.scheduler = FIFO;
-	return (config);
+	config->number_of_coders = 20;
+	config->time_to_compile = 20;
+	config->time_to_debug = 20;
+	config->time_to_refactor = 20;
+	config->number_of_compiles_required = 2;
+	config->dongle_cooldown = 20;
+	config->scheduler = FIFO;
+	return true;
 }
