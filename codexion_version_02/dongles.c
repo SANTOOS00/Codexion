@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 19:04:20 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/04 20:11:34 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/04 23:57:15 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,11 @@ t_action init_dongles(t_dongle **dongles, int dongles_number)
 		if (pthread_mutex_init(&dongles[i]->mutex, NULL))
 		{
 			clean_dongles(dongles, i);
-			return (fail);
+			return (FAIL);
 		}
+		i++;
 	}
-	return (success);
+	return (SUCCESS);
 }
 
 t_action alloc_and_init_dongles(t_simulation *simulation)
@@ -66,9 +67,9 @@ t_action alloc_and_init_dongles(t_simulation *simulation)
 
 	dongles = dongles_alloc(simulation->config.number_of_coders);
 	if (!dongles)
-		return (fail);
-	if (!init_dongles(dongles, simulation->config.number_of_coders) == fail)
-		return (free_2d_array((void **)dongles, simulation->config.number_of_coders), fail);
+		return (FAIL);
+	if (init_dongles(dongles, simulation->config.number_of_coders) == FAIL)
+		return (free_2d_array((void **)dongles, simulation->config.number_of_coders), FAIL);
 	simulation->dongles = dongles;
-	return (success);
+	return (SUCCESS);
 }

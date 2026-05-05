@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/04 19:26:28 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/05 01:11:01 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@
 	
 typedef enum e_action
 {
-    fail,
-    success,
+    FAIL,
+    SUCCESS,
 } t_action;
 		
 typedef enum e_scheduler
@@ -83,7 +83,6 @@ typedef struct s_coder
 	t_mutex_cond *coders_counter_m_c;
 	t_coder_status status;
 	t_mutex_cond mutex_cond;
-	pthread_mutex_t *print_mutex;
 }	t_coder;
 
 
@@ -113,7 +112,7 @@ bool	parse_args(int ac, char **av, t_config *config);
 // init simulation
 t_action ft_init_simulation(int argc, char **argv, t_simulation *simulation);
 t_action init_coders(t_simulation *simulation);
-t_action init_dongles(t_simulation *simulation);
+t_action alloc_and_init_dongles(t_simulation *simulation);
 
 
 
@@ -121,3 +120,23 @@ t_action init_dongles(t_simulation *simulation);
 
 // free 2d arry void ** and size for free
 void free_2d_array(void **arr, int size);
+
+t_action init_mutex_cond(t_mutex_cond *mutex_cond);
+void destory_mutex_cond(t_mutex_cond *mutex_cond);
+
+
+
+
+// clean resource 
+void destroy_m_c_simulation(t_simulation *simulation);
+void clean_dongles(t_dongle **dongles, int size);
+void clean_resource(t_simulation *simulation);
+
+// init t_mutex_cond
+t_action init_mutex_cond(t_mutex_cond *mutex_cond);
+
+
+// set coder in state
+t_action ft_set_coders_initial_state(t_simulation *simulation);
+
+
