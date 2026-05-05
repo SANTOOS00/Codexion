@@ -1,9 +1,7 @@
 NAME_PROGRAN = codexion
 CC = cc
 
-FLAGS = -pthread -g3
-
-#-g3 -fsanitize=thread
+FLAGS = -pthread -g3 -fsanitize=thread
 
 SRC = codexion.c \
       parse_args.c \
@@ -12,7 +10,8 @@ SRC = codexion.c \
 	  dongles.c \
 	  free_2d_array.c\
 	  init_or_destory_mutex_cond.c\
-	  clean_resource.c
+	  clean_resource.c\
+	  threads_orchestrator.c
 OBG = $(SRC:.c=.o)
 
 all: $(NAME_PROGRAN)

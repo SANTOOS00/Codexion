@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/05 03:57:04 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/05 23:46:00 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,20 +65,22 @@ typedef struct s_mutex_cond {
 
 typedef struct s_coder
 {
+	pthread_t thread;
+	bool is_coder_waiting;
 	int id;
-	bool check_wait;
 	bool *is_burnout;
 	pthread_mutex_t *burnout_mutex;
-	pthread_t thread;
 	t_config *config;
 	t_dongle *left_dongle;
 	t_dongle *right_dongle;
-	int *coders_counter;
+	int *run_coders_counter;
 	t_mutex_cond *coders_counter_m_c;
 	t_coder_status status;
 	t_mutex_cond mutex_cond;
 }	t_coder;
 
+
+struct t_monitor;
 
 typedef struct s_queue
 {
@@ -88,15 +90,16 @@ typedef struct s_queue
 } t_queue;
 
 typedef struct s_simulation {
+	pthread_t thread;
 	t_config config;
 	t_coder **coders;
 	t_dongle **dongles;
-	int coders_counter;
-	t_mutex_cond coders_counter_m_c; //
+	int run_coders_counter;
+	t_mutex_cond coders_counter_m_c;
 	bool is_burnout;
-	pthread_mutex_t burnout_mutex; //
-	t_queue queue;
+	pthread_mutex_t burnout_mutex;
 } t_simulation;
+
 
 
 // parse the args
@@ -134,3 +137,13 @@ void clean_coders(t_coder **coders, int size);
 void clean_dongles(t_dongle **dongles, int size);
 void clean_mutex_cond_simulation(t_simulation *simulation);
 void clean_resource(t_simulation *simulation);
+
+
+
+
+
+
+
+
+// run simulation 
+bool start_simulation(t_simulation *sim);
