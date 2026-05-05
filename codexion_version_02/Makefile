@@ -11,8 +11,8 @@ SRC = codexion.c \
 	  coders.c \
 	  dongles.c \
 	  free_2d_array.c\
-	  clean_resource.c\
-	  init_or_destory_mutex_cond.c
+	  init_or_destory_mutex_cond.c\
+	  clean_resource.c
 OBG = $(SRC:.c=.o)
 
 all: $(NAME_PROGRAN)

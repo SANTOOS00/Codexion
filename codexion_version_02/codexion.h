@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/05 01:11:01 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/05 03:57:04 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,6 @@
 // {
 	// }   t_queue_state;
 	
-typedef enum e_action
-{
-    FAIL,
-    SUCCESS,
-} t_action;
-		
 typedef enum e_scheduler
 {
 	FIFO,
@@ -110,9 +104,9 @@ bool	parse_args(int ac, char **av, t_config *config);
 
 
 // init simulation
-t_action ft_init_simulation(int argc, char **argv, t_simulation *simulation);
-t_action init_coders(t_simulation *simulation);
-t_action alloc_and_init_dongles(t_simulation *simulation);
+bool ft_init_simulation(int argc, char **argv, t_simulation *simulation);
+bool init_coders(t_simulation *simulation);
+bool alloc_and_init_dongles(t_simulation *simulation);
 
 
 
@@ -121,22 +115,22 @@ t_action alloc_and_init_dongles(t_simulation *simulation);
 // free 2d arry void ** and size for free
 void free_2d_array(void **arr, int size);
 
-t_action init_mutex_cond(t_mutex_cond *mutex_cond);
+bool init_mutex_cond(t_mutex_cond *mutex_cond);
 void destory_mutex_cond(t_mutex_cond *mutex_cond);
 
 
 
 
-// clean resource 
-void destroy_m_c_simulation(t_simulation *simulation);
-void clean_dongles(t_dongle **dongles, int size);
-void clean_resource(t_simulation *simulation);
-
-// init t_mutex_cond
-t_action init_mutex_cond(t_mutex_cond *mutex_cond);
+bool init_mutex_cond(t_mutex_cond *mutex_cond);
 
 
+void clean_mutex_cond_simulation(t_simulation *simulation);
+
+void clean_mutex_dongles(t_dongle **dongles, int size);
 // set coder in state
-t_action ft_set_coders_initial_state(t_simulation *simulation);
+bool ft_set_coders_initial_state(t_simulation *simulation);
 
-
+void clean_coders(t_coder **coders, int size);
+void clean_dongles(t_dongle **dongles, int size);
+void clean_mutex_cond_simulation(t_simulation *simulation);
+void clean_resource(t_simulation *simulation);

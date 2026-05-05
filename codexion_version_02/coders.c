@@ -6,13 +6,13 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 19:27:24 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/05 00:58:36 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/05 03:48:33 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-t_coder **coders_alloc(int coders_number)
+t_coder **alloc_coders(int coders_number)
 {
 	t_coder **coders;
 	int i;
@@ -32,7 +32,7 @@ t_coder **coders_alloc(int coders_number)
 }
 
 
-t_action ft_set_coders_initial_state(t_simulation *simulation)
+bool ft_set_coders_initial_state(t_simulation *simulation)
 {
 	int i;
 	int j;
@@ -54,26 +54,57 @@ t_action ft_set_coders_initial_state(t_simulation *simulation)
 		coder->coders_counter = &simulation->coders_counter;
 		coder->coders_counter_m_c = &simulation->coders_counter_m_c;
 		coder->status = START;
-		if (init_mutex_cond(&coder->mutex_cond) == FAIL)
+		i++;
+	}
+	return (true);
+}
+
+
+void destory_mutex_cond_coders(t_coder **coders, int size)
+{
+	int i;
+
+	i = 0;
+	while (i < size)
+		destory_mutex_cond(&coders[i++]->mutex_cond);
+}
+
+bool init_mutex_cond_coders(t_coder **coders, int size)
+{
+	int i;
+	i = 0;
+	while (i < size)
+	{
+		if (init_mutex_cond(&coders[i]->mutex_cond) == false)
 		{
-			while (++j < i)
-				destory_mutex_cond(&coder->mutex_cond);
-			return (FAIL);
+			destory_mutex_cond_coders(coders, i);
+			return (false);
 		}
 		i++;
 	}
-	return (SUCCESS);
+	return (true);
 }
 
-t_action init_coders(t_simulation *simulation)
+void clean_coders(t_coder **coders, int size)
+{
+	destory_mutex_cond_coders(coders, size);
+	free_2d_array((void **)coders, size);
+}
+
+bool init_coders(t_simulation *simulation)
 {
 	t_coder **coders;
 
 
-	coders = coders_alloc(simulation->config.number_of_coders);
+	coders = alloc_coders(simulation->config.number_of_coders);
 	if (!coders)
-		return (FAIL);
+		return (false);
+	if (init_mutex_cond_coders(coders, simulation->config.number_of_coders) == false)
+	{
+		free_2d_array((void **)coders, simulation->config.number_of_coders);
+		return (false);
+	}
 	simulation->coders = coders;
-	return (SUCCESS);
+	return (true);
 
 }

@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 19:04:20 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/04 23:57:15 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/05 03:54:50 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_dongle **dongles_alloc(int dongles_number)
 	return (dongles);
 }
 
-void clean_dongles(t_dongle **dongles, int size)
+void clean_mutex_dongles(t_dongle **dongles, int size)
 {
 	int i;
 
@@ -43,7 +43,13 @@ void clean_dongles(t_dongle **dongles, int size)
 		pthread_mutex_destroy(&dongles[i++]->mutex);
 }
 
-t_action init_dongles(t_dongle **dongles, int dongles_number)
+void clean_dongles(t_dongle **dongles, int size)
+{
+	clean_mutex_dongles(dongles, size);
+	free_2d_array((void **)dongles, size);
+}
+
+bool init_mutex_dongles(t_dongle **dongles, int dongles_number)
 {
 	int i;
 	
@@ -52,24 +58,24 @@ t_action init_dongles(t_dongle **dongles, int dongles_number)
 	{
 		if (pthread_mutex_init(&dongles[i]->mutex, NULL))
 		{
-			clean_dongles(dongles, i);
-			return (FAIL);
+			clean_mutex_dongles(dongles, i);
+			return (false);
 		}
 		i++;
 	}
-	return (SUCCESS);
+	return (true);
 }
 
-t_action alloc_and_init_dongles(t_simulation *simulation)
+bool alloc_and_init_dongles(t_simulation *simulation)
 {
 	t_dongle **dongles;
 
 
 	dongles = dongles_alloc(simulation->config.number_of_coders);
 	if (!dongles)
-		return (FAIL);
-	if (init_dongles(dongles, simulation->config.number_of_coders) == FAIL)
-		return (free_2d_array((void **)dongles, simulation->config.number_of_coders), FAIL);
+		return (false);
+	if (init_mutex_dongles(dongles, simulation->config.number_of_coders) == false)
+		return (free_2d_array((void **)dongles, simulation->config.number_of_coders), false);
 	simulation->dongles = dongles;
-	return (SUCCESS);
+	return (true);
 }
