@@ -1,25 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_args.c                                       :+:      :+:    :+:   */
+/*   fifo_or_edf.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/20 13:03:45 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/06 04:00:36 by moerrais         ###   ########.fr       */
+/*   Created: 2026/05/06 03:50:54 by moerrais          #+#    #+#             */
+/*   Updated: 2026/05/06 04:01:05 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-bool	parse_args(int ac, char **av, t_config *config)
+
+bool ft_edf(t_simulation *sim)
 {
-	config->number_of_coders = 20;
-	config->time_to_compile = 20;
-	config->time_to_debug = 20;
-	config->time_to_refactor = 20;
-	config->dongle_cooldown = 20;
-	config->number_of_compiles_required = 2;
-	config->scheduler = EDF;
-	return true;
+	return (true);
+}
+
+
+bool ft_fifo(t_simulation *sim)
+{
+	return (true);
+}
+
+
+bool ft_fifo_or_edf(t_simulation *sim)
+{
+	if (sim->config.scheduler == FIFO)
+		ft_fifo(sim);
+	else if(sim->config.scheduler == EDF)
+		ft_edf(sim);
+	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/05 23:46:00 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/06 03:49:58 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,6 @@ typedef struct s_coder
 	t_mutex_cond mutex_cond;
 }	t_coder;
 
-
-struct t_monitor;
-
 typedef struct s_queue
 {
 	void **coders;
@@ -140,6 +137,18 @@ void clean_resource(t_simulation *simulation);
 
 
 
+//manger moniter 
+bool run_monitor_simulation(t_simulation *sim);
+
+
+
+
+// manger in fifo or edf
+bool ft_fifo_or_edf(t_simulation *sim);
+
+
+// start coders in simulation 
+bool start_coders_in_simulation(t_simulation *sim);
 
 
 
