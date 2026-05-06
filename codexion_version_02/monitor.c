@@ -12,10 +12,6 @@
 
 #include "codexion.h"
 
-
-
-
-
 void *monitor_routine(void *arg)
 {
 	t_simulation *sim;
@@ -25,7 +21,6 @@ void *monitor_routine(void *arg)
 	while (sim->run_coders_counter != sim->config.number_of_coders)
 		pthread_cond_wait(&sim->coders_counter_m_c.cond, &sim->coders_counter_m_c.mutex);
 	pthread_mutex_unlock(&sim->coders_counter_m_c.mutex);
-	printf("ssss\n");
 	if (ft_fifo_or_edf(sim) == false)
 		return (NULL);
 	return (NULL);
@@ -36,6 +31,5 @@ bool run_monitor_simulation(t_simulation *sim)
 {
 	if(pthread_create(&sim->thread, NULL, monitor_routine, sim) != 0)
 		return (false);
-
 	return (true);
 }

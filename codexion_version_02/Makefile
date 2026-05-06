@@ -15,7 +15,9 @@ SRC = codexion.c \
 	  threads_orchestrator.c\
 	  monitor.c\
 	  start_coders_in_simulation.c\
-	  fifo_or_edf.c
+	  fifo_or_edf.c\
+	  wait_coder.c\
+	  queue.c
 
 OBG = $(SRC:.c=.o)
 

@@ -48,10 +48,15 @@ bool ft_init_simulation(int argc, char **argv, t_simulation *simulation)
 	if (alloc_and_init_dongles(simulation) == false)
 	{
 		clean_mutex_cond_simulation(simulation);
-		free_2d_array((void **)simulation->coders, simulation->config.number_of_coders);
+		clean_coders(simulation->coders, simulation->config.number_of_coders);
 		return (false);
 	}
+	if (ft_init_queue(simulation) == false)
+	{
+		clean_coders(simulation->coders, simulation->config.number_of_coders);
+		clean_dongles(simulation->dongles, simulation->config.number_of_coders);
+		clean_mutex_cond_simulation(simulation);
+	}
 	ft_set_coders_initial_state(simulation);
-	return (true);
-		
+	return (true);	
 }

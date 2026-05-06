@@ -12,14 +12,6 @@
 
 #include "codexion.h"
 
-bool wait_coders(t_coder *coder)
-{
-	pthread_mutex_lock(&coder->mutex_cond.mutex);
-	while (coder->is_coder_waiting)
-		pthread_cond_wait(&coder->mutex_cond.cond, &coder->mutex_cond.mutex);	
-	pthread_mutex_unlock(&coder->mutex_cond.mutex);	
-	return (true);
-}
 
 void *coders_routine(void *arg)
 {
@@ -30,9 +22,8 @@ void *coders_routine(void *arg)
 	(*coder->run_coders_counter)++;
 	pthread_cond_broadcast(&coder->coders_counter_m_c->cond);
 	pthread_mutex_unlock(&coder->coders_counter_m_c->mutex);
-	if (wait_coders(coder) == false)
-		return (NULL);
-	return (coder);
+	wait_coder(coder);
+	return (NULL);
 }
 
 
@@ -49,8 +40,8 @@ bool start_coders_in_simulation(t_simulation *sim)
 		i++;
 	}
 	i = 0;
-	while (i < sim->config.number_of_coders)
-		pthread_join(sim->coders[i++]->thread, NULL);
-	pthread_join(sim->thread, NULL);
+	// while (i < sim->config.number_of_coders)
+	// 	pthread_join(sim->coders[i++]->thread, NULL);
+	// pthread_join(sim->thread, NULL);
 	return (true);
 }

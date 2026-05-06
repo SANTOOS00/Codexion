@@ -81,7 +81,7 @@ typedef struct s_coder
 
 typedef struct s_queue
 {
-	void **coders;
+	t_coder **coders;
 	int size;
 	int max_size;
 } t_queue;
@@ -95,6 +95,7 @@ typedef struct s_simulation {
 	t_mutex_cond coders_counter_m_c;
 	bool is_burnout;
 	pthread_mutex_t burnout_mutex;
+	t_queue *queue;
 } t_simulation;
 
 
@@ -108,7 +109,7 @@ bool ft_init_simulation(int argc, char **argv, t_simulation *simulation);
 bool init_coders(t_simulation *simulation);
 bool alloc_and_init_dongles(t_simulation *simulation);
 
-
+t_coder **alloc_coders(int coders_number);
 
 
 
@@ -141,7 +142,10 @@ void clean_resource(t_simulation *simulation);
 bool run_monitor_simulation(t_simulation *sim);
 
 
+bool ft_init_queue(t_simulation *sim);
 
+
+void clean_queue(t_queue *queue);
 
 // manger in fifo or edf
 bool ft_fifo_or_edf(t_simulation *sim);
@@ -151,8 +155,8 @@ bool ft_fifo_or_edf(t_simulation *sim);
 bool start_coders_in_simulation(t_simulation *sim);
 
 
-
-
+// wait coder
+void wait_coder(t_coder *coder);
 
 // run simulation 
 bool start_simulation(t_simulation *sim);

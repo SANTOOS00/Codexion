@@ -15,6 +15,7 @@
 
 bool ft_edf(t_simulation *sim)
 {
+	
 	return (true);
 }
 

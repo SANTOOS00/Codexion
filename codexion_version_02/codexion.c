@@ -15,6 +15,7 @@
 int main(int argc, char **argv)
 {
 	t_simulation simulation;
+
 	if (ft_init_simulation(argc, argv, &simulation) == false)
 		return (1);
 	if (start_simulation(&simulation) == false)
