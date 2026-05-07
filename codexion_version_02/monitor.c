@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/06 03:37:59 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/06 03:56:24 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/07 03:07:52 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@ void *monitor_routine(void *arg)
 	return (NULL);
 }
 
+void *join_monitor(t_simulation *sim)
+{
+	void *arg_ret;
+	pthread_join(sim->thread, arg_ret);
+	return (arg_ret);
+}
 
 bool run_monitor_simulation(t_simulation *sim)
 {

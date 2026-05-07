@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 18:59:05 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/05 03:56:50 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/07 02:43:24 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ void clean_mutex_cond_simulation(t_simulation *simulation)
 
 bool ft_set_simulation_intial_state(int argc, char **argv, t_simulation *simulation)
 {
-	
+	simulation->is_burnout = false;
+	simulation->run_coders_counter = 0;
 	if (parse_args(argc, argv, &simulation->config) == false)
 		return (false);
 	if (init_mutex_cond(&simulation->coders_counter_m_c) == false)
@@ -32,7 +33,7 @@ bool ft_set_simulation_intial_state(int argc, char **argv, t_simulation *simulat
 	{
 		destory_mutex_cond(&simulation->coders_counter_m_c);
 		return (false);
-	}
+	}	
 	return (true);
 }
 

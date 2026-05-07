@@ -1,8 +1,7 @@
 NAME_PROGRAN = codexion
 CC = cc
 
-FLAGS = -pthread
-# -g3 -fsanitize=thread
+FLAGS = -pthread -g3 -fsanitize=thread
 
 SRC = codexion.c \
       parse_args.c \
@@ -16,7 +15,6 @@ SRC = codexion.c \
 	  monitor.c\
 	  start_coders_in_simulation.c\
 	  fifo_or_edf.c\
-	  wait_coder.c\
 	  queue.c
 
 OBG = $(SRC:.c=.o)
