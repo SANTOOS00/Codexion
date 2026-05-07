@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/07 03:08:01 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/07 15:47:10 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,64 +54,96 @@ typedef struct s_config
 
 typedef struct s_dongle
 {
-	pthread_mutex_t mutex;
-	bool is_available;
-	int cooldown_time;
+	pthread_mutex_t 	mutex;
+	bool				is_available;
+	int					cooldown_time;
 }	t_dongle;
 
 typedef struct s_mutex_cond {
-	pthread_mutex_t mutex;
-	pthread_cond_t cond;
+	pthread_mutex_t 	mutex;
+	pthread_cond_t 		cond;
 } t_mutex_cond;
 
 
 typedef struct s_coder
 {
-	pthread_t thread;
-	bool has_dongle;
-	int id;
-	bool *is_burnout;
+	pthread_t 		thread;
+	int 			id;
+	
+	bool 			has_dongle; /// kaytsna dongles min monitor i3tihom lih
+	
+	bool 			*is_burnout;
 	pthread_mutex_t *burnout_mutex;
-	t_config *config;
-	t_dongle *left_dongle;
-	t_dongle *right_dongle;
-	int *run_coders_counter;
-	t_mutex_cond *coders_counter_m_c;
-	t_coder_status status;
-	t_mutex_cond mutex_cond;
-	t_queue *queue;
+	
+	t_config 		*config;
+	
+	t_dongle 		*left_dongle;
+	t_dongle 		*right_dongle;
+	
+	int 			*run_coders_counter;
+	t_mutex_cond 	*coders_cnt_lock;
+	
+	t_coder_status 	status;
+	t_mutex_cond 	mutex_cond;
+	
+	bool			*check_wait_monitor;  // القفل الخاص بالعداد
+	t_mutex_cond	*monitor_wait_lock;
+	
+	t_queue 		*queue;
 	pthread_mutex_t *queue_mutex;
 }	t_coder;
 
 
 typedef struct s_dongle_request
 {
-	t_coder	*coder;
+	t_coder		*coder;
 	long long	deadline;  //deadline = last_compile_start + time_to_burnout
 }	t_dongle_request;
 
 typedef struct s_queue
 {
 	t_dongle_request	**heap;
+	
 	int					size; //xhal 3ndi f heap
+	
 	int					capacity;  // hnay xhal i9dr ihz lina heap ya3ni xhal max dyalo
-	pthread_mutex_t mutex;
+	pthread_mutex_t 	mutex;
 }	t_queue;
 
 
-typedef struct s_simulation {
-	pthread_t thread;
-	t_config config;
-	t_coder **coders;
-	t_dongle **dongles;
-	int run_coders_counter;
-	t_mutex_cond coders_counter_m_c;//
-	bool is_burnout;
-	pthread_mutex_t burnout_mutex;//
-	t_queue *queue;
-	pthread_mutex_t queue_mutex;//
-} t_simulation;
+// typedef struct s_simulation {
+// 	pthread_t		thread;
+// 	t_config		config;
+// 	t_coder			**coders;
+// 	t_dongle **dongles;
+// 	int run_coders_counter;
+// 	t_mutex_cond coders_counter_m_c;//
+// 	bool is_burnout;
+// 	pthread_mutex_t burnout_mutex;//
+// 	t_queue *queue;
+// 	pthread_mutex_t queue_mutex;//
+// } t_simulation;
 
+
+
+typedef struct s_simulation {
+    pthread_t       thread;
+    t_config        config;
+    t_coder         **coders;
+    t_dongle        **dongles;
+    
+    // الجزء الخاص بالعداد والمراقبة
+    int             run_coders_counter;
+    t_mutex_cond    coders_cnt_lock; 
+
+	bool			check_wait_monitor;  // القفل الخاص بالعداد
+    t_mutex_cond	monitor_wait_lock;  // القفل الخاص بانتظار المراقبة (Wait Monitor)
+
+    bool            is_burnout;
+    pthread_mutex_t burnout_mutex;
+    
+    t_queue         *queue;
+} t_simulation;
 
 
 // parse the args

@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 19:27:24 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/07 03:08:59 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/07 15:37:34 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,24 @@ bool ft_set_coders_initial_state(t_simulation *simulation)
 	while (i < config.number_of_coders)
 	{
 		coder = simulation->coders[i];
-		coder->has_dongle = true;
 		coder->id = i;
+		
+		coder->has_dongle = true;
+		
 		coder->is_burnout = &simulation->is_burnout;
 		coder->burnout_mutex = &simulation->burnout_mutex;
+		
 		coder->config = &simulation->config;
+		
 		coder->left_dongle = simulation->dongles[i];
 		coder->right_dongle = simulation->dongles[(i + 1) % config.number_of_coders];
+		
 		coder->run_coders_counter = &simulation->run_coders_counter;
-		coder->coders_counter_m_c = &simulation->coders_counter_m_c;
+		coder->coders_cnt_lock = &simulation->coders_cnt_lock;
+		
+		coder->monitor_wait_lock = &simulation->monitor_wait_lock;
+		coder->check_wait_monitor = &simulation->check_wait_monitor;
+		
 		coder->status = START;
 		i++;
 	}

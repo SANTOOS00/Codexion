@@ -6,22 +6,11 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/06 03:42:54 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/07 10:06:49 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/07 17:33:37 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-
-
-
-void ft_swap(t_dongle_request **arg1, t_dongle_request **arg2)
-{
-	t_dongle_request *timp;
-
-	timp = *arg1;
-	*arg1 = *arg2;
-	*arg2 = timp;
-}
 
 long long get_time()
 {
@@ -30,10 +19,12 @@ long long get_time()
 	return ((long long)(tv.tv_sec) * 1000 + (tv.tv_usec / 1000));
 }
 
-
-int get_index_parent(int index)
+void false_ture(t_coder *coder)
 {
-	return (index - 1) / 2;
+	pthread_mutex_lock(&coder->mutex_cond.mutex);
+	coder->left_dongle->is_available = true;
+	coder->right_dongle->is_available = true;
+	pthread_mutex_unlock(&coder->mutex_cond.mutex);
 }
 
 void push_and_time_deadline(t_queue *queue, t_coder *coder)
@@ -45,13 +36,12 @@ void push_and_time_deadline(t_queue *queue, t_coder *coder)
 	queue->heap[i]->deadline = coder->config->time_to_burnout + get_time();
 	queue->size++;
 	pthread_mutex_unlock(&queue->mutex);
-	while (i > 0 && queue->heap[i]->deadline < queue->heap[get_index_parent(i)]->deadline)
-	{
-		pthread_mutex_lock(&queue->mutex);
-		ft_swap(&queue->heap[i], &queue->heap[get_index_parent(i)]);
-		i = get_index_parent(i);
-		pthread_mutex_unlock(&queue->mutex);
-	}
+	// false_ture(coder);
+	pthread_mutex_lock(&coder->monitor_wait_lock->mutex);
+	(*coder->check_wait_monitor) = false;
+	printf("SA\n");
+	pthread_cond_destroy(&coder->monitor_wait_lock->cond);
+	pthread_mutex_unlock(&coder->monitor_wait_lock->mutex);
 }
 
 void enqueue_coder_request(t_coder *coder)
@@ -86,10 +76,10 @@ void *coders_routine(void *arg)
 	t_coder *coder;
 	
 	coder = (t_coder *)arg;	
-	pthread_mutex_lock(&coder->coders_counter_m_c->mutex);
+	pthread_mutex_lock(&coder->coders_cnt_lock->mutex);
 	(*coder->run_coders_counter)++;
-	pthread_cond_broadcast(&coder->coders_counter_m_c->cond);
-	pthread_mutex_unlock(&coder->coders_counter_m_c->mutex);
+	pthread_cond_broadcast(&coder->coders_cnt_lock->cond);
+	pthread_mutex_unlock(&coder->coders_cnt_lock->mutex);
 	works_coders_threads(coder);
 	return (NULL);
 }
