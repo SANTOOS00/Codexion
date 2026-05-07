@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/06 03:42:54 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/07 03:31:43 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/07 10:06:49 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,19 +39,19 @@ int get_index_parent(int index)
 void push_and_time_deadline(t_queue *queue, t_coder *coder)
 {
 	int i;
-	i = queue->size;
 	pthread_mutex_lock(&queue->mutex);
+	i = queue->size;
 	queue->heap[i]->coder = coder;
 	queue->heap[i]->deadline = coder->config->time_to_burnout + get_time();
 	queue->size++;
-	// pthread_mutex_unlock(&queue->mutex);
+	pthread_mutex_unlock(&queue->mutex);
 	while (i > 0 && queue->heap[i]->deadline < queue->heap[get_index_parent(i)]->deadline)
 	{
-		// pthread_mutex_lock(&queue->mutex);
+		pthread_mutex_lock(&queue->mutex);
 		ft_swap(&queue->heap[i], &queue->heap[get_index_parent(i)]);
 		i = get_index_parent(i);
+		pthread_mutex_unlock(&queue->mutex);
 	}
-	pthread_mutex_unlock(&queue->mutex);
 }
 
 void enqueue_coder_request(t_coder *coder)
