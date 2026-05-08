@@ -201,6 +201,11 @@ void run_scheduler_logic(t_simulation *sim);
 bool start_coders_in_simulation(t_simulation *sim);
 
 
+
+// return  dongles
+void return_right_dongle(t_coder *coder);
+void return_left_dongle(t_coder *coder);
+
 // wait coder
 // void wait_coder(t_coder *coder);
 

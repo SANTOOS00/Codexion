@@ -59,15 +59,16 @@ void refresh_coder_request(t_queue *queue, t_coder *coder)
 }
 
 
+
+
 void enqueue_coder_request(t_coder *coder)
 {
 	if (coder->status == START)
-	{
-		printf("id %d\n", coder->id);
 		schedule_priority_request(coder->queue, coder);
-	}
 	else if (coder->status == REF)
     	refresh_coder_request(coder->queue, coder);
+	return_left_dongle(coder);
+	return_right_dongle(coder);
 	pthread_mutex_lock(&coder->mutex_cond.mutex);
     while (coder->has_dongle)
 		pthread_cond_wait(&coder->mutex_cond.cond, &coder->mutex_cond.mutex);

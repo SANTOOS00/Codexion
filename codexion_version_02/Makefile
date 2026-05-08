@@ -15,6 +15,7 @@ SRC = codexion.c \
 	  monitor.c\
 	  start_coders_in_simulation.c\
 	  execute_coder_workflow.c\
+	  return_dongles.c\
 	  queue.c
 
 OBG = $(SRC:.c=.o)
