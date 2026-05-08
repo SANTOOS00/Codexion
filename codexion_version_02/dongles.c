@@ -66,6 +66,19 @@ bool init_mutex_dongles(t_dongle **dongles, int dongles_number)
 	return (true);
 }
 
+
+void init_dongles_state(t_dongle **dongles, long long cooldown_time)
+{
+	int i;
+
+	i = 0;
+	while (dongles[i] != NULL)
+	{
+		dongles[i]->is_available = true;
+		dongles[i]->cooldown_time = cooldown_time;
+		i++;
+	}
+}
 bool alloc_and_init_dongles(t_simulation *simulation)
 {
 	t_dongle **dongles;
@@ -76,6 +89,7 @@ bool alloc_and_init_dongles(t_simulation *simulation)
 		return (false);
 	if (init_mutex_dongles(dongles, simulation->config.number_of_coders) == false)
 		return (free_2d_array((void **)dongles, simulation->config.number_of_coders), false);
+	init_dongles_state(dongles, simulation->config.dongle_cooldown);
 	simulation->dongles = dongles;
 	return (true);
 }

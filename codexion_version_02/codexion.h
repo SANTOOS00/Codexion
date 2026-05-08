@@ -42,14 +42,14 @@ typedef enum e_coder_status {
 
 typedef struct s_config
 {
-	int			number_of_coders;
-	int			time_to_burnout;
-	int			time_to_compile;
-	int			time_to_debug;
-	int			time_to_refactor;
-	int			number_of_compiles_required;
-	int			dongle_cooldown;
-	t_scheduler	scheduler;
+	int					number_of_coders;
+	int					time_to_burnout;
+	int					time_to_compile;
+	int					time_to_debug;
+	int					time_to_refactor;
+	int					number_of_compiles_required;
+	long long			dongle_cooldown;
+	t_scheduler			scheduler;
 }	t_config;
 
 typedef struct s_dongle
@@ -90,7 +90,6 @@ typedef struct s_coder
 	t_mutex_cond	*monitor_wait_lock;
 	
 	t_queue 		*queue;
-	pthread_mutex_t *queue_mutex;
 }	t_coder;
 
 
@@ -194,7 +193,8 @@ bool ft_init_queue(t_simulation *sim);
 void clean_queue(t_queue *queue);
 
 // manger in fifo or edf
-bool ft_fifo_or_edf(t_simulation *sim);
+bool ft_fifo_or_edf_coders(t_coder *coder);
+void ft_fifo_or_edf_monitor(t_simulation *sim);
 
 
 // start coders in simulation 
@@ -202,7 +202,7 @@ bool start_coders_in_simulation(t_simulation *sim);
 
 
 // wait coder
-void wait_coder(t_coder *coder);
+// void wait_coder(t_coder *coder);
 
 // run simulation 
 bool start_simulation(t_simulation *sim);

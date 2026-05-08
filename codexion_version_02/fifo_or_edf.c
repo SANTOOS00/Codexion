@@ -12,6 +12,13 @@
 
 #include "codexion.h"
 
+long long get_time()
+{
+	struct timeval tv;
+	gettimeofday(&tv, NULL);
+	return ((long long)(tv.tv_sec) * 1000 + (tv.tv_usec / 1000));
+}
+
 int index_parent(int i)
 {
 	return (i - 1 / 2);
@@ -24,54 +31,72 @@ void ft_swap(t_dongle_request **arg1, t_dongle_request **arg2)
 	*arg1 = *arg2;
 	*arg2 = timp;
 }
-
-void notify_monitor_push(t_queue *queue)
+void schedule_priority_request(t_queue *queue, t_coder *coder)
 {
 	int i;
-	
+
 	pthread_mutex_lock(&queue->mutex);
 	i = queue->size;
+	queue->heap[i]->coder = coder;
+	queue->heap[i]->deadline = coder->config->time_to_burnout + get_time();
+	queue->size++;
+	pthread_mutex_unlock(&queue->mutex);
 	while(i > 0 && queue->heap[i]->deadline < queue->heap[index_parent(i)]->deadline)
 	{
-		printf("sss\n");
+		pthread_mutex_lock(&queue->mutex);
 		ft_swap(&queue->heap[i], &queue->heap[index_parent(i)]);
 		i = index_parent(i);
-	}
-	pthread_mutex_unlock(&queue->mutex);
+		pthread_mutex_unlock(&queue->mutex);
+	}	
+}
+
+
+void refresh_coder_request(t_queue *queue, t_coder *coder)
+{
+	printf("ref \n");
 	return ;
 }
 
-bool ft_edf(t_simulation *sim)
+
+void enqueue_coder_request(t_coder *coder)
 {
-	while (1)
-	{
-		pthread_mutex_lock(&sim->monitor_wait_lock.mutex);
-		while (sim->check_wait_monitor)
-		{
-			printf("sss\n");
-			pthread_cond_wait(&sim->monitor_wait_lock.cond, &sim->monitor_wait_lock.mutex);
-		}
-		pthread_mutex_unlock(&sim->monitor_wait_lock.mutex);
-		// notify_monitor_push(sim->queue);
-	}
-	return (true);
+    t_queue *queue;
+	
+	if (coder->status == START)
+		schedule_priority_request(coder->queue, coder);
+	else if (coder->status == REF)
+    	refresh_coder_request(coder->queue, coder);
+	pthread_mutex_lock(&coder->mutex_cond.mutex);
+    while (coder->has_dongle)
+		pthread_cond_wait(&coder->mutex_cond.cond, &coder->mutex_cond.mutex);
+    pthread_mutex_unlock(&coder->mutex_cond.mutex);
 }
 
 
-bool ft_fifo(t_simulation *sim)
+void works_coders_threads_edf(t_coder *coder)
 {
-	return (true);
+	while(coder->is_burnout  != false && coder->status != FINISH)
+	{
+		enqueue_coder_request(coder);
+	}
 }
 
-
-bool ft_fifo_or_edf(t_simulation *sim)
+void ft_fifo(t_coder *coder)
 {
-	if (sim->config.scheduler == FIFO)
-		ft_fifo(sim);
-	else if(sim->config.scheduler == EDF)
-	{
-		printf("sss\n");
-		ft_edf(sim);
-	}
+	return ;
+}
+
+void ft_edf(t_coder *coder)
+{
+	works_coders_threads_edf(coder);
+	return ;
+}
+
+bool ft_fifo_or_edf_coders(t_coder *coder)
+{
+	if (coder->config->scheduler == FIFO)
+		ft_fifo(coder);
+	else if(coder->config->scheduler == EDF)
+		ft_edf(coder);
 	return (true);
 }
