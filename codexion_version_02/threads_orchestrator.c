@@ -12,10 +12,6 @@
 
 #include "codexion.h"
 
-
-
-
-
 bool start_simulation(t_simulation *sim)
 {
 	if (run_monitor_simulation(sim) == false)	

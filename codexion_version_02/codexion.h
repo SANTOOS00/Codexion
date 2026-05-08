@@ -52,17 +52,17 @@ typedef struct s_config
 	t_scheduler			scheduler;
 }	t_config;
 
-typedef struct s_dongle
-{
-	pthread_mutex_t 	mutex;
-	bool				is_available;
-	int					cooldown_time;
-}	t_dongle;
-
 typedef struct s_mutex_cond {
 	pthread_mutex_t 	mutex;
 	pthread_cond_t 		cond;
 } t_mutex_cond;
+
+typedef struct s_dongle
+{
+ 	t_mutex_cond		m_cn_dongle;
+	bool				is_available;
+	int					cooldown_time;
+}	t_dongle;
 
 
 typedef struct s_coder
@@ -165,8 +165,6 @@ bool init_mutex_cond(t_mutex_cond *mutex_cond);
 void destory_mutex_cond(t_mutex_cond *mutex_cond);
 
 
-t_queue *get_queue();
-
 bool init_mutex_cond(t_mutex_cond *mutex_cond);
 
 
@@ -208,6 +206,11 @@ void return_left_dongle(t_coder *coder);
 
 // wait coder
 // void wait_coder(t_coder *coder);
+
+
+// work in coder for mange in monitor
+void execute_coding_cycle(t_coder *coder);
+
 
 // run simulation 
 bool start_simulation(t_simulation *sim);

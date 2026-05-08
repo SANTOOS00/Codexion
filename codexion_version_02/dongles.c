@@ -40,7 +40,7 @@ void clean_mutex_dongles(t_dongle **dongles, int size)
 
 	i = 0;
 	while (i <	size)
-		pthread_mutex_destroy(&dongles[i++]->mutex);
+		destory_mutex_cond(&dongles[i++]->m_cn_dongle);
 }
 
 void clean_dongles(t_dongle **dongles, int size)
@@ -56,7 +56,7 @@ bool init_mutex_dongles(t_dongle **dongles, int dongles_number)
 	i = 0;
 	while(i < dongles_number)
 	{
-		if (pthread_mutex_init(&dongles[i]->mutex, NULL))
+		if (init_mutex_cond(&dongles[i]->m_cn_dongle) == false)
 		{
 			clean_mutex_dongles(dongles, i);
 			return (false);

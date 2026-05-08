@@ -16,6 +16,21 @@
 
 void monitor_edf_mode(t_simulation *sim)
 {
+	int i = 19;
+
+
+	pthread_mutex_lock(&sim->coders[i]->mutex_cond.mutex);
+    sim->coders[i]->has_dongle = false;
+	pthread_cond_broadcast(&sim->coders[i]->mutex_cond.cond);
+	pthread_mutex_unlock(&sim->coders[i]->mutex_cond.mutex);
+
+	int j = 18;
+
+
+	pthread_mutex_lock(&sim->coders[j]->mutex_cond.mutex);
+    sim->coders[j]->has_dongle = false;
+	pthread_cond_broadcast(&sim->coders[j]->mutex_cond.cond);
+	pthread_mutex_unlock(&sim->coders[j]->mutex_cond.mutex);
 	return;
 }
 
@@ -43,7 +58,7 @@ void *monitor_routine(void *arg)
 		pthread_cond_wait(&sim->coders_cnt_lock.cond, &sim->coders_cnt_lock.mutex);
 	pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
 	printf("monitor ok\n");
-	// run_scheduler_logic(sim);
+	run_scheduler_logic(sim);
 	return (NULL);
 }
 

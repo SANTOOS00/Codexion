@@ -31,35 +31,33 @@ void ft_swap(t_dongle_request **arg1, t_dongle_request **arg2)
 	*arg1 = *arg2;
 	*arg2 = timp;
 }
+
 void schedule_priority_request(t_queue *queue, t_coder *coder)
 {
-	int i;
+	// printf("push\n");
+	// int i;
 
-	pthread_mutex_lock(&queue->mutex);
+	// pthread_mutex_lock(&queue->mutex);
 
-	i = queue->size;
-	queue->heap[i]->coder = coder;
-	queue->heap[i]->deadline = coder->config->time_to_burnout + get_time();
-	queue->size++;
-	pthread_mutex_unlock(&queue->mutex);
-	while(i > 0 && queue->heap[i]->deadline < queue->heap[index_parent(i)]->deadline)
-	{
-		pthread_mutex_lock(&queue->mutex);
-		ft_swap(&queue->heap[i], &queue->heap[index_parent(i)]);
-		i = index_parent(i);
-		pthread_mutex_unlock(&queue->mutex);
-	}	
+	// i = queue->size;
+	// queue->heap[i]->coder = coder;
+	// queue->heap[i]->deadline = coder->config->time_to_burnout + get_time();
+	// queue->size++;
+	// pthread_mutex_unlock(&queue->mutex);
+	// while(i > 0 && queue->heap[i]->deadline < queue->heap[index_parent(i)]->deadline)
+	// {
+	// 	pthread_mutex_lock(&queue->mutex);
+	// 	ft_swap(&queue->heap[i], &queue->heap[index_parent(i)]);
+	// 	i = index_parent(i);
+	// 	pthread_mutex_unlock(&queue->mutex);
+	// }	
 }
-
 
 void refresh_coder_request(t_queue *queue, t_coder *coder)
 {
-	printf("ref \n");
+	// printf("ref \n");
 	return ;
 }
-
-
-
 
 void enqueue_coder_request(t_coder *coder)
 {
@@ -73,14 +71,15 @@ void enqueue_coder_request(t_coder *coder)
     while (coder->has_dongle)
 		pthread_cond_wait(&coder->mutex_cond.cond, &coder->mutex_cond.mutex);
     pthread_mutex_unlock(&coder->mutex_cond.mutex);
+	
 }
-
 
 void works_coders_threads_edf(t_coder *coder)
 {
 	while(coder->is_burnout  != false && coder->status != FINISH)
 	{
 		enqueue_coder_request(coder);
+		execute_coding_cycle(coder);
 	}
 }
 
