@@ -36,7 +36,6 @@ void schedule_priority_request(t_queue *queue, t_coder *coder)
 {
 	// printf("push\n");
 	// int i;
-
 	// pthread_mutex_lock(&queue->mutex);
 
 	// i = queue->size;
@@ -63,7 +62,7 @@ void enqueue_coder_request(t_coder *coder)
 {
 	if (coder->status == START)
 		schedule_priority_request(coder->queue, coder);
-	else if (coder->status == REF)
+	else if (coder->status == REFACTORING)
     	refresh_coder_request(coder->queue, coder);
 	return_left_dongle(coder);
 	return_right_dongle(coder);
@@ -76,10 +75,15 @@ void enqueue_coder_request(t_coder *coder)
 
 void works_coders_threads_edf(t_coder *coder)
 {
-	while(coder->is_burnout  != false && coder->status != FINISH)
+	while(coder->is_burnout  != false && coder->status != FINISHED)
 	{
 		enqueue_coder_request(coder);
+		pthread_mutex_lock(&coder->mutex_cond.mutex);
+		printf("number %d\n", coder->compilation_count);
+		pthread_mutex_unlock(&coder->mutex_cond.mutex);
 		execute_coding_cycle(coder);
+		if (coder->compilation_count == coder->config->number_of_compiles_required)
+			coder->status = FINISHED;
 	}
 }
 

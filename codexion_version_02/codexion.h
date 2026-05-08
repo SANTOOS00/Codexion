@@ -32,13 +32,15 @@ typedef enum e_scheduler
 }	t_scheduler;
 
 typedef enum e_coder_status {
-	START,
-	WAIT,
-	COMP,
-	DEBUG,
-	REF,
-	FINISH,
+    START,              // Initial state
+    WAIT_FOR_DONGLE,    // Waiting for resource availability or cooldown
+    COMPILING,          // Currently in the compilation phase
+    DEBUGGING,          // Currently in the debugging phase
+    REFACTORING,        // Currently in the refactoring phase
+    FINISHED,           // Workflow completed successfully
+    ERROR               // Generic error (e.g., thread creation failure)
 } t_coder_status;
+
 
 typedef struct s_config
 {
@@ -69,7 +71,7 @@ typedef struct s_coder
 {
 	pthread_t 		thread;
 	int 			id;
-	
+	int				compilation_count;
 	bool 			has_dongle; /// kaytsna dongles min monitor i3tihom lih
 	
 	bool 			*is_burnout;

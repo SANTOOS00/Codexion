@@ -64,7 +64,7 @@ bool ft_set_coders_initial_state(t_simulation *simulation)
 		coder->check_wait_monitor = &simulation->check_wait_monitor;
 
 		coder->queue = simulation->queue;
-		
+		coder->compilation_count = 0;
 		coder->status = START;
 		i++;
 	}
