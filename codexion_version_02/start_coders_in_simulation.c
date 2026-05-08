@@ -28,7 +28,7 @@ void *coders_routine(void *arg)
 	(*coder->run_coders_counter)++;
 	pthread_cond_broadcast(&coder->coders_cnt_lock->cond);
 	pthread_mutex_unlock(&coder->coders_cnt_lock->mutex);
-	ft_fifo_or_edf_coders(coder);
+	execute_coder_workflow(coder);
 	return (NULL);
 }
 
@@ -37,12 +37,11 @@ void *coders_routine(void *arg)
 void *join_coders(t_simulation *sim)
 {
 	int i;
-	void *ret_val;
 
 	i = 0;
 	while(i < sim->config.number_of_coders)
-		pthread_join(sim->coders[i++]->thread, ret_val);
-	return (ret_val);
+		pthread_join(sim->coders[i++]->thread, NULL);
+	return (NULL);
 }
 
 
@@ -56,7 +55,9 @@ bool start_coders_in_simulation(t_simulation *sim)
 	while (i < sim->config.number_of_coders)
 	{
 		if (pthread_create(&sim->coders[i]->thread, NULL, coders_routine, sim->coders[i]) != 0)
+		{
 			return (false);
+		}
 		i++;
 	}
 	join_coders(sim);

@@ -21,7 +21,7 @@ long long get_time()
 
 int index_parent(int i)
 {
-	return (i - 1 / 2);
+	return ((i - 1) / 2);
 }
 
 void ft_swap(t_dongle_request **arg1, t_dongle_request **arg2)
@@ -36,6 +36,7 @@ void schedule_priority_request(t_queue *queue, t_coder *coder)
 	int i;
 
 	pthread_mutex_lock(&queue->mutex);
+
 	i = queue->size;
 	queue->heap[i]->coder = coder;
 	queue->heap[i]->deadline = coder->config->time_to_burnout + get_time();
@@ -60,10 +61,11 @@ void refresh_coder_request(t_queue *queue, t_coder *coder)
 
 void enqueue_coder_request(t_coder *coder)
 {
-    t_queue *queue;
-	
 	if (coder->status == START)
+	{
+		printf("id %d\n", coder->id);
 		schedule_priority_request(coder->queue, coder);
+	}
 	else if (coder->status == REF)
     	refresh_coder_request(coder->queue, coder);
 	pthread_mutex_lock(&coder->mutex_cond.mutex);
@@ -81,22 +83,22 @@ void works_coders_threads_edf(t_coder *coder)
 	}
 }
 
-void ft_fifo(t_coder *coder)
-{
-	return ;
-}
-
-void ft_edf(t_coder *coder)
+void run_edf_routine(t_coder *coder)
 {
 	works_coders_threads_edf(coder);
 	return ;
 }
 
-bool ft_fifo_or_edf_coders(t_coder *coder)
+void run_fifo_routine(t_coder *coder)
+{
+	return ;
+}
+
+bool execute_coder_workflow(t_coder *coder)
 {
 	if (coder->config->scheduler == FIFO)
-		ft_fifo(coder);
+		run_fifo_routine(coder);
 	else if(coder->config->scheduler == EDF)
-		ft_edf(coder);
+		run_edf_routine(coder);
 	return (true);
 }

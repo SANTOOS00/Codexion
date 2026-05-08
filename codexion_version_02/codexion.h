@@ -193,8 +193,8 @@ bool ft_init_queue(t_simulation *sim);
 void clean_queue(t_queue *queue);
 
 // manger in fifo or edf
-bool ft_fifo_or_edf_coders(t_coder *coder);
-void ft_fifo_or_edf_monitor(t_simulation *sim);
+bool execute_coder_workflow(t_coder *coder);
+void run_scheduler_logic(t_simulation *sim);
 
 
 // start coders in simulation 
