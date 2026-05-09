@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/06 03:37:59 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/09 18:36:11 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/09 19:10:36 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void *monitor_routine(void *arg)
 	while (sim->run_coders_counter != sim->config.number_of_coders)
 		pthread_cond_wait(&sim->coders_cnt_lock.cond, &sim->coders_cnt_lock.mutex);
 	pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
-	usleep(1000000);
+	// usleep(1000000);
 	print_queue(sim->queue);
 	printf("monitor ok\n");
 	run_scheduler_logic(sim);

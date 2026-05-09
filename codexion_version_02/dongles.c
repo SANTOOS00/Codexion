@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 19:04:20 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/09 18:44:16 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/09 19:38:17 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,9 @@ void init_dongles_state(t_dongle **dongles, long long cooldown_time)
 	while (dongles[i] != NULL)
 	{
 		dongles[i]->is_available = true;
-		if (i == 1)
+		if (i == 0)
 			dongles[i]->is_available = false;
-		if (i == 2)
+		if (i == 1)
 			dongles[i]->is_available = false;
 		dongles[i]->cooldown_time = cooldown_time;
 		i++;

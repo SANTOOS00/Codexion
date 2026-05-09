@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/06 03:50:54 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/09 18:42:21 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/09 19:35:14 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,19 @@ void push_queue(t_queue *queue, t_coder *coder)
 		pthread_mutex_lock(&queue->mutex);
 		if (is_greater(queue->heap[i], queue->heap[(i - 1) / 2]))
 		{
-			queue->heap[i]->index_coder = (i - 1) / 2;
-			queue->heap[(i - 1) / 2]->index_coder = i;
+			pthread_mutex_lock(&queue->heap[i]->coder->mutex_cond.mutex);
+			queue->heap[i]->coder->index_in_queue = (i - 1) / 2;
+			queue->heap[(i - 1) / 2]->coder->index_in_queue = i;
+			pthread_mutex_unlock(&queue->heap[i]->coder->mutex_cond.mutex);
 			ft_swap(&queue->heap[i], &queue->heap[index_parent(i)]);
 			i = index_parent(i);
 		}
 		else 
 		{
 			
-			queue->heap[i]->index_coder = i;
+			pthread_mutex_lock(&queue->heap[i]->coder->mutex_cond.mutex);
+			queue->heap[i]->coder->index_in_queue = i;
+			pthread_mutex_unlock(&queue->heap[i]->coder->mutex_cond.mutex);
 			pthread_mutex_unlock(&queue->mutex);
 			break;
 		}

@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/09 18:25:41 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/09 19:34:34 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,11 @@ typedef struct s_coder
 	pthread_t 		thread;
 	int 			id;
 	int				compilation_count;
+
+	int				index_in_queue;
+	int				*index_coder_left_queue;
+	int				*index_coder_right_queue;
+
 	bool 			has_dongle; /// kaytsna dongles min monitor i3tihom lih
 	
 	bool 			*is_burnout;
@@ -107,7 +112,6 @@ typedef struct s_coder
 typedef struct s_dongle_request
 {
 	t_coder		*coder;
-	int			index_coder;
 	long long	deadline;  //deadline = last_compile_start + time_to_burnout
 }	t_dongle_request;
 

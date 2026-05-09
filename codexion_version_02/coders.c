@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 19:27:24 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/07 15:37:34 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/09 19:44:07 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ bool ft_set_coders_initial_state(t_simulation *simulation)
 	while (i < config.number_of_coders)
 	{
 		coder = simulation->coders[i];
+		coder->index_coder_right_queue = &simulation->coders[(i - 1 + config.number_of_coders) % config.number_of_coders]->index_in_queue;
+		coder->index_coder_left_queue = &simulation->coders[(i + 1) % config.number_of_coders]->index_in_queue;
 		coder->id = i;
 		
 		coder->has_dongle = true;
