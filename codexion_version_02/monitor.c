@@ -6,31 +6,48 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/06 03:37:59 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/07 15:12:35 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/09 18:36:11 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
+// void update_node(t_queue *q, int index, bool new_valid)
+
+// void heap_down(t_dongle_request **heap)
+// {
+	
+// }
+
+
+// t_coder *pop(t_queue *queue)
+// {
+// 	t_coder *root;
+// 	pthread_mutex_lock(&queue->mutex);
+// 	root = queue->heap[0]->coder;
+// 	queue->heap[0]->coder = queue->heap[queue->size - 1]->coder;
+// 	queue->size--;
+// 	heap_Down(queue->heap, 0);
+// 	pthread_mutex_UNlock(&queue->mutex);
+// }
 
 
 void monitor_edf_mode(t_simulation *sim)
 {
-	int i = 19;
+	// t_coder *coder;
 
-
-	pthread_mutex_lock(&sim->coders[i]->mutex_cond.mutex);
-    sim->coders[i]->has_dongle = false;
-	pthread_cond_broadcast(&sim->coders[i]->mutex_cond.cond);
-	pthread_mutex_unlock(&sim->coders[i]->mutex_cond.mutex);
-
-	int j = 18;
-
-
-	pthread_mutex_lock(&sim->coders[j]->mutex_cond.mutex);
-    sim->coders[j]->has_dongle = false;
-	pthread_cond_broadcast(&sim->coders[j]->mutex_cond.cond);
-	pthread_mutex_unlock(&sim->coders[j]->mutex_cond.mutex);
+	// while(sim->monitor_status != ERROR_M && sim->monitor_status != FINISHED_M)
+	// {
+	// 	if (sim->queue->size == 0)
+	// 		break;
+	// 	coder = pop(sim->queue);
+	// 	pick_up_dongle(coder);
+		
+	// 	pthread_mutex_lock(&coder->mutex_cond.mutex);
+	// 	coder->has_dongle = false;
+	// 	pthread_cond_broadcast(&coder->mutex_cond.cond);
+	// 	pthread_mutex_unlock(&coder->mutex_cond.mutex);
+	// }
 	return;
 }
 
@@ -57,6 +74,8 @@ void *monitor_routine(void *arg)
 	while (sim->run_coders_counter != sim->config.number_of_coders)
 		pthread_cond_wait(&sim->coders_cnt_lock.cond, &sim->coders_cnt_lock.mutex);
 	pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
+	usleep(1000000);
+	print_queue(sim->queue);
 	printf("monitor ok\n");
 	run_scheduler_logic(sim);
 	return (NULL);

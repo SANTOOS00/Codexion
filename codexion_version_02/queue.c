@@ -17,6 +17,19 @@ void clean_queue(t_queue *queue)
 }
 
 
+void print_queue(t_queue *queue)
+{
+    int i;
+    i = 0;
+    while (i < queue->capacity)
+    {
+        pthread_mutex_lock(&queue->mutex);
+        printf("id -> %d index %d  || %d  %d\n", queue->heap[i]->coder->id, queue->heap[i]->index_coder, queue->heap[i]->coder->left_dongle->is_available, queue->heap[i]->coder->right_dongle->is_available);
+        pthread_mutex_unlock(&queue->mutex);
+        i++;
+    }
+}
+
 bool ft_init_queue(t_simulation *sim)
 {
     t_queue *queue;

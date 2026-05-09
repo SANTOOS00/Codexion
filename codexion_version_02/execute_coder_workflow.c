@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fifo_or_edf.c                                      :+:      :+:    :+:   */
+/*   execute_coder_workflow.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/06 03:50:54 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/07 17:34:41 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/09 18:42:21 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,24 +32,54 @@ void ft_swap(t_dongle_request **arg1, t_dongle_request **arg2)
 	*arg2 = timp;
 }
 
-void schedule_priority_request(t_queue *queue, t_coder *coder)
-{
-	// printf("push\n");
-	// int i;
-	// pthread_mutex_lock(&queue->mutex);
 
-	// i = queue->size;
-	// queue->heap[i]->coder = coder;
-	// queue->heap[i]->deadline = coder->config->time_to_burnout + get_time();
-	// queue->size++;
-	// pthread_mutex_unlock(&queue->mutex);
-	// while(i > 0 && queue->heap[i]->deadline < queue->heap[index_parent(i)]->deadline)
-	// {
-	// 	pthread_mutex_lock(&queue->mutex);
-	// 	ft_swap(&queue->heap[i], &queue->heap[index_parent(i)]);
-	// 	i = index_parent(i);
-	// 	pthread_mutex_unlock(&queue->mutex);
-	// }	
+
+bool is_greater(t_dongle_request *data_1, t_dongle_request *data_2)
+{
+	if ((data_1->coder->right_dongle->is_available && data_1->coder->left_dongle->is_available) 
+	    && !(data_2->coder->right_dongle->is_available && data_2->coder->left_dongle->is_available))
+		return (true);
+	if (!(data_1->coder->right_dongle->is_available && data_1->coder->left_dongle->is_available) 
+	    && (data_2->coder->right_dongle->is_available && data_2->coder->left_dongle->is_available))
+		return (false);
+	if (data_1->deadline < data_2->deadline)
+		return (true);
+	return (false);
+}
+
+
+
+void push_queue(t_queue *queue, t_coder *coder)
+{
+	printf("push\n");
+	int i;
+	pthread_mutex_lock(&queue->mutex);
+
+	i = queue->size;
+	queue->heap[i]->coder = coder;
+	queue->heap[i]->deadline = coder->config->time_to_burnout + get_time();
+	queue->size++;
+	pthread_mutex_unlock(&queue->mutex);
+
+	while(i > 0)
+	{
+		pthread_mutex_lock(&queue->mutex);
+		if (is_greater(queue->heap[i], queue->heap[(i - 1) / 2]))
+		{
+			queue->heap[i]->index_coder = (i - 1) / 2;
+			queue->heap[(i - 1) / 2]->index_coder = i;
+			ft_swap(&queue->heap[i], &queue->heap[index_parent(i)]);
+			i = index_parent(i);
+		}
+		else 
+		{
+			
+			queue->heap[i]->index_coder = i;
+			pthread_mutex_unlock(&queue->mutex);
+			break;
+		}
+		pthread_mutex_unlock(&queue->mutex);
+	}	
 }
 
 void refresh_coder_request(t_queue *queue, t_coder *coder)
@@ -60,17 +90,12 @@ void refresh_coder_request(t_queue *queue, t_coder *coder)
 
 void enqueue_coder_request(t_coder *coder)
 {
-	if (coder->status == START)
-		schedule_priority_request(coder->queue, coder);
-	else if (coder->status == REFACTORING)
-    	refresh_coder_request(coder->queue, coder);
-	return_left_dongle(coder);
-	return_right_dongle(coder);
+	// return_dongles(coder);	
+	push_queue(coder->queue, coder);
 	pthread_mutex_lock(&coder->mutex_cond.mutex);
     while (coder->has_dongle)
 		pthread_cond_wait(&coder->mutex_cond.cond, &coder->mutex_cond.mutex);
     pthread_mutex_unlock(&coder->mutex_cond.mutex);
-	
 }
 
 void works_coders_threads_edf(t_coder *coder)
@@ -78,9 +103,6 @@ void works_coders_threads_edf(t_coder *coder)
 	while(coder->is_burnout  != false && coder->status != FINISHED)
 	{
 		enqueue_coder_request(coder);
-		pthread_mutex_lock(&coder->mutex_cond.mutex);
-		printf("number %d\n", coder->compilation_count);
-		pthread_mutex_unlock(&coder->mutex_cond.mutex);
 		execute_coding_cycle(coder);
 		if (coder->compilation_count == coder->config->number_of_compiles_required)
 			coder->status = FINISHED;

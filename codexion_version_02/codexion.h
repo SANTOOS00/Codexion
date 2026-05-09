@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/07 15:47:10 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/09 18:25:41 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ typedef enum e_scheduler
 	EDF
 }	t_scheduler;
 
-typedef enum e_coder_status {
+typedef enum e_coder_status 
+{
     START,              // Initial state
     WAIT_FOR_DONGLE,    // Waiting for resource availability or cooldown
     COMPILING,          // Currently in the compilation phase
@@ -41,6 +42,14 @@ typedef enum e_coder_status {
     ERROR               // Generic error (e.g., thread creation failure)
 } t_coder_status;
 
+
+typedef enum e_monitor_status
+{
+	START_M,              // Initial state
+	FINISHED_M,           // Workflow completed successfully
+	ERROR_M           // Generic error (e.g., thread creation failure)
+	
+} t_monitor_status;
 
 typedef struct s_config
 {
@@ -98,6 +107,7 @@ typedef struct s_coder
 typedef struct s_dongle_request
 {
 	t_coder		*coder;
+	int			index_coder;
 	long long	deadline;  //deadline = last_compile_start + time_to_burnout
 }	t_dongle_request;
 
@@ -133,6 +143,8 @@ typedef struct s_simulation {
     t_coder         **coders;
     t_dongle        **dongles;
     
+
+	t_monitor_status monitor_status;
     // الجزء الخاص بالعداد والمراقبة
     int             run_coders_counter;
     t_mutex_cond    coders_cnt_lock; 
@@ -200,11 +212,7 @@ void run_scheduler_logic(t_simulation *sim);
 // start coders in simulation 
 bool start_coders_in_simulation(t_simulation *sim);
 
-
-
-// return  dongles
-void return_right_dongle(t_coder *coder);
-void return_left_dongle(t_coder *coder);
+void print_queue(t_queue *queue);
 
 // wait coder
 // void wait_coder(t_coder *coder);
@@ -212,6 +220,15 @@ void return_left_dongle(t_coder *coder);
 
 // work in coder for mange in monitor
 void execute_coding_cycle(t_coder *coder);
+
+
+
+
+
+// return and 
+void pick_up_dongle(t_coder *coder);
+void return_dongles(t_coder *coder);
+
 
 
 // run simulation 
