@@ -172,3 +172,172 @@ int main()
 
     return 0;
 }
+
+
+
+
+
+// #include "codexion.h"
+
+// static int	index_parent(int i)
+// {
+// 	return ((i - 1) / 2);
+// }
+
+// static void	ft_swap(t_dongle_request **a, t_dongle_request **b)
+// {
+// 	t_dongle_request	*tmp;
+
+// 	tmp = *a;
+// 	*a = *b;
+// 	*b = tmp;
+// }
+
+// static bool	can_run(t_dongle_request *req)
+// {
+// 	return (
+// 		req->coder->left_dongle->is_available
+// 		&& req->coder->right_dongle->is_available
+// 	);
+// }
+
+// static bool	is_greater(t_dongle_request *a, t_dongle_request *b)
+// {
+// 	bool	a_ready;
+// 	bool	b_ready;
+
+// 	a_ready = can_run(a);
+// 	b_ready = can_run(b);
+
+// 	if (a_ready && !b_ready)
+// 		return (true);
+// 	if (!a_ready && b_ready)
+// 		return (false);
+// 	return (a->deadline < b->deadline);
+// }
+
+// void	heap_down(t_queue *queue, int i)
+// {
+// 	int	parent;
+// 	int	left;
+// 	int	right;
+
+// 	while (1)
+// 	{
+// 		parent = i;
+// 		left = (2 * i) + 1;
+// 		right = (2 * i) + 2;
+
+// 		if (left < queue->size
+// 			&& is_greater(queue->heap[left], queue->heap[parent]))
+// 			parent = left;
+
+// 		if (right < queue->size
+// 			&& is_greater(queue->heap[right], queue->heap[parent]))
+// 			parent = right;
+
+// 		if (parent == i)
+// 			break ;
+
+// 		queue->heap[i]->coder->index_in_queue = parent;
+// 		queue->heap[parent]->coder->index_in_queue = i;
+
+// 		ft_swap(&queue->heap[i], &queue->heap[parent]);
+
+// 		i = parent;
+// 	}
+// }
+
+// void	heap_up(t_queue *queue, int i)
+// {
+// 	int	parent;
+
+// 	while (i > 0)
+// 	{
+// 		parent = index_parent(i);
+
+// 		if (!is_greater(queue->heap[i], queue->heap[parent]))
+// 			break ;
+
+// 		queue->heap[i]->coder->index_in_queue = parent;
+// 		queue->heap[parent]->coder->index_in_queue = i;
+
+// 		ft_swap(&queue->heap[i], &queue->heap[parent]);
+
+// 		i = parent;
+// 	}
+// }
+
+// void	update_queue(t_queue *queue, int index)
+// {
+// 	pthread_mutex_lock(&queue->mutex);
+
+// 	if (index > 0
+// 		&& is_greater(queue->heap[index],
+// 			queue->heap[index_parent(index)]))
+// 		heap_up(queue, index);
+// 	else
+// 		heap_down(queue, index);
+
+// 	pthread_mutex_unlock(&queue->mutex);
+// }
+
+// t_dongle_request	*pop(t_queue *queue)
+// {
+// 	t_dongle_request	*root;
+
+// 	pthread_mutex_lock(&queue->mutex);
+
+// 	if (queue->size == 0)
+// 	{
+// 		pthread_mutex_unlock(&queue->mutex);
+// 		return (NULL);
+// 	}
+
+// 	if (!can_run(queue->heap[0]))
+// 	{
+// 		pthread_mutex_unlock(&queue->mutex);
+// 		return (NULL);
+// 	}
+
+// 	root = queue->heap[0];
+
+// 	if (queue->size == 1)
+// 	{
+// 		queue->size = 0;
+// 		pthread_mutex_unlock(&queue->mutex);
+// 		return (root);
+// 	}
+
+// 	queue->heap[0] = queue->heap[queue->size - 1];
+// 	queue->heap[0]->coder->index_in_queue = 0;
+
+// 	queue->size--;
+
+// 	heap_down(queue, 0);
+
+// 	pthread_mutex_unlock(&queue->mutex);
+
+// 	return (root);
+// }
+
+// void	push_queue(t_queue *queue, t_coder *coder)
+// {
+// 	int	i;
+
+// 	pthread_mutex_lock(&queue->mutex);
+
+// 	i = queue->size;
+
+// 	queue->heap[i]->coder = coder;
+// 	queue->heap[i]->deadline =
+// 		get_time() + coder->config->time_to_burnout;
+
+// 	coder->index_in_queue = i;
+
+// 	queue->size++;
+
+// 	heap_up(queue, i);
+
+// 	pthread_mutex_unlock(&queue->mutex);
+// }
