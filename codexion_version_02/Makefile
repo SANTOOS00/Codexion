@@ -1,7 +1,7 @@
 NAME_PROGRAN = codexion
-CC = cc
+CC = gcc
 
-FLAGS = -pthread  -g3 -fsanitize=thread
+FLAGS = -pthread -g3 -fsanitize=thread
 
 SRC = codexion.c \
 	  init_or_clean_resource/init_simulation.c \

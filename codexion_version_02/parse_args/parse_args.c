@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 13:03:45 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/10 18:13:14 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/10 20:42:03 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,6 @@ bool	parse_args(int ac, char **av, t_config *config)
 	config->time_to_refactor = 20;
 	config->dongle_cooldown = 20;
 	config->number_of_compiles_required = 2;
-	config->scheduler = EDF;
+	config->scheduler = FIFO;
 	return true;
 }

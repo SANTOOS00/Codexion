@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/06 03:50:54 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/10 18:31:55 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/10 19:51:32 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ void push_queue_fifo(t_coder *coder)
 
 void enqueue_coder_request(t_coder *coder)
 {
-	pthread_mutex_lock(&coder->coders_cnt_lock->mutex);
-	coder->run_coders_counter++;
-	pthread_cond_broadcast(&coder->coders_cnt_lock->cond);
-	pthread_mutex_unlock(&coder->coders_cnt_lock->mutex);
+	// pthread_mutex_lock(&coder->coders_cnt_lock->mutex);
+	// coder->run_coders_counter++;
+	// pthread_cond_broadcast(&coder->coders_cnt_lock->cond);
+	// pthread_mutex_unlock(&coder->coders_cnt_lock->mutex);
 
 	push_queue_fifo(coder);
 

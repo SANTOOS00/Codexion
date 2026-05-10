@@ -29,6 +29,7 @@ void ft_refactoring(t_coder *coder)
 void execute_coding_cycle(t_coder *coder)
 {
 	ft_compiling_coder(coder);
+    return_dongles(coder);
 	ft_debugging_coder(coder);
 	ft_refactoring(coder);
 }
