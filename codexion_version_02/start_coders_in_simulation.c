@@ -32,8 +32,6 @@ void *coders_routine(void *arg)
 	return (NULL);
 }
 
-
-
 void *join_coders(t_simulation *sim)
 {
 	int i;
@@ -43,9 +41,6 @@ void *join_coders(t_simulation *sim)
 		pthread_join(sim->coders[i++]->thread, NULL);
 	return (NULL);
 }
-
-
-
 
 bool start_coders_in_simulation(t_simulation *sim)
 {

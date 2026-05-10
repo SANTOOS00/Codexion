@@ -12,43 +12,35 @@
 
 #include "codexion.h"
 
-// void update_node(t_queue *q, int index, bool new_valid)
-
-// void heap_down(t_dongle_request **heap)
-// {
-	
-// }
-
-
-// t_coder *pop(t_queue *queue)
-// {
-// 	t_coder *root;
-// 	pthread_mutex_lock(&queue->mutex);
-// 	root = queue->heap[0]->coder;
-// 	queue->heap[0]->coder = queue->heap[queue->size - 1]->coder;
-// 	queue->size--;
-// 	heap_Down(queue->heap, 0);
-// 	pthread_mutex_UNlock(&queue->mutex);
-// }
 
 
 void monitor_edf_mode(t_simulation *sim)
 {
-	// t_coder *coder;
+	t_dongle_request *root;
 
-	// while(sim->monitor_status != ERROR_M && sim->monitor_status != FINISHED_M)
+	// // while(sim->monitor_status != ERROR_M && sim->monitor_status != FINISHED_M)
+	// // {
+	// // if (sim->queue->size == 0)
+	// // 	break;
+	root = pop(sim->queue);
+	if (root)
+	{
+		printf("id %d left index %d, right index %d index_queue %d", 
+			root->coder->id, root->coder->index_coder_left_queue,
+		root->coder->index_coder_right_queue, root->coder->index_in_queue);
+	}
+	// if (root)
 	// {
-	// 	if (sim->queue->size == 0)
-	// 		break;
-	// 	coder = pop(sim->queue);
-	// 	pick_up_dongle(coder);
-		
-	// 	pthread_mutex_lock(&coder->mutex_cond.mutex);
-	// 	coder->has_dongle = false;
-	// 	pthread_cond_broadcast(&coder->mutex_cond.cond);
-	// 	pthread_mutex_unlock(&coder->mutex_cond.mutex);
+	// 	printf("%d  time %lld\n", root->coder->id, root->deadline);
+	// 	// pick_up_dongle(coder);
+	// 	// pthread_mutex_lock(&coder->mutex_cond.mutex);
+	// 	// coder->has_dongle = false;
+	// 	// pthread_cond_broadcast(&coder->mutex_cond.cond);
+	// 	// pthread_mutex_unlock(&coder->mutex_cond.mutex);
 	// }
-	return;
+	// if (!root)
+	// 	printf("NULL\n");
+	// return;
 }
 
 void monitor_fifo_mode(t_simulation *sim)
@@ -74,10 +66,10 @@ void *monitor_routine(void *arg)
 	while (sim->run_coders_counter != sim->config.number_of_coders)
 		pthread_cond_wait(&sim->coders_cnt_lock.cond, &sim->coders_cnt_lock.mutex);
 	pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
-	// usleep(1000000);
-	print_queue(sim->queue);
+	usleep(10000);
 	printf("monitor ok\n");
 	run_scheduler_logic(sim);
+	print_queue(sim->queue);
 	return (NULL);
 }
 

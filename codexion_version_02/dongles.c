@@ -75,10 +75,6 @@ void init_dongles_state(t_dongle **dongles, long long cooldown_time)
 	while (dongles[i] != NULL)
 	{
 		dongles[i]->is_available = true;
-		if (i == 0)
-			dongles[i]->is_available = false;
-		if (i == 1)
-			dongles[i]->is_available = false;
 		dongles[i]->cooldown_time = cooldown_time;
 		i++;
 	}

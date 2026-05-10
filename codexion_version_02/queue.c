@@ -21,12 +21,13 @@ void print_queue(t_queue *queue)
 {
     int i;
     i = 0;
-    while (i < queue->capacity)
+    while (i < queue->size)
     {
         pthread_mutex_lock(&queue->mutex);
-        printf("id -> %d index %d  || %d  %d   left index %d, right index %d\n", 
+        printf("id -> %d index %d  time %lld|| %d  %d   left index %d, right index %d\n", 
             queue->heap[i]->coder->id,
             queue->heap[i]->coder->index_in_queue,
+            queue->heap[i]->deadline,
             queue->heap[i]->coder->left_dongle->is_available, 
             queue->heap[i]->coder->right_dongle->is_available,
             *(queue->heap[i]->coder->index_coder_right_queue),

@@ -167,6 +167,9 @@ typedef struct s_simulation {
 bool	parse_args(int ac, char **av, t_config *config);
 
 
+
+
+bool has_priority(t_dongle_request *data_1, t_dongle_request *data_2);
 // init simulation
 bool ft_init_simulation(int argc, char **argv, t_simulation *simulation);
 bool init_coders(t_simulation *simulation);
@@ -199,7 +202,17 @@ void clean_resource(t_simulation *simulation);
 
 
 
+
+void ft_swap(t_dongle_request **arg1, t_dongle_request **arg2);
+t_dongle_request *pop(t_queue *queue);
+void heap_down(t_queue *queue, int i);
+// void update_queue(t_queue *q, int index);
+
+
 //manger moniter 
+
+
+
 bool run_monitor_simulation(t_simulation *sim);
 
 
@@ -226,8 +239,10 @@ void print_queue(t_queue *queue);
 void execute_coding_cycle(t_coder *coder);
 
 
+void push_queue(t_queue *queue, t_coder *coder);
 
 
+long long get_time();
 
 // return and 
 void pick_up_dongle(t_coder *coder);

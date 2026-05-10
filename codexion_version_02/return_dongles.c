@@ -125,5 +125,7 @@ void return_dongles(t_coder *coder)
 {
 	usleep(coder->left_dongle->cooldown_time * 1000);
 	return_left_dongle(coder);	
-	return_right_dongle(coder);	
+	return_right_dongle(coder);
+	// update_queue(coder->queue, *(coder->index_coder_left_queue));
+	// update_queue(coder->queue, *(coder->index_coder_right_queue));
 }

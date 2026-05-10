@@ -30,4 +30,6 @@ void pick_up_dongle(t_coder *coder)
 {
 	pick_up_left_dongle(coder);	
 	pick_up_right_dongle(coder);	
+	// update_queue(coder->queue, *(coder->index_coder_left_queue));
+	// update_queue(coder->queue, *(coder->index_coder_right_queue));
 }
