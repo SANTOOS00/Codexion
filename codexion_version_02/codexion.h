@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/09 19:34:34 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/10 18:34:59 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include <time.h>
 #include <stdbool.h>
 
-typedef struct s_queue t_queue;
+typedef struct s_queue_fifo t_queue_fifo;
 
 // typedef enum e_queue_state
 // {
@@ -49,7 +49,7 @@ typedef enum e_monitor_status
 	FINISHED_M,           // Workflow completed successfully
 	ERROR_M           // Generic error (e.g., thread creation failure)
 	
-} t_monitor_status;
+} t_monitor_enum_status;
 
 typedef struct s_config
 {
@@ -74,6 +74,7 @@ typedef struct s_dongle
 	bool				is_available;
 	int					cooldown_time;
 }	t_dongle;
+
 
 
 typedef struct s_coder
@@ -105,14 +106,23 @@ typedef struct s_coder
 	bool			*check_wait_monitor;  // القفل الخاص بالعداد
 	t_mutex_cond	*monitor_wait_lock;
 	
-	t_queue 		*queue;
+	
+	t_queue_fifo 	*queue_fifo;
 }	t_coder;
 
+typedef struct s_queue_fifo
+{
+	t_coder 		**heap;
+	int 			size;
+	int				capacity;
+	pthread_mutex_t mutex_queue_fifo;
+
+} t_queue_fifo;
 
 typedef struct s_dongle_request
 {
-	t_coder		*coder;
-	long long	deadline;  //deadline = last_compile_start + time_to_burnout
+	t_coder			*coder;
+	long long		deadline;  //deadline = last_compile_start + time_to_burnout
 }	t_dongle_request;
 
 typedef struct s_queue
@@ -122,44 +132,34 @@ typedef struct s_queue
 	int					size; //xhal 3ndi f heap
 	
 	int					capacity;  // hnay xhal i9dr ihz lina heap ya3ni xhal max dyalo
-	pthread_mutex_t 	mutex;
+	pthread_mutex_t 	mutex_queue_priority;
 }	t_queue;
 
 
-// typedef struct s_simulation {
-// 	pthread_t		thread;
-// 	t_config		config;
-// 	t_coder			**coders;
-// 	t_dongle **dongles;
-// 	int run_coders_counter;
-// 	t_mutex_cond coders_counter_m_c;//
-// 	bool is_burnout;
-// 	pthread_mutex_t burnout_mutex;//
-// 	t_queue *queue;
-// 	pthread_mutex_t queue_mutex;//
-// } t_simulation;
 
 
 
-typedef struct s_simulation {
-    pthread_t       thread;
-    t_config        config;
-    t_coder         **coders;
-    t_dongle        **dongles;
-    
+typedef struct s_simulation
+{
+    pthread_t       			thread;
+    t_config        			config;
 
-	t_monitor_status monitor_status;
-    // الجزء الخاص بالعداد والمراقبة
-    int             run_coders_counter;
-    t_mutex_cond    coders_cnt_lock; 
+    t_coder         			**coders;
+    t_dongle        			**dongles;
 
-	bool			check_wait_monitor;  // القفل الخاص بالعداد
-    t_mutex_cond	monitor_wait_lock;  // القفل الخاص بانتظار المراقبة (Wait Monitor)
+	t_monitor_enum_status		monitor_status;// الجزء الخاص بالعداد والمراقبة
+    int             			run_coders_counter;
+    t_mutex_cond    			coders_cnt_lock; 
 
-    bool            is_burnout;
-    pthread_mutex_t burnout_mutex;
-    
-    t_queue         *queue;
+	bool						check_wait_monitor;  // القفل الخاص بالعداد
+    t_mutex_cond				monitor_wait_lock;  // القفل الخاص بانتظار المراقبة (Wait Monitor)
+
+	bool            			is_burnout;
+    pthread_mutex_t 			burnout_mutex;
+
+	t_queue         			*queue_priority;
+	t_queue_fifo 				*queue_fifo;
+
 } t_simulation;
 
 
@@ -169,24 +169,36 @@ bool	parse_args(int ac, char **av, t_config *config);
 
 
 
+// init resource and free resource
+bool 		init_mutex_cond(t_mutex_cond *mutex_cond);
+bool 		ft_init_simulation(int argc, char **argv, t_simulation *simulation);
+bool 		init_coders(t_simulation *simulation);
+bool 		alloc_and_init_dongles(t_simulation *simulation);
+bool 		init_mutex_cond(t_mutex_cond *mutex_cond);
+bool		ft_init_queue_fifo(t_simulation *sim);
+
+
+void 		clean_coders(t_coder **coders, int size);
+void 		free_2d_array(void **arr, int size);
+void 		clean_dongles(t_dongle **dongles, int size);
+void 		clean_mutex_cond_simulation(t_simulation *simulation);
+void 		clean_resource(t_simulation *simulation);
+t_coder		**alloc_coders(int coders_number);
+void		clean_queue_pro(t_queue *queue);
+void		clean_queue_fifo(t_queue_fifo *queue);
+void 		destory_mutex_cond(t_mutex_cond *mutex_cond);
+
+
+
+
 bool has_priority(t_dongle_request *data_1, t_dongle_request *data_2);
 // init simulation
-bool ft_init_simulation(int argc, char **argv, t_simulation *simulation);
-bool init_coders(t_simulation *simulation);
-bool alloc_and_init_dongles(t_simulation *simulation);
-
-t_coder **alloc_coders(int coders_number);
 
 void *join_monitor(t_simulation *sim);
 
 // free 2d arry void ** and size for free
-void free_2d_array(void **arr, int size);
-
-bool init_mutex_cond(t_mutex_cond *mutex_cond);
-void destory_mutex_cond(t_mutex_cond *mutex_cond);
 
 
-bool init_mutex_cond(t_mutex_cond *mutex_cond);
 
 
 void clean_mutex_cond_simulation(t_simulation *simulation);
@@ -195,10 +207,6 @@ void clean_mutex_dongles(t_dongle **dongles, int size);
 // set coder in state
 bool ft_set_coders_initial_state(t_simulation *simulation);
 
-void clean_coders(t_coder **coders, int size);
-void clean_dongles(t_dongle **dongles, int size);
-void clean_mutex_cond_simulation(t_simulation *simulation);
-void clean_resource(t_simulation *simulation);
 
 
 
@@ -219,7 +227,6 @@ bool run_monitor_simulation(t_simulation *sim);
 bool ft_init_queue(t_simulation *sim);
 
 
-void clean_queue(t_queue *queue);
 
 // manger in fifo or edf
 bool execute_coder_workflow(t_coder *coder);

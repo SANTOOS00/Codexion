@@ -6,11 +6,11 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 18:59:05 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/07 16:11:51 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/10 18:34:25 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "codexion.h"
+#include "../codexion.h"
 
 
 
@@ -65,6 +65,15 @@ bool ft_init_simulation(int argc, char **argv, t_simulation *simulation)
 		clean_coders(simulation->coders, simulation->config.number_of_coders);
 		clean_dongles(simulation->dongles, simulation->config.number_of_coders);
 		clean_mutex_cond_simulation(simulation);
+	}
+
+	if(ft_init_queue_fifo(simulation)== false)
+	{
+		clean_coders(simulation->coders, simulation->config.number_of_coders);
+		clean_dongles(simulation->dongles, simulation->config.number_of_coders);
+		clean_mutex_cond_simulation(simulation);
+		clean_queue_pro(simulation->queue_priority);
+		return (false);
 	}
 	ft_set_coders_initial_state(simulation);
 	return (true);	

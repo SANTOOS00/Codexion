@@ -6,16 +6,17 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/05 04:05:58 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/05 04:05:59 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/10 18:20:03 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "codexion.h"
+#include "../codexion.h"
 
 void clean_resource(t_simulation *simulation)
 {
 	clean_coders(simulation->coders, simulation->config.number_of_coders);
 	clean_dongles(simulation->dongles, simulation->config.number_of_coders);
-	clean_queue(simulation->queue);
+	clean_queue_pro(simulation->queue_priority);
+	clean_queue_fifo(simulation->queue_fifo);
 	clean_mutex_cond_simulation(simulation);
 }

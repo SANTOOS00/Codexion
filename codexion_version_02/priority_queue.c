@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   priority_queue.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/10 14:50:59 by moerrais          #+#    #+#             */
+/*   Updated: 2026/05/10 18:13:51 by moerrais         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "codexion.h"
 
 
@@ -13,8 +25,6 @@ void ft_swap(t_dongle_request **arg1, t_dongle_request **arg2)
 	*arg1 = *arg2;
 	*arg2 = timp;
 }
-
-
 
 bool is_coder_ready(t_dongle_request *request)
 {
@@ -40,21 +50,7 @@ bool has_priority(t_dongle_request *req_a, t_dongle_request *req_b)
 
 void heap_up(t_queue *q, int i)
 {
-	int parent;
-
-	while (i > 0)
-	{
-		int parent = index_parent(i);
-		if (has_priority(q->heap[i], q->heap[parent]))
-		{
-			q->heap[i]->coder->index_in_queue = parent;
-			q->heap[parent]->coder->index_in_queue = i;
-			ft_swap(&q->heap[i], &q->heap[parent]);
-			i = parent;
-		}
-		else
-			break;
-	}
+	
 }
 
 
@@ -65,24 +61,13 @@ void heap_down(t_queue *q, int i)
 
 t_dongle_request *pop(t_queue *q)
 {
-	pthread_mutex_lock(&q->mutex);
-	// hat ba3d alfotor
-	pthread_mutex_unlock(&q->mutex);
+	return (NULL);
 }
 
 
 void push_queue(t_queue *queue, t_coder *coder)
 {
-	int i;
-
-	pthread_mutex_lock(&queue->mutex);
-	i = queue->size;
-	queue->heap[i]->coder = coder;
-	queue->heap[i]->deadline = coder->config->time_to_burnout + get_time();
-	queue->size++;
-	queue->heap[i]->coder->index_in_queue = i;
-	heap_up(queue, i);	
-	pthread_mutex_unlock(&queue->mutex);
+	return ;
 }
 
 

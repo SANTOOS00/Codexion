@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_2d_array.c                                    :+:      :+:    :+:   */
+/*   parse_args.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/04 19:18:41 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/04 19:20:19 by moerrais         ###   ########.fr       */
+/*   Created: 2026/04/20 13:03:45 by moerrais          #+#    #+#             */
+/*   Updated: 2026/05/10 18:13:14 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "codexion.h"
+#include "../codexion.h"
 
-void free_2d_array(void **arr, int size)
+bool	parse_args(int ac, char **av, t_config *config)
 {
-	int i;
-
-	i = 0;
-	while(i < size)
-		free(arr[i++]);
-	free(arr);
+	config->number_of_coders = 20;
+	config->time_to_compile = 20;
+	config->time_to_debug = 20;
+	config->time_to_refactor = 20;
+	config->dongle_cooldown = 20;
+	config->number_of_compiles_required = 2;
+	config->scheduler = EDF;
+	return true;
 }

@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/06 03:37:59 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/09 19:10:36 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/10 18:32:57 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,31 +16,7 @@
 
 void monitor_edf_mode(t_simulation *sim)
 {
-	t_dongle_request *root;
-
-	// // while(sim->monitor_status != ERROR_M && sim->monitor_status != FINISHED_M)
-	// // {
-	// // if (sim->queue->size == 0)
-	// // 	break;
-	root = pop(sim->queue);
-	if (root)
-	{
-		printf("id %d left index %d, right index %d index_queue %d", 
-			root->coder->id, root->coder->index_coder_left_queue,
-		root->coder->index_coder_right_queue, root->coder->index_in_queue);
-	}
-	// if (root)
-	// {
-	// 	printf("%d  time %lld\n", root->coder->id, root->deadline);
-	// 	// pick_up_dongle(coder);
-	// 	// pthread_mutex_lock(&coder->mutex_cond.mutex);
-	// 	// coder->has_dongle = false;
-	// 	// pthread_cond_broadcast(&coder->mutex_cond.cond);
-	// 	// pthread_mutex_unlock(&coder->mutex_cond.mutex);
-	// }
-	// if (!root)
-	// 	printf("NULL\n");
-	// return;
+	return;
 }
 
 void monitor_fifo_mode(t_simulation *sim)
@@ -62,14 +38,11 @@ void *monitor_routine(void *arg)
 	t_simulation *sim;
 
 	sim = (t_simulation *)arg;
+	printf("monitor ok\n");
 	pthread_mutex_lock(&sim->coders_cnt_lock.mutex);
 	while (sim->run_coders_counter != sim->config.number_of_coders)
 		pthread_cond_wait(&sim->coders_cnt_lock.cond, &sim->coders_cnt_lock.mutex);
 	pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
-	usleep(10000);
-	printf("monitor ok\n");
-	run_scheduler_logic(sim);
-	print_queue(sim->queue);
 	return (NULL);
 }
 

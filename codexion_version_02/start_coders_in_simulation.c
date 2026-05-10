@@ -6,23 +6,16 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/06 03:42:54 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/07 17:33:37 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/10 18:02:55 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-
-
-
-
-
-
-
 void *coders_routine(void *arg)
 {
 	t_coder *coder;
-	
+
 	coder = (t_coder *)arg;	
 	pthread_mutex_lock(&coder->coders_cnt_lock->mutex);
 	(*coder->run_coders_counter)++;

@@ -6,11 +6,11 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 19:04:20 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/09 19:38:17 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/10 17:19:08 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "codexion.h"
+#include "../codexion.h"
 
 
 
@@ -67,15 +67,15 @@ bool init_mutex_dongles(t_dongle **dongles, int dongles_number)
 }
 
 
-void init_dongles_state(t_dongle **dongles, long long cooldown_time)
+void init_dongles_state(t_dongle **dongles, t_config config)
 {
 	int i;
 
 	i = 0;
-	while (dongles[i] != NULL)
+	while (i < config.number_of_coders)
 	{
 		dongles[i]->is_available = true;
-		dongles[i]->cooldown_time = cooldown_time;
+		dongles[i]->cooldown_time = config.dongle_cooldown;
 		i++;
 	}
 }
@@ -89,7 +89,7 @@ bool alloc_and_init_dongles(t_simulation *simulation)
 		return (false);
 	if (init_mutex_dongles(dongles, simulation->config.number_of_coders) == false)
 		return (free_2d_array((void **)dongles, simulation->config.number_of_coders), false);
-	init_dongles_state(dongles, simulation->config.dongle_cooldown);
+	init_dongles_state(dongles, simulation->config);
 	simulation->dongles = dongles;
 	return (true);
 }

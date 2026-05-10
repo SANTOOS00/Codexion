@@ -6,11 +6,11 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 19:27:24 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/09 19:44:07 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/10 18:25:58 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "codexion.h"
+#include "../codexion.h"
 
 t_coder **alloc_coders(int coders_number)
 {
@@ -45,11 +45,8 @@ bool ft_set_coders_initial_state(t_simulation *simulation)
 	while (i < config.number_of_coders)
 	{
 		coder = simulation->coders[i];
-		coder->index_coder_right_queue = &simulation->coders[(i - 1 + config.number_of_coders) % config.number_of_coders]->index_in_queue;
-		coder->index_coder_left_queue = &simulation->coders[(i + 1) % config.number_of_coders]->index_in_queue;
 		coder->id = i;
-		
-		coder->has_dongle = true;
+		coder->has_dongle = false;
 		
 		coder->is_burnout = &simulation->is_burnout;
 		coder->burnout_mutex = &simulation->burnout_mutex;
@@ -64,10 +61,16 @@ bool ft_set_coders_initial_state(t_simulation *simulation)
 		
 		coder->monitor_wait_lock = &simulation->monitor_wait_lock;
 		coder->check_wait_monitor = &simulation->check_wait_monitor;
-
-		coder->queue = simulation->queue;
 		coder->compilation_count = 0;
 		coder->status = START;
+		
+		coder->index_coder_right_queue = &simulation->coders[(i - 1 + config.number_of_coders) % config.number_of_coders]->index_in_queue;
+		coder->index_coder_left_queue = &simulation->coders[(i + 1) % config.number_of_coders]->index_in_queue;
+		
+		
+		
+		coder->queue_fifo = simulation->queue_fifo;		
+		
 		i++;
 	}
 	return (true);
@@ -81,10 +84,10 @@ void destory_mutex_cond_coders(t_coder **coders, int size)
 	i = 0;
 	while (i < size)
 		destory_mutex_cond(&coders[i++]->mutex_cond);
-}
-
-bool init_mutex_cond_coders(t_coder **coders, int size)
-{
+	}
+	
+	bool init_mutex_cond_coders(t_coder **coders, int size)
+	{
 	int i;
 	i = 0;
 	while (i < size)
@@ -108,17 +111,17 @@ void clean_coders(t_coder **coders, int size)
 bool init_coders(t_simulation *simulation)
 {
 	t_coder **coders;
-
-
+	
+	
 	coders = alloc_coders(simulation->config.number_of_coders);
 	if (!coders)
 		return (false);
-	if (init_mutex_cond_coders(coders, simulation->config.number_of_coders) == false)
-	{
-		free_2d_array((void **)coders, simulation->config.number_of_coders);
+		if (init_mutex_cond_coders(coders, simulation->config.number_of_coders) == false)
+		{
+			free_2d_array((void **)coders, simulation->config.number_of_coders);
 		return (false);
 	}
 	simulation->coders = coders;
 	return (true);
-
+	
 }
