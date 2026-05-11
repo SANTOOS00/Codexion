@@ -73,6 +73,8 @@ t_dongle_request *pop_fifo(t_queue_fifo *queue_fifo)
 	return (request);
 }
 
+
+
 void monitor_fifo_mode(t_simulation *sim)
 {
 	t_queue_fifo *q;
