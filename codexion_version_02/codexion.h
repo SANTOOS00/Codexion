@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/10 18:34:59 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/11 10:46:35 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,16 +81,16 @@ typedef struct s_coder
 {
 	pthread_t 		thread;
 	int 			id;
-	int				compilation_count;
-
-	int				index_in_queue;
-	int				*index_coder_left_queue;
-	int				*index_coder_right_queue;
-
 	bool 			has_dongle; /// kaytsna dongles min monitor i3tihom lih
 	
 	bool 			*is_burnout;
 	pthread_mutex_t *burnout_mutex;
+	
+	int				compilation_count;
+	int				index_in_queue;
+	int				*index_coder_left_queue;
+	int				*index_coder_right_queue;
+	
 	
 	t_config 		*config;
 	
@@ -198,6 +198,7 @@ void *join_monitor(t_simulation *sim);
 
 // free 2d arry void ** and size for free
 
+void print_data_queue(t_queue_fifo *fifo);
 
 
 

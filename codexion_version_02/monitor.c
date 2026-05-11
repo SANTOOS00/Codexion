@@ -6,18 +6,31 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/06 03:37:59 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/10 20:50:01 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/11 12:01:35 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
+// static bool is_coder_ready(t_coder *coder)
+// {
+// 	bool is_dongle_valid;
+
+// 	is_dongle_valid = false;
+// 	pthread_mutex_lock(&coder->left_dongle->m_cn_dongle.mutex);
+// 	pthread_mutex_lock(&coder->right_dongle->m_cn_dongle.mutex);
+// 	if ((coder->right_dongle->is_available 
+// 		&& coder->left_dongle->is_available))
+// 		is_dongle_valid = true;
+// 	pthread_mutex_unlock(&coder->left_dongle->m_cn_dongle.mutex);
+// 	pthread_mutex_unlock(&coder->right_dongle->m_cn_dongle.mutex);
+// 	return (is_dongle_valid);
+// }
 static bool is_coder_ready(t_coder *coder)
 {
 	return ((coder->right_dongle->is_available 
 		&& coder->left_dongle->is_available));
 }
-
 // static bool has_priority(t_dongle_request *req_a, t_dongle_request *req_b)
 // {
 // 	bool a_ready;
@@ -39,7 +52,7 @@ t_coder *pop_fifo(t_queue_fifo *queue_fifo)
 
 	i = 0;
 	pthread_mutex_lock(&queue_fifo->mutex_queue_fifo);
-	if (queue_fifo->size == 0 && is_coder_ready(queue_fifo->heap[0]) == true)
+	if (queue_fifo->size > 0 && is_coder_ready(queue_fifo->heap[0]) == true)
 	{
 		coder = queue_fifo->heap[0];
 		while (i < queue_fifo->size)
@@ -65,30 +78,33 @@ void monitor_fifo_mode(t_simulation *sim)
 	t_coder *coder;
 	
 
-	printf("sss\n");
-	// p = sim->queue_fifo;
-	// while (sim->monitor_status != FINISHED_M && sim->monitor_status != ERROR_M)
-	// {
-	// 	coder = pop_fifo(p);
-	// 	if (coder)
-	// 	{
-	// 		pthread_mutex_lock(&coder->mutex_cond.mutex);	
-	// 		printf("is %d\n", coder->id);
-	// 		pthread_mutex_unlock(&coder->mutex_cond.mutex);	
-	// 	}	
-	// 	// if (coder != NULL)
-	// 	// {
-	// 	// 	pick_up_dongle(coder);
-	// 	// 	pthread_mutex_lock(&coder->mutex_cond.mutex);
-	// 	// 	coder->has_dongle = true;
-	// 	// 	pthread_cond_broadcast(&coder->mutex_cond.cond);
-	// 	// 	pthread_mutex_unlock(&coder->mutex_cond.mutex);
-	// 	// }
-	// 	// else
-	// 	// {
-	// 	// 	usleep(10);
-	// 	// }
-	// }
+
+	// print_data_queue(sim->queue_fifo);
+	p = sim->queue_fifo;
+	while (sim->monitor_status == START_M)
+	{
+		coder = pop_fifo(p);
+		if (coder)
+		{
+			pick_up_dongle(coder);
+			pthread_mutex_lock(&coder->mutex_cond.mutex);	
+			// printf("is %d\n", coder->id);
+			coder->has_dongle = true;
+			pthread_cond_broadcast(&coder->mutex_cond.cond);
+			pthread_mutex_unlock(&coder->mutex_cond.mutex);	
+		}
+		// ifcoder != NULL)
+		// {
+		// 	pthread_mutex_lock(&coder->mutex_cond.mutex);
+		// 	coder->has_dongle = true;
+		// 	pthread_cond_broadcast(&coder->mutex_cond.cond);
+		// 	pthread_mutex_unlock(&coder->mutex_cond.mutex);
+		// }
+		// else
+		// {
+		// 	usleep(10);
+		// }
+	}
 	return;
 }
 

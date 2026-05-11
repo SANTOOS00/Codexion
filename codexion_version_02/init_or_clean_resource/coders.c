@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 19:27:24 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/10 18:25:58 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/11 10:20:18 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,30 +47,29 @@ bool ft_set_coders_initial_state(t_simulation *simulation)
 		coder = simulation->coders[i];
 		coder->id = i;
 		coder->has_dongle = false;
-		
+
 		coder->is_burnout = &simulation->is_burnout;
 		coder->burnout_mutex = &simulation->burnout_mutex;
-		
-		coder->config = &simulation->config;
-		
-		coder->left_dongle = simulation->dongles[i];
-		coder->right_dongle = simulation->dongles[(i + 1) % config.number_of_coders];
-		
-		coder->run_coders_counter = &simulation->run_coders_counter;
-		coder->coders_cnt_lock = &simulation->coders_cnt_lock;
-		
-		coder->monitor_wait_lock = &simulation->monitor_wait_lock;
-		coder->check_wait_monitor = &simulation->check_wait_monitor;
+
 		coder->compilation_count = 0;
-		coder->status = START;
-		
+		coder->index_in_queue = -1;
 		coder->index_coder_right_queue = &simulation->coders[(i - 1 + config.number_of_coders) % config.number_of_coders]->index_in_queue;
 		coder->index_coder_left_queue = &simulation->coders[(i + 1) % config.number_of_coders]->index_in_queue;
-		
-		
-		
-		coder->queue_fifo = simulation->queue_fifo;		
-		
+
+		coder->config = &simulation->config;
+
+		coder->left_dongle = simulation->dongles[i];
+		coder->right_dongle = simulation->dongles[(i + 1) % config.number_of_coders];
+
+		coder->run_coders_counter = &simulation->run_coders_counter;
+		coder->coders_cnt_lock = &simulation->coders_cnt_lock;
+
+		coder->status = START;
+	
+		coder->check_wait_monitor = &simulation->check_wait_monitor;
+		coder->monitor_wait_lock = &simulation->monitor_wait_lock;
+
+		coder->queue_fifo = simulation->queue_fifo;
 		i++;
 	}
 	return (true);

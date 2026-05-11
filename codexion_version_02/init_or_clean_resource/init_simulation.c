@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 18:59:05 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/10 18:34:25 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/11 11:31:27 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ bool ft_set_simulation_intial_state(int argc, char **argv, t_simulation *simulat
 	simulation->is_burnout = false;
 	simulation->run_coders_counter = 0;
 	simulation->check_wait_monitor= true;
+	simulation->monitor_status = START_M;
 	if (parse_args(argc, argv, &simulation->config) == false)
 		return (false);
 	if (init_mutex_cond(&simulation->coders_cnt_lock) == false)

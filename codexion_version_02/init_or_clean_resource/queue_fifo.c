@@ -15,19 +15,28 @@ t_queue_fifo *alloc_queue_fifo(int coders_number)
 
 	queue_fifo = malloc(sizeof(t_queue_fifo));
 	if (!queue_fifo)
-		return (false);
+		return (NULL);
 	queue_fifo->heap = malloc(coders_number * sizeof(t_coder *));
 	if (!queue_fifo->heap)
 	{
 		free(queue_fifo);
-		return (false);
+		return (NULL);
 	}
 	queue_fifo->size = 0;
 	queue_fifo->capacity = coders_number;
-	pthread_mutex_init(&queue_fifo->mutex_queue_fifo, NULL);
 	return (queue_fifo);
 }
 
+
+void print_data_queue(t_queue_fifo *fifo)
+{
+	int i;
+	i = 0;
+	while(i < fifo->capacity)
+	{
+		printf("id coder %d \n",  fifo->heap[i++]->id);
+	}
+}
 
 bool ft_init_queue_fifo(t_simulation *sim)
 {
