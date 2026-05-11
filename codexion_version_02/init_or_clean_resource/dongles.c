@@ -39,8 +39,12 @@ void clean_mutex_dongles(t_dongle **dongles, int size)
 	int i;
 
 	i = 0;
-	while (i <	size)
-		destory_mutex_cond(&dongles[i++]->m_cn_dongle);
+	if (!dongles) return;
+	while (i < size)
+	{
+		destory_mutex_cond(&dongles[i]->m_cn_dongle);
+		i++;
+	}
 }
 
 void clean_dongles(t_dongle **dongles, int size)

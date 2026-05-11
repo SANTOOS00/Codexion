@@ -31,14 +31,12 @@ void *join_coders(t_simulation *sim)
 
 	i = 0;
 	while(i < sim->config.number_of_coders)
-	{	
+	{
 		pthread_join(sim->coders[i++]->thread, NULL);
-		// if (i == sim->config.number_of_coders)
-		// {
-		// 	pthread_mutex_lock(&sim->queue_fifo->mutex_queue_fifo);
-		// 	sim->monitor_status = FINISHED_M;
-		// 	pthread_mutex_unlock(&sim->queue_fifo->mutex_queue_fifo);
-		// }
+		pthread_mutex_lock(&sim->queue_fifo->mutex_queue_fifo);
+		if (sim->queue_fifo->size == 0)
+			sim->queue_fifo->status_queue_fifo = FINISHED;
+		pthread_mutex_unlock(&sim->queue_fifo->mutex_queue_fifo);
 	}
 	return (NULL);
 }
@@ -57,6 +55,8 @@ bool start_coders_in_simulation(t_simulation *sim)
 		i++;
 	}
 	join_coders(sim);
+	printf("finich coders\n");
 	join_monitor(sim);
+	printf("finich monitor\n");
 	return (true);
 }

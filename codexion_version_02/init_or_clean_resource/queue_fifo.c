@@ -5,22 +5,32 @@
 void clean_queue_fifo(t_queue_fifo *queue_fifo)
 {
 	pthread_mutex_destroy(&queue_fifo->mutex_queue_fifo);
-	free(queue_fifo->heap);
+	free_2d_array((void **)queue_fifo->heap, queue_fifo->capacity);
 	free(queue_fifo);
 }
 
 t_queue_fifo *alloc_queue_fifo(int coders_number)
 {
 	t_queue_fifo *queue_fifo;
+	int			i;
 
-	queue_fifo = malloc(sizeof(t_queue_fifo));
+	i = 0;
+	queue_fifo = (t_queue_fifo *)malloc(sizeof(t_queue_fifo));
 	if (!queue_fifo)
 		return (NULL);
-	queue_fifo->heap = malloc(coders_number * sizeof(t_coder *));
+	queue_fifo->heap = (t_dongle_request **)malloc(sizeof(t_dongle_request *) * coders_number);
 	if (!queue_fifo->heap)
+		return (free(queue_fifo), false);
+	while(i < coders_number)
 	{
-		free(queue_fifo);
-		return (NULL);
+		queue_fifo->heap[i] = malloc(sizeof(t_dongle_request));
+		if (!queue_fifo->heap[i])
+		{
+			free_2d_array((void **)queue_fifo->heap, i);
+			free(queue_fifo);
+			return (NULL);
+		}
+		i++;
 	}
 	queue_fifo->size = 0;
 	queue_fifo->capacity = coders_number;
@@ -49,6 +59,7 @@ bool ft_init_queue_fifo(t_simulation *sim)
 		return (free(q->heap), free(q), false);
 	q->capacity = sim->config.number_of_coders;
 	q->size = 0;
+	q->status_queue_fifo = START;
 	sim->queue_fifo = q;
 	return (true);
 }

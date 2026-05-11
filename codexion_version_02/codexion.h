@@ -115,6 +115,7 @@ typedef struct s_queue_fifo
 	t_coder 		**heap;
 	int 			size;
 	int				capacity;
+	t_coder_status	status_queue_fifo;
 	pthread_mutex_t mutex_queue_fifo;
 
 } t_queue_fifo;

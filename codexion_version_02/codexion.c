@@ -20,6 +20,7 @@ int main(int argc, char **argv)
 		return (1);
 	if (start_simulation(&simulation) == false)
 		return (1);
+	// usleep(100000000);
 	clean_resource(&simulation);
 	return (0);
 }

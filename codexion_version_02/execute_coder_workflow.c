@@ -12,14 +12,20 @@
 
 #include "codexion.h"
 
+// void set_cooldown_time_start(t_dongle_request *request)
+// {
+// 	request->deadline = get_time();
+// }
+
 
 void push_queue_fifo(t_coder *coder)
 {
 	t_queue_fifo *q;
-
+	
 	pthread_mutex_lock(&coder->queue_fifo->mutex_queue_fifo);
 	q = coder->queue_fifo;
-	q->heap[q->size] = coder;
+	q->heap[q->size]->coder = coder;
+	// set_cooldown_time_start(q->heap[q->size]);
 	q->size++;
 	pthread_mutex_unlock(&coder->queue_fifo->mutex_queue_fifo);
 }
@@ -28,11 +34,10 @@ void push_queue_fifo(t_coder *coder)
 
 void enqueue_coder_request(t_coder *coder)
 {
-	// pthread_mutex_lock(&coder->coders_cnt_lock->mutex);
-	// coder->run_coders_counter++;
-	// pthread_cond_broadcast(&coder->coders_cnt_lock->cond);
-	// pthread_mutex_unlock(&coder->coders_cnt_lock->mutex);
-
+	pthread_mutex_lock(&coder->mutex_cond.mutex);
+	if (coder->status == START && coder->id % 2 != 0)
+		usleep(100);
+	pthread_mutex_unlock(&coder->mutex_cond.mutex);
 	push_queue_fifo(coder);
 	pthread_mutex_lock(&coder->mutex_cond.mutex);
 	coder->has_dongle = false;

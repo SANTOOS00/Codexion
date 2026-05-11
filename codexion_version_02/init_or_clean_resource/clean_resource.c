@@ -14,9 +14,9 @@
 
 void clean_resource(t_simulation *simulation)
 {
-	clean_coders(simulation->coders, simulation->config.number_of_coders);
 	clean_dongles(simulation->dongles, simulation->config.number_of_coders);
-	clean_queue_pro(simulation->queue_priority);
-	clean_queue_fifo(simulation->queue_fifo);
 	clean_mutex_cond_simulation(simulation);
+	clean_queue_pro(simulation->queue_priority);
+	clean_coders(simulation->coders, simulation->config.number_of_coders);
+	clean_queue_fifo(simulation->queue_fifo);
 }
