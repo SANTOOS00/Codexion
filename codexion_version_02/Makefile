@@ -1,7 +1,7 @@
 NAME_PROGRAN = codexion
 CC = cc
 
-FLAGS = -pthread -g3 -fsanitize=thread
+FLAGS = -pthread #-g3 -fsanitize=address
 
 SRC = init_or_clean_resource/queue.c\
 	  init_or_clean_resource/coder_crossing.c\

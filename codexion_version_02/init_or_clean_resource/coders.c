@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 19:27:24 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/12 15:01:40 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/12 19:07:27 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ bool ft_set_coders_initial_state(t_simulation *simulation)
 		coder->monitor_wait_lock = &simulation->monitor_wait_lock;
 
 		coder->crossing = simulation->crossing;
+		coder->deadline = 0;
 		i++;
 	}
 	return (true);

@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/12 17:55:09 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/12 19:40:22 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef enum e_monitor_status
 typedef struct s_config
 {
 	int					number_of_coders;
-	int					time_to_burnout;
+	long long			time_to_burnout;
 	int					time_to_compile;
 	int					time_to_debug;
 	int					time_to_refactor;
@@ -79,7 +79,7 @@ typedef struct s_coder
 	pthread_t 		thread;//perficto
 	int 			id;//perficto
 	bool 			has_dongle;//perficto  /// kaytsna dongles min monitor i3tihom lih
-	
+	long long		deadline;
 	bool 			*is_burnout;//perficto
 	pthread_mutex_t *burnout_mutex;//perficto
 	
@@ -122,7 +122,7 @@ typedef struct s_coder_crossing
 typedef struct s_dongle_request
 {
 	t_coder			*coder;
-	long long		deadline;  //deadline = last_compile_start + time_to_burnout
+	long long 		deadline;
 }	t_dongle_request;
 
 typedef struct s_queue
@@ -132,6 +132,7 @@ typedef struct s_queue
 	int					size; //xhal 3ndi f heap
 	
 	int					capacity;  // hnay xhal i9dr ihz lina heap ya3ni xhal max dyalo
+	long long			time_burnout;
 	pthread_mutex_t 	mutex_queue;
 }	t_queue;
 
@@ -253,3 +254,5 @@ void add_crossing_to_queue(t_coder_crossing *cro, t_queue *q, t_scheduler schedu
 
 // push li queue 3la hasb 3wtani scheduler
 void push_to_priority_queue(t_queue *q, t_coder *coder, t_scheduler scheduler);
+
+t_coder *pop_queue(t_queue *q, t_scheduler scheduler);

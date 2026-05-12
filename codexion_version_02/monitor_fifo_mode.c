@@ -6,30 +6,39 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:30:25 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/12 18:19:08 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/12 20:19:51 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "codexion.h"
 
-void	run_fifo_routine(t_simulation *sim)
+
+void    run_fifo_routine(t_simulation *sim)
 {
-    t_coder_crossing *cor;
-    usleep(1000);
-    int size;
-    cor = sim->crossing;
+    t_coder *coder;
+
     while (1)
     {
-        pthread_mutex_lock(&cor->mutex_crossing);
-        size = cor->size;
-        pthread_mutex_unlock(&cor->mutex_crossing);
-        if (size > 0)
+        pthread_mutex_lock(&sim->crossing->mutex_crossing);
+        if (sim->crossing->size > 0)
             add_crossing_to_queue(sim->crossing, sim->queue, FIFO);
-        if(size == 0)
+        pthread_mutex_unlock(&sim->crossing->mutex_crossing);
+
+        coder = pop_queue(sim->queue, FIFO);
+        
+        if (coder)
         {
-            printf("finich crossing\n");
+            pthread_mutex_lock(&coder->mutex_cond.mutex);
+            coder->has_dongle = true;
+            pthread_cond_broadcast(&coder->mutex_cond.cond);
+            pthread_mutex_unlock(&coder->mutex_cond.mutex);
+        }        
+        else
+            usleep(1000);
+        pthread_mutex_lock(&sim->coders_cnt_lock.mutex);
+        if (sim->monitor_status == FINISHED_M)
             break;
-        }
+        pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
     }
 }

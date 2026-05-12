@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 13:03:45 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/12 18:18:44 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/12 20:27:23 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,10 @@
 bool	parse_args(int ac, char **av, t_config *config)
 {
 	config->number_of_coders = 3;
-	config->time_to_compile = 20;
-	config->time_to_debug = 20;
-	config->time_to_refactor = 20;
+	config->time_to_burnout = 20;
+	config->time_to_compile = 200;
+	config->time_to_debug = 200;
+	config->time_to_refactor = 200;
 	config->dongle_cooldown = 20;
 	config->number_of_compiles_required = 2;
 	config->scheduler = FIFO;

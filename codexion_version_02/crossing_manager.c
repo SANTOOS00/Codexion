@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 16:15:36 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/12 18:16:36 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/12 20:28:46 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,6 @@ t_coder *pop_crossing(t_coder_crossing *cro)
     int i;
 
     coder = cro->heap[0];
-    if (cro->size == 1)
-    {
-        cro->size--;
-        return (coder);   
-    }
     i = 1;
     while (cro->size > i)
     {
@@ -40,17 +35,11 @@ void add_crossing_to_queue(t_coder_crossing *cro, t_queue *q, t_scheduler schedu
 {
     t_coder *coder;
 
-    pthread_mutex_lock(&cro->mutex_crossing);
     while (cro->size > 0)
     {
         coder = pop_crossing(cro);
-        printf("%d\n", coder->id);
-        pthread_mutex_lock(&q->mutex_queue);
-        push_to_priority_queue(q, coder, scheduler);
-        pthread_mutex_unlock(&q->mutex_queue);
-        
+        push_to_priority_queue(q, coder, scheduler);        
     }
-    pthread_mutex_unlock(&cro->mutex_crossing);
 }
 
 
