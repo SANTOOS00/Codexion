@@ -1,22 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   clean_resource.c                                   :+:      :+:    :+:   */
+/*   controller.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/05 04:05:58 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/12 15:18:51 by moerrais         ###   ########.fr       */
+/*   Created: 2026/05/12 15:58:46 by moerrais          #+#    #+#             */
+/*   Updated: 2026/05/12 16:16:19 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../codexion.h"
+#include "codexion.h"
 
-void clean_resource(t_simulation *simulation)
+void initiate_crossing_logic(t_simulation *sim)
 {
-	clean_dongles(simulation->dongles, simulation->config.number_of_coders);
-	clean_coders(simulation->coders, simulation->config.number_of_coders);
-	clean_queue(simulation->queue);
-	clean_crossing(simulation->crossing);
-	clean_mutex_cond_simulation(simulation);
+    if (sim->config.scheduler == FIFO)
+        run_fifo_routine(sim);
+    if (sim->config.scheduler == EDF)
+        run_edf_routine(sim);
 }

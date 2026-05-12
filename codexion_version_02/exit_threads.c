@@ -1,22 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   clean_resource.c                                   :+:      :+:    :+:   */
+/*   exit_threads.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/05 04:05:58 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/12 15:18:51 by moerrais         ###   ########.fr       */
+/*   Created: 2026/05/12 15:46:14 by moerrais          #+#    #+#             */
+/*   Updated: 2026/05/12 15:52:50 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../codexion.h"
+#include "codexion.h"
 
-void clean_resource(t_simulation *simulation)
+void exit_thread(t_simulation *sim, int size_threads_create)
 {
-	clean_dongles(simulation->dongles, simulation->config.number_of_coders);
-	clean_coders(simulation->coders, simulation->config.number_of_coders);
-	clean_queue(simulation->queue);
-	clean_crossing(simulation->crossing);
-	clean_mutex_cond_simulation(simulation);
+    printf(
+				"error create in threads\n\n\n\nand exit thread\n\n\n "
+				 "plessssssssssssssssssssssssssssssssssssssssssssssss\n\n\n\n"
+				);	
 }

@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/06 03:42:54 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/11 12:04:52 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/12 16:01:08 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,7 @@ void *join_coders(t_simulation *sim)
 
 	i = 0;
 	while(i < sim->config.number_of_coders)
-	{
 		pthread_join(sim->coders[i++]->thread, NULL);
-		pthread_mutex_lock(&sim->queue_fifo->mutex_queue_fifo);
-		if (sim->queue_fifo->size == 0)
-			sim->queue_fifo->status_queue_fifo = FINISHED;
-		pthread_mutex_unlock(&sim->queue_fifo->mutex_queue_fifo);
-	}
 	return (NULL);
 }
 
@@ -49,9 +43,7 @@ bool start_coders_in_simulation(t_simulation *sim)
 	while (i < sim->config.number_of_coders)
 	{
 		if (pthread_create(&sim->coders[i]->thread, NULL, coders_routine, sim->coders[i]) != 0)
-		{
-			return (false);
-		}
+			return (exit_thread(sim, i), false);
 		i++;
 	}
 	join_coders(sim);

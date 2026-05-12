@@ -6,72 +6,33 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/06 03:50:54 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/11 11:26:39 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/12 16:02:08 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-// void set_cooldown_time_start(t_dongle_request *request)
-// {
-// 	request->deadline = get_time();
-// }
-
-
-void push_queue_fifo(t_coder *coder)
-{
-	t_queue_fifo *q;
-	
-	pthread_mutex_lock(&coder->queue_fifo->mutex_queue_fifo);
-	q = coder->queue_fifo;
-	q->heap[q->size]->coder = coder;
-	// set_cooldown_time_start(q->heap[q->size]);
-	q->size++;
-	pthread_mutex_unlock(&coder->queue_fifo->mutex_queue_fifo);
-}
-
-
-
 void enqueue_coder_request(t_coder *coder)
 {
-	pthread_mutex_lock(&coder->mutex_cond.mutex);
-	if (coder->status == START && coder->id % 2 != 0)
-		usleep(100);
-	pthread_mutex_unlock(&coder->mutex_cond.mutex);
-	push_queue_fifo(coder);
-	pthread_mutex_lock(&coder->mutex_cond.mutex);
+	// pthread_mutex_lock(&coder->mutex_cond.mutex);
 	coder->has_dongle = false;
-    while (!coder->has_dongle)
-		pthread_cond_wait(&coder->mutex_cond.cond, &coder->mutex_cond.mutex);
-    pthread_mutex_unlock(&coder->mutex_cond.mutex);
+    // while (coder->has_dongle)
+	// 	pthread_cond_wait(&coder->mutex_cond.cond, &coder->mutex_cond.mutex);
+    // pthread_mutex_unlock(&coder->mutex_cond.mutex);
 }
 
 void works_coders_threads(t_coder *coder)
 {
-	while(*(coder->is_burnout) != true && coder->status != FINISHED)
-	{
-		enqueue_coder_request(coder);
-		execute_coding_cycle(coder);
-	}
-}
-
-void run_edf_routine(t_coder *coder)
-{
-	works_coders_threads(coder);
 	return ;
-}
-
-void run_fifo_routine(t_coder *coder)
-{
-	works_coders_threads(coder);
-	return ;
+	// while(*(coder->is_burnout) != true && coder->status != FINISHED)
+	// {
+	// 	enqueue_coder_request(coder);
+	// 	// execute_coding_cycle(coder);
+	// }
 }
 
 bool execute_coder_workflow(t_coder *coder)
 {
-	if (coder->config->scheduler == FIFO)
-		run_fifo_routine(coder);
-	else if(coder->config->scheduler == EDF)
-		run_edf_routine(coder);
+	works_coders_threads(coder);
 	return (true);
 }

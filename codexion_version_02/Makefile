@@ -1,9 +1,10 @@
 NAME_PROGRAN = codexion
 CC = cc
 
-FLAGS = -pthread -g3 -fsanitize=thread
+FLAGS = -pthread #-g3 -fsanitize=thread
 
-SRC = codexion.c \
+SRC = init_or_clean_resource/queue.c\
+	  init_or_clean_resource/coder_crossing.c\
 	  init_or_clean_resource/init_simulation.c \
 	  init_or_clean_resource/coders.c \
 	  init_or_clean_resource/dongles.c \
@@ -11,17 +12,21 @@ SRC = codexion.c \
 	  init_or_clean_resource/init_or_destory_mutex_cond.c\
 	  init_or_clean_resource/clean_resource.c\
       parse_args/parse_args.c \
-	  threads_orchestrator.c\
-	  monitor.c\
-	  start_coders_in_simulation.c\
+	  codexion.c \
+	  crossing_manager.c\
 	  execute_coder_workflow.c\
-	  return_dongles.c\
 	  execute_coding_cycle.c\
+	  monitor_edf_mode.c\
+	  monitor_fifo_mode.c\
+	  monitor.c\
 	  pick_up_dongle.c\
-	  init_or_clean_resource/queue_pro.c\
-	  init_or_clean_resource/queue_fifo.c\
-	  priority_queue.c\
-	  time_utils.c
+	  return_dongles.c\
+	  start_coders_in_simulation.c\
+	  threads_orchestrator.c\
+	  time_utils.c\
+	  exit_threads.c\
+	  controller.c
+
 
 OBG = $(SRC:.c=.o)
 

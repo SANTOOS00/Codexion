@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 19:27:24 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/11 10:20:18 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/12 15:01:40 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@ t_coder **alloc_coders(int coders_number)
 	return (coders);
 }
 
+// coder->index_in_queue = -1;
+// coder->index_coder_right_queue = &simulation->coders[(i - 1 + config.number_of_coders) % config.number_of_coders]->index_in_queue;
+// coder->index_coder_left_queue = &simulation->coders[(i + 1) % config.number_of_coders]->index_in_queue;
 
 bool ft_set_coders_initial_state(t_simulation *simulation)
 {
@@ -52,9 +55,6 @@ bool ft_set_coders_initial_state(t_simulation *simulation)
 		coder->burnout_mutex = &simulation->burnout_mutex;
 
 		coder->compilation_count = 0;
-		coder->index_in_queue = -1;
-		coder->index_coder_right_queue = &simulation->coders[(i - 1 + config.number_of_coders) % config.number_of_coders]->index_in_queue;
-		coder->index_coder_left_queue = &simulation->coders[(i + 1) % config.number_of_coders]->index_in_queue;
 
 		coder->config = &simulation->config;
 
@@ -69,7 +69,7 @@ bool ft_set_coders_initial_state(t_simulation *simulation)
 		coder->check_wait_monitor = &simulation->check_wait_monitor;
 		coder->monitor_wait_lock = &simulation->monitor_wait_lock;
 
-		coder->queue_fifo = simulation->queue_fifo;
+		coder->crossing = simulation->crossing;
 		i++;
 	}
 	return (true);

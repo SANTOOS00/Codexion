@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/09 17:11:31 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/11 12:02:34 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/12 15:33:04 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,6 @@ void return_right_dongle(t_coder *coder)
 void return_dongles(t_coder *coder)
 {
 	usleep(coder->left_dongle->cooldown_time * 1000);
-	pthread_mutex_lock(&coder->queue_fifo->mutex_queue_fifo);
 	return_left_dongle(coder);
 	return_right_dongle(coder);
-	pthread_mutex_unlock(&coder->queue_fifo->mutex_queue_fifo);
-	// update_queue(coder->queue, *(coder->index_coder_left_queue));
-	// update_queue(coder->queue, *(coder->index_coder_right_queue));
 }

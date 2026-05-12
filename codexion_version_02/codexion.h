@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/11 10:46:35 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/12 16:14:52 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,7 @@
 #include <time.h>
 #include <stdbool.h>
 
-typedef struct s_queue_fifo t_queue_fifo;
 
-// typedef enum e_queue_state
-// {
-	// }   t_queue_state;
-	
 typedef enum e_scheduler
 {
 	FIFO,
@@ -33,7 +28,7 @@ typedef enum e_scheduler
 
 typedef enum e_coder_status 
 {
-    START,              // Initial state
+	START,              // Initial state
     WAIT_FOR_DONGLE,    // Waiting for resource availability or cooldown
     COMPILING,          // Currently in the compilation phase
     DEBUGGING,          // Currently in the debugging phase
@@ -63,6 +58,8 @@ typedef struct s_config
 	t_scheduler			scheduler;
 }	t_config;
 
+typedef struct s_coder_crossing t_coder_crossing;
+
 typedef struct s_mutex_cond {
 	pthread_mutex_t 	mutex;
 	pthread_cond_t 		cond;
@@ -79,46 +76,48 @@ typedef struct s_dongle
 
 typedef struct s_coder
 {
-	pthread_t 		thread;
-	int 			id;
-	bool 			has_dongle; /// kaytsna dongles min monitor i3tihom lih
+	pthread_t 		thread;//perficto
+	int 			id;//perficto
+	bool 			has_dongle;//perficto  /// kaytsna dongles min monitor i3tihom lih
 	
-	bool 			*is_burnout;
-	pthread_mutex_t *burnout_mutex;
+	bool 			*is_burnout;//perficto
+	pthread_mutex_t *burnout_mutex;//perficto
 	
-	int				compilation_count;
-	int				index_in_queue;
-	int				*index_coder_left_queue;
-	int				*index_coder_right_queue;
+	int				compilation_count;//perficto
+
+	int				index_in_queue;  // no no no
+	int				*index_coder_left_queue; // no no no
+	int				*index_coder_right_queue; // no no no
 	
 	
-	t_config 		*config;
+	t_config 		*config; // perficto
 	
-	t_dongle 		*left_dongle;
-	t_dongle 		*right_dongle;
+	t_dongle 		*left_dongle; // perficto
+	t_dongle 		*right_dongle; // perficto
 	
-	int 			*run_coders_counter;
-	t_mutex_cond 	*coders_cnt_lock;
+	int 			*run_coders_counter; // perficto
+	t_mutex_cond 	*coders_cnt_lock; // perficto
 	
-	t_coder_status 	status;
+	t_coder_status 	status; // perficto
 	t_mutex_cond 	mutex_cond;
 	
-	bool			*check_wait_monitor;  // القفل الخاص بالعداد
-	t_mutex_cond	*monitor_wait_lock;
+	bool			*check_wait_monitor;  // perficto  // القفل الخاص بالعداد
+	t_mutex_cond	*monitor_wait_lock; // perficto
 	
 	
-	t_queue_fifo 	*queue_fifo;
+	t_coder_crossing 	*crossing; // perficto
 }	t_coder;
 
-typedef struct s_queue_fifo
+typedef struct s_coder_crossing
 {
-	t_coder 		**heap;
+	t_coder 		**heap; // perficto
+
 	int 			size;
 	int				capacity;
-	t_coder_status	status_queue_fifo;
-	pthread_mutex_t mutex_queue_fifo;
 
-} t_queue_fifo;
+	pthread_mutex_t mutex_crossing;
+
+} t_coder_crossing;
 
 typedef struct s_dongle_request
 {
@@ -133,7 +132,7 @@ typedef struct s_queue
 	int					size; //xhal 3ndi f heap
 	
 	int					capacity;  // hnay xhal i9dr ihz lina heap ya3ni xhal max dyalo
-	pthread_mutex_t 	mutex_queue_priority;
+	pthread_mutex_t 	mutex_queue;
 }	t_queue;
 
 
@@ -158,106 +157,86 @@ typedef struct s_simulation
 	bool            			is_burnout;
     pthread_mutex_t 			burnout_mutex;
 
-	t_queue         			*queue_priority;
-	t_queue_fifo 				*queue_fifo;
+	t_queue         			*queue;
+	t_coder_crossing 			*crossing;
 
 } t_simulation;
 
 
 // parse the args
-bool	parse_args(int ac, char **av, t_config *config);
+bool		parse_args(int ac, char **av, t_config *config);
 
 
-
-
-// init resource and free resource
-bool 		init_mutex_cond(t_mutex_cond *mutex_cond);
 bool 		ft_init_simulation(int argc, char **argv, t_simulation *simulation);
+bool		start_simulation(t_simulation *sim);
+
 bool 		init_coders(t_simulation *simulation);
 bool 		alloc_and_init_dongles(t_simulation *simulation);
+
 bool 		init_mutex_cond(t_mutex_cond *mutex_cond);
-bool		ft_init_queue_fifo(t_simulation *sim);
-
-
-void 		clean_coders(t_coder **coders, int size);
-void 		free_2d_array(void **arr, int size);
-void 		clean_dongles(t_dongle **dongles, int size);
-void 		clean_mutex_cond_simulation(t_simulation *simulation);
-void 		clean_resource(t_simulation *simulation);
-t_coder		**alloc_coders(int coders_number);
-void		clean_queue_pro(t_queue *queue);
-void		clean_queue_fifo(t_queue_fifo *queue);
 void 		destory_mutex_cond(t_mutex_cond *mutex_cond);
 
 
+void 		free_2d_array(void **arr, int size);
+void 		clean_dongles(t_dongle **dongles, int size);
+
+void 		clean_resource(t_simulation *simulation);
+t_coder		**alloc_coders(int coders_number);
+
+//clean resource
+void		clean_queue(t_queue *queue);
+void		clean_crossing(t_coder_crossing *queue);
+void 		clean_coders(t_coder **coders, int size);
 
 
-bool has_priority(t_dongle_request *data_1, t_dongle_request *data_2);
-// init simulation
+
+
+
+bool ft_init_queue(t_simulation *sim);
 
 void *join_monitor(t_simulation *sim);
 
-// free 2d arry void ** and size for free
 
-void print_data_queue(t_queue_fifo *fifo);
+bool ft_set_coders_initial_state(t_simulation *simulation);
 
 
 
 void clean_mutex_cond_simulation(t_simulation *simulation);
 
 void clean_mutex_dongles(t_dongle **dongles, int size);
-// set coder in state
-bool ft_set_coders_initial_state(t_simulation *simulation);
 
 
+void	run_fifo_routine(t_simulation *sim);
+void	run_edf_routine(t_simulation *sim);
 
 
-
-void ft_swap(t_dongle_request **arg1, t_dongle_request **arg2);
-t_dongle_request *pop(t_queue *queue);
-void heap_down(t_queue *queue, int i);
-// void update_queue(t_queue *q, int index);
-
-
-//manger moniter 
-
-
+bool ft_init_coder_crossing(t_simulation *sim);
 
 bool run_monitor_simulation(t_simulation *sim);
 
 
-bool ft_init_queue(t_simulation *sim);
 
 
 
-// manger in fifo or edf
 bool execute_coder_workflow(t_coder *coder);
-void run_scheduler_logic(t_simulation *sim);
 
 
-// start coders in simulation 
+
 bool start_coders_in_simulation(t_simulation *sim);
 
-void print_queue(t_queue *queue);
+void exit_thread(t_simulation *sim, int size_threads_create);
 
-// wait coder
-// void wait_coder(t_coder *coder);
-
-
-// work in coder for mange in monitor
 void execute_coding_cycle(t_coder *coder);
 
 
-void push_queue(t_queue *queue, t_coder *coder);
+void initiate_crossing_logic(t_simulation *sim);
 
 
 long long get_time();
 
-// return and 
+
 void pick_up_dongle(t_coder *coder);
 void return_dongles(t_coder *coder);
 
 
 
-// run simulation 
-bool start_simulation(t_simulation *sim);

@@ -1,22 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   clean_resource.c                                   :+:      :+:    :+:   */
+/*   monitor_edf_mode.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/05 04:05:58 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/12 15:18:51 by moerrais         ###   ########.fr       */
+/*   Created: 2026/05/12 15:25:56 by moerrais          #+#    #+#             */
+/*   Updated: 2026/05/12 16:14:05 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../codexion.h"
+#include "codexion.h"
 
-void clean_resource(t_simulation *simulation)
+void	run_edf_routine(t_simulation *sim)
 {
-	clean_dongles(simulation->dongles, simulation->config.number_of_coders);
-	clean_coders(simulation->coders, simulation->config.number_of_coders);
-	clean_queue(simulation->queue);
-	clean_crossing(simulation->crossing);
-	clean_mutex_cond_simulation(simulation);
+    printf("monitor edf ok\n");
+
 }
