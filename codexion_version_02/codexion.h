@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/12 16:14:52 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/12 17:55:09 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,7 +189,7 @@ void		clean_crossing(t_coder_crossing *queue);
 void 		clean_coders(t_coder **coders, int size);
 
 
-
+long long get_time();
 
 
 bool ft_init_queue(t_simulation *sim);
@@ -240,3 +240,16 @@ void return_dongles(t_coder *coder);
 
 
 
+/////////////////////////////////////////////////
+void push_crossing(t_coder *coder);
+
+
+
+
+// kat5wi codr min cro li queue
+void add_crossing_to_queue(t_coder_crossing *cro, t_queue *q, t_scheduler scheduler);
+
+
+
+// push li queue 3la hasb 3wtani scheduler
+void push_to_priority_queue(t_queue *q, t_coder *coder, t_scheduler scheduler);

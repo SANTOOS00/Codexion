@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/10 17:24:44 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/12 15:23:35 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/12 17:36:05 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ bool ft_init_queue(t_simulation *sim)
         return (false);
     if (pthread_mutex_init(&queue->mutex_queue, NULL) != 0)
         return (free(queue), false);
-    queue->heap = (t_dongle_request **)malloc(sizeof(t_dongle_request) *sim->config.number_of_coders);
+    queue->heap = (t_dongle_request **)malloc(sizeof(t_dongle_request *) * sim->config.number_of_coders);
     if (!queue->heap)
         return (free(queue) , false);
     while (i < sim->config.number_of_coders)
@@ -52,6 +52,7 @@ bool ft_init_queue(t_simulation *sim)
             free(queue);
             return (false);
         }
+        queue->heap[i]->deadline = 0;
         i++;
     }
     queue->capacity = sim->config.number_of_coders;

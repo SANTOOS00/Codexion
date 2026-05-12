@@ -1,7 +1,7 @@
 NAME_PROGRAN = codexion
 CC = cc
 
-FLAGS = -pthread #-g3 -fsanitize=thread
+FLAGS = -pthread -g3 -fsanitize=thread
 
 SRC = init_or_clean_resource/queue.c\
 	  init_or_clean_resource/coder_crossing.c\
@@ -25,7 +25,8 @@ SRC = init_or_clean_resource/queue.c\
 	  threads_orchestrator.c\
 	  time_utils.c\
 	  exit_threads.c\
-	  controller.c
+	  controller.c\
+	  priority_queue.c
 
 
 OBG = $(SRC:.c=.o)

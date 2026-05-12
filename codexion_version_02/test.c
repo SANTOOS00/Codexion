@@ -31,7 +31,7 @@ void swap(t_heap **a, t_heap **b)
     *a = *b;
     *b = tmp;
 }
-
+    
 void heapifyDown(t_queue *q, int i)
 {
     while (1)
