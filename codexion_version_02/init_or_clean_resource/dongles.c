@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 19:04:20 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/10 17:19:08 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/13 09:08:31 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void init_dongles_state(t_dongle **dongles, t_config config)
 	{
 		dongles[i]->is_available = true;
 		dongles[i]->cooldown_time = config.dongle_cooldown;
+		dongles[i]->last_release_time = 0;
 		i++;
 	}
 }

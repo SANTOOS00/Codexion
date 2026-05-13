@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 17:20:51 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/12 20:11:16 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/13 09:08:42 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,29 +108,39 @@ void push_to_priority_queue(t_queue *q, t_coder *coder, t_scheduler scheduler)
 }
 
 
-bool is_dongle_left(t_dongle *dongle)
+bool try_take_dongle(t_dongle *dongle)
 {
-    bool is_valid;
+    bool success;
 
     pthread_mutex_lock(&dongle->m_cn_dongle.mutex);
-    is_valid = dongle->is_available;
+    if (!(get_time() - dongle->last_release_time >= dongle->cooldown_time))
+    {
+        pthread_mutex_unlock(&dongle->m_cn_dongle.mutex);
+        return (false);
+    }
+    success = dongle->is_available;
     pthread_mutex_unlock(&dongle->m_cn_dongle.mutex);
-    return (is_valid);
-}
-
-bool is_dongle_right(t_dongle *dongle)
-{
-    bool is_valid;
-
-    pthread_mutex_lock(&dongle->m_cn_dongle.mutex);
-    is_valid = dongle->is_available;
-    pthread_mutex_unlock(&dongle->m_cn_dongle.mutex);
-    return (is_valid);
+    return (success);
 }
 
 bool is_valid_dongl_left_right(t_coder *coder)
 {
-    return (is_dongle_left(coder->left_dongle) && is_dongle_right(coder->right_dongle));
+    
+    return (try_take_dongle(coder->left_dongle)
+             && try_take_dongle(coder->right_dongle));
+}
+
+void shift_queue_elements(t_queue *q)
+{
+    int i;
+
+    i = 1;
+    while (i < q->size)
+    {
+        q->heap[i - 1]->coder = q->heap[i]->coder;
+        q->heap[i - 1]->deadline = q->heap[i]->deadline;
+        i++;
+    }
 }
 
 t_coder *pop_queue(t_queue *q, t_scheduler scheduler)
@@ -148,11 +158,7 @@ t_coder *pop_queue(t_queue *q, t_scheduler scheduler)
     {
         coder = q->heap[0]->coder;
         pick_up_dongle(coder);
-        while (i < q->size) {
-            q->heap[i - 1]->coder = q->heap[i]->coder;
-            q->heap[i - 1]->deadline = q->heap[i]->deadline;
-            i++;
-        }
+        shift_queue_elements(q);
         q->size--;
     }
 

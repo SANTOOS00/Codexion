@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 16:15:36 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/12 20:28:46 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/12 20:39:10 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,6 @@ t_coder *pop_crossing(t_coder_crossing *cro)
     return (coder);
 }
 
-
-
-
 void add_crossing_to_queue(t_coder_crossing *cro, t_queue *q, t_scheduler scheduler)
 {
     t_coder *coder;
@@ -41,8 +38,6 @@ void add_crossing_to_queue(t_coder_crossing *cro, t_queue *q, t_scheduler schedu
         push_to_priority_queue(q, coder, scheduler);        
     }
 }
-
-
 
 void push_crossing(t_coder *coder)
 {

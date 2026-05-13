@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/06 03:42:54 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/12 20:19:29 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/12 20:39:27 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,5 @@ bool start_coders_in_simulation(t_simulation *sim)
 	sim->monitor_status = FINISHED_M;
 	pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
 	join_monitor(sim);
-	printf("finich monitor\n");
 	return (true);
 }

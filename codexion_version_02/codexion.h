@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/12 19:40:22 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/13 09:08:36 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ typedef struct s_dongle
 {
  	t_mutex_cond		m_cn_dongle;
 	bool				is_available;
-	int					cooldown_time;
+	long long			cooldown_time;
+	long long			last_release_time;
 }	t_dongle;
 
 
