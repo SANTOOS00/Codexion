@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 16:15:36 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/12 20:39:10 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/13 14:34:21 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void push_crossing(t_coder *coder)
     crossing = coder->crossing;
     pthread_mutex_lock(&crossing->mutex_crossing);
     crossing->heap[crossing->size] = coder;
+    
     crossing->size++;
     pthread_mutex_unlock(&crossing->mutex_crossing);
 }

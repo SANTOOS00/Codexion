@@ -6,13 +6,18 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:47:02 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/12 20:37:15 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/13 16:34:40 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../codexion.h"
 
-
+void clean_crossing(t_coder_crossing *crossing)
+{
+    pthread_mutex_destroy(&crossing->mutex_crossing);
+	free(crossing->heap);
+    free(crossing);
+}
 
 static void  free_2d_arrays(t_coder **heap, int size)
 {
@@ -24,12 +29,7 @@ static void  free_2d_arrays(t_coder **heap, int size)
 	free(heap);
 }
 
-void clean_crossing(t_coder_crossing *crossing)
-{
-    pthread_mutex_destroy(&crossing->mutex_crossing);
-	free(crossing->heap);
-    free(crossing);
-}
+
 
 t_coder_crossing *alloc_coder_crossing(int coders_number)
 {

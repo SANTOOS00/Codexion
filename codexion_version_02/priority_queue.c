@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 17:20:51 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/13 09:08:42 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/13 14:48:25 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,34 +52,7 @@ void heapify_up(t_queue *q, int index)
     }
 }
 
-// static t_dongle_request *init_queue(t_coder *coder, t_queue *q)
-// {
-//     t_dongle_request *req;
-//     long long time;
 
-//     time =  q->time_burnout + get_time();
-//     coder->deadline = time;
-//     req->coder = coder;
-//     req->deadline = time;
-//     return (req);
-// }
-
-
-// void push_to_priority_queue(t_queue *q, t_coder *coder, t_scheduler scheduler)
-// {
-        
-//     q->heap[q->size]->coder = coder;
-//     pthread_mutex_lock(&coder->mutex_cond.mutex);
-//     if(coder->status == START)
-//     {
-//         q->heap[q->size]->coder->deadline = get_time();
-//         q->heap[q->size]->deadline = coder->deadline;
-//     }
-//     pthread_mutex_unlock(&coder->mutex_cond.mutex);    
-//     if (scheduler == EDF)
-//         heapify_up(q, q->size);
-//     q->size++;
-// }
 
 void push_to_priority_queue(t_queue *q, t_coder *coder, t_scheduler scheduler)
 {
@@ -92,11 +65,11 @@ void push_to_priority_queue(t_queue *q, t_coder *coder, t_scheduler scheduler)
     }
 
     q->heap[q->size]->coder = coder;
-    
+    q->heap[q->size]->deadline = coder->deadline;
     pthread_mutex_lock(&coder->mutex_cond.mutex);
     if(coder->status == START)
     {
-        coder->deadline = get_time();
+        coder->deadline = q->time_burnout + get_time();
         q->heap[q->size]->deadline = coder->deadline;
     }
     pthread_mutex_unlock(&coder->mutex_cond.mutex);    
@@ -165,3 +138,36 @@ t_coder *pop_queue(t_queue *q, t_scheduler scheduler)
     pthread_mutex_unlock(&q->mutex_queue);
     return (coder);
 }
+
+
+
+
+
+// static t_dongle_request *init_queue(t_coder *coder, t_queue *q)
+// {
+//     t_dongle_request *req;
+//     long long time;
+
+//     time =  q->time_burnout + get_time();
+//     coder->deadline = time;
+//     req->coder = coder;
+//     req->deadline = time;
+//     return (req);
+// }
+
+
+// void push_to_priority_queue(t_queue *q, t_coder *coder, t_scheduler scheduler)
+// {
+        
+//     q->heap[q->size]->coder = coder;
+//     pthread_mutex_lock(&coder->mutex_cond.mutex);
+//     if(coder->status == START)
+//     {
+//         q->heap[q->size]->coder->deadline = get_time();
+//         q->heap[q->size]->deadline = coder->deadline;
+//     }
+//     pthread_mutex_unlock(&coder->mutex_cond.mutex);    
+//     if (scheduler == EDF)
+//         heapify_up(q, q->size);
+//     q->size++;
+// }

@@ -6,17 +6,11 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/05 04:06:08 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/10 17:19:13 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/13 16:32:00 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../codexion.h"
-
-void destory_mutex_cond(t_mutex_cond *mutex_cond)
-{
-	pthread_mutex_destroy(&mutex_cond->mutex);
-	pthread_cond_destroy(&mutex_cond->cond);
-}
 
 bool init_mutex_cond(t_mutex_cond *mutex_cond)
 {
