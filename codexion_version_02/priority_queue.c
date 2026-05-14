@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 17:20:51 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/14 16:37:01 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/14 20:23:00 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ bool try_take_dongle(t_dongle *dongle)
 
 bool is_valid_dongl_left_right(t_coder *coder)
 {
-    
     return (try_take_dongle(coder->left_dongle)
              && try_take_dongle(coder->right_dongle));
 }
@@ -125,49 +124,23 @@ t_coder *pop_queue(t_queue *q, t_scheduler scheduler)
     if (q->size == 0) {
         pthread_mutex_unlock(&q->mutex_queue);
         return (NULL);
-    }
-
-    if (scheduler == FIFO && is_valid_dongl_left_right(q->heap[0]->coder))
-    {
-        coder = q->heap[0]->coder;
-        pick_up_dongle(coder);
-        shift_queue_elements(q);
-        q->size--;
-    }
+    }    
+    coder = q->heap[0]->coder;
 
     pthread_mutex_unlock(&q->mutex_queue);
+    if (scheduler == FIFO)
+    {
+        if (!is_valid_dongl_left_right(q->heap[0]->coder))
+            return (NULL);
+            
+        pick_up_dongle(coder);
+        pthread_mutex_unlock(&q->mutex_queue);
+
+        shift_queue_elements(q);
+        q->size--;
+
+        pthread_mutex_unlock(&q->mutex_queue);
+    }
+
     return (coder);
 }
-
-
-
-
-
-// static t_dongle_request *init_queue(t_coder *coder, t_queue *q)
-// {
-//     t_dongle_request *req;
-//     long long time;
-
-//     time =  q->time_burnout + get_time();
-//     coder->deadline = time;
-//     req->coder = coder;
-//     req->deadline = time;
-//     return (req);
-// }
-
-
-// void push_to_priority_queue(t_queue *q, t_coder *coder, t_scheduler scheduler)
-// {
-        
-//     q->heap[q->size]->coder = coder;
-//     pthread_mutex_lock(&coder->mutex_cond.mutex);
-//     if(coder->status == START)
-//     {
-//         q->heap[q->size]->coder->deadline = get_time();
-//         q->heap[q->size]->deadline = coder->deadline;
-//     }
-//     pthread_mutex_unlock(&coder->mutex_cond.mutex);    
-//     if (scheduler == EDF)
-//         heapify_up(q, q->size);
-//     q->size++;
-// }

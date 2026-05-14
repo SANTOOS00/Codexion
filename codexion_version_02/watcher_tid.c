@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 16:17:56 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/14 16:38:02 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/14 20:06:52 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,25 @@ void exit_coders(t_coder **coders, int size)
 {
     int i;
 
-    
+    i = 0;
+    while(i < size)
+    {
+        pthread_mutex_lock(&coders[i]->mutex_cond.mutex);
+        coders[i]->status = ERROR;
+        coders[i]->has_dongle = true;
+        pthread_cond_broadcast(&coders[i]->mutex_cond.cond);
+        pthread_mutex_unlock(&coders[i]->mutex_cond.mutex);  
+        i++;
+    }
 }
 
-void test(t_simulation *sim)
+void check_burned_out(t_simulation *sim)
 {
     int i;
     int size;
     long long time_coder;
     int id;
+    long long time_new;
 
     pthread_mutex_lock(&sim->coders_cnt_lock.mutex);
     size = sim->config.number_of_coders;
@@ -35,6 +45,7 @@ void test(t_simulation *sim)
     while (true)
     {
         pthread_mutex_lock(&sim->watch_lock.mutex);
+        time_new = get_time_start_end(sim);
         if (sim->watch_status == FINISHED_W)
         {
             pthread_mutex_unlock(&sim->watch_lock.mutex);
@@ -48,21 +59,11 @@ void test(t_simulation *sim)
 
         if (time_coder != 0 && get_time() > time_coder)
         {
-            printf("\nburnout ok coder id %d time get %lld, time _coder %lld\n\n", id, get_time(), time_coder);
+            printf("%lld %d burned out\n", time_new, id);
             pthread_mutex_lock(&sim->burnout_mutex);
             sim->is_burnout = true;
             pthread_mutex_unlock(&sim->burnout_mutex);
-            i = 0;
-            while(i < size)
-            {
-                pthread_mutex_lock(&sim->coders[i]->mutex_cond.mutex);
-                sim->coders[i]->status = ERROR;
-                sim->coders[i]->has_dongle = true;
-                pthread_cond_broadcast(&sim->coders[i]->mutex_cond.cond);
-                pthread_mutex_unlock(&sim->coders[i]->mutex_cond.mutex);  
-                i++;
-            }
-            // exit_coders(sim->coders, size);
+            exit_coders(sim->coders, size);
             break;
         }
         i++;
@@ -71,17 +72,7 @@ void test(t_simulation *sim)
             i = 0;
             usleep(1000);
         }
-        
-        // pthread_mutex_lock(&sim->queue->mutex_queue);
-        // if (sim->queue->size == 0)
-        // {
-        //     pthread_mutex_unlock(&sim->queue->mutex_queue);
-        //     break;
-        // }
-        // pthread_mutex_unlock(&sim->queue->mutex_queue);
     }
-   
-    // stop_coder(sim->queue, sim->crossing);
 }
 
 void *watcher_tid_routine(void *arg)
@@ -95,7 +86,6 @@ void *watcher_tid_routine(void *arg)
 	if (sim->watch_status == ERROR_W)
 		return (NULL);
 	pthread_mutex_unlock(&sim->watch_lock.mutex);
-    test(sim);
-    printf("finich test\n");
+    check_burned_out(sim);
 	return (NULL);
 }

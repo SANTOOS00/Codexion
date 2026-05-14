@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:46:14 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/13 16:50:47 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/14 20:07:36 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void exit_watcher_tid(t_simulation *sim)
 	sim->watch_status = ERROR_W;
 	pthread_cond_broadcast(&sim->watch_lock.cond);
 	pthread_mutex_unlock(&sim->watch_lock.mutex);
+	join_watcher_tid(sim);
 }
 
 void exit_thread(t_simulation *sim, int size_threads_create)

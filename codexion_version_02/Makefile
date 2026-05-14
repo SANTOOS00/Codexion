@@ -1,8 +1,9 @@
 NAME_PROGRAN = codexion
 CC = cc
 
-FLAGS = -pthread -fsanitize=thread
-
+FLAGS = -pthread #-g3 -o2 -fsanitize=thread
+#valgrind --leak-check=full --track-origins=yes --verbose --num-callers=20
+#valgrind --tool=helgrind --verbose --num-callers=20 ./codexion
 SRC = init_or_clean_resource/queue.c\
 	  init_or_clean_resource/coder_crossing.c\
 	  init_or_clean_resource/init_simulation.c \
@@ -45,3 +46,5 @@ clean:
 
 fclean: clean
 	rm -f $(NAME_PROGRAN)
+
+re: fclean all
