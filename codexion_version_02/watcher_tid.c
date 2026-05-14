@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 16:17:56 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/14 20:06:52 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/14 21:08:54 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,10 @@ void *watcher_tid_routine(void *arg)
 	while (!sim->is_watch_waiting)
 		pthread_cond_wait(&sim->watch_lock.cond, &sim->watch_lock.mutex);
 	if (sim->watch_status == ERROR_W)
+    {
+        pthread_mutex_unlock(&sim->watch_lock.mutex);
 		return (NULL);
+    }
 	pthread_mutex_unlock(&sim->watch_lock.mutex);
     check_burned_out(sim);
 	return (NULL);

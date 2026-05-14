@@ -1,7 +1,7 @@
 NAME_PROGRAN = codexion
 CC = cc
 
-FLAGS = -pthread #-g3 -o2 -fsanitize=thread
+FLAGS = -pthread -g3# -o2 -fsanitize=thread
 #valgrind --leak-check=full --track-origins=yes --verbose --num-callers=20
 #valgrind --tool=helgrind --verbose --num-callers=20 ./codexion
 SRC = init_or_clean_resource/queue.c\

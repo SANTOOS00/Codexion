@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/06 03:37:59 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/13 16:48:24 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/14 21:21:26 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,13 @@ void *monitor_routine(void *arg)
 
 	sim = (t_simulation *)arg;
 	pthread_mutex_lock(&sim->coders_cnt_lock.mutex);
-	while (sim->run_coders_counter != sim->config.number_of_coders || sim->monitor_status == ERROR_M)
+	while (sim->run_coders_counter != sim->config.number_of_coders && sim->monitor_status != ERROR_M)
 		pthread_cond_wait(&sim->coders_cnt_lock.cond, &sim->coders_cnt_lock.mutex);
 	if (sim->monitor_status == ERROR_M)
+	{
+		pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
 		return (NULL);
+	}
 	pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
 	initiate_crossing_logic(sim);
 	return (NULL);
@@ -31,11 +34,13 @@ void *monitor_routine(void *arg)
 void join_monitor(t_simulation *sim)
 {
 	pthread_join(sim->monitor_tid, NULL);
+	printf("error\n");
 }
 
 void join_watcher_tid(t_simulation *sim)
 {
 	pthread_join(sim->watcher_tid, NULL);
+	printf("error\n");
 }
 
 bool run_monitor_simulation(t_simulation *sim)

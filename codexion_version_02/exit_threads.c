@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:46:14 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/14 20:07:36 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/14 21:12:25 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void exit_monitor_tid(t_simulation *sim)
 {
 	pthread_mutex_lock(&sim->coders_cnt_lock.mutex);
 	sim->monitor_status = ERROR_M;
+	sim->is_watch_waiting = true;
 	pthread_cond_broadcast(&sim->coders_cnt_lock.cond);
 	pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
 	join_monitor(sim);
@@ -40,10 +41,11 @@ void exit_thread(t_simulation *sim, int size_threads_create)
 	i = 0;
 	while(i < size_threads_create)
 	{
-		pthread_mutex_lock(&sim->coders[i]->coders_cnt_lock->mutex);
+		pthread_mutex_lock(&sim->coders[i]->mutex_cond.mutex);
+		sim->coders[i]->has_dongle = true;
 		sim->coders[i]->status = ERROR;
-		pthread_cond_broadcast(&sim->coders[i]->coders_cnt_lock->cond);
-		pthread_mutex_unlock(&sim->coders[i]->coders_cnt_lock->mutex);
+		pthread_cond_broadcast(&sim->coders[i]->mutex_cond.cond);
+		pthread_mutex_unlock(&sim->coders[i]->mutex_cond.mutex);
 		i++;
 	}
 	join_coders(sim, size_threads_create);

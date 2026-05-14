@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/06 03:50:54 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/14 16:24:56 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/14 21:21:34 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void works_coders_threads(t_coder *coder)
 	{
 		enqueue_coder_request(coder);
 		if (get_status_coder(coder) == ERROR)
-			break;
+			return;
 		execute_coding_cycle(coder);
 	}
 }

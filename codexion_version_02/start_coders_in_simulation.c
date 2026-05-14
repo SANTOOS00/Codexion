@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/06 03:42:54 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/14 20:09:59 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/14 21:21:50 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void join_coders(t_simulation *sim, int number_coder_create)
 	int i;
 
 	i = 0;
-	while(i < number_coder_create)
+	while(i < number_coder_create )
 		pthread_join(sim->coders[i++]->thread, NULL);
 }
 
@@ -58,14 +58,16 @@ void join_threads(t_simulation *sim)
 bool start_coders_in_simulation(t_simulation *sim)
 {
 	int i;
+	int ret;
 
 	i = 0;
 	while (i < sim->config.number_of_coders)
 	{
-		if (pthread_create(&sim->coders[i]->thread, NULL, coders_routine, sim->coders[i]) != 0)
+		if ((ret = pthread_create(&sim->coders[i]->thread, NULL, coders_routine, sim->coders[i])))
 		{
-			exit_monitor_tid(sim);
+			fprintf(stderr, "Error: pthread_create failed: %s\n", strerror(ret));
 			exit_watcher_tid(sim);
+			exit_monitor_tid(sim);
 			exit_thread(sim, i);
 			return (false);
 		}
