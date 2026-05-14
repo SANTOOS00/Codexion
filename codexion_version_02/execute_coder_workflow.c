@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/06 03:50:54 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/13 15:25:36 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/14 11:58:22 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,11 @@ void works_coders_threads(t_coder *coder)
 	while(!get_is_burnout_monitor(coder->sim) && get_stataus_coder(coder) != FINISHED && get_stataus_coder(coder) != ERROR)
 	{
 		enqueue_coder_request(coder);
+		if (get_stataus_coder(coder) == ERROR)
+			break;
 		execute_coding_cycle(coder);
 	}
 }
-
 bool execute_coder_workflow(t_coder *coder)
 {
 	works_coders_threads(coder);

@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/13 17:00:27 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/14 11:16:08 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ typedef struct s_coder
 	t_coder_status 		status;
 	t_mutex_cond 		mutex_cond;	
 		
-	t_coder_crossing 	*crossing;
+	t_coder_crossing 	*crossing;	
 	t_simulation		*sim;
 }	t_coder;
 
@@ -265,3 +265,11 @@ void        clean_coders(t_coder **coders, int size);
 void        free_2d_array(void **arr, int size);
 void        clean_resource(t_simulation *simulation);
 void		destroy_mutex_cond_coders(t_coder **coders,int size);
+
+
+
+
+
+void ft_refactoring_coder(t_coder *coder);
+void ft_compiling_coder(t_coder *coder);
+void ft_debugging_coder(t_coder *coder);

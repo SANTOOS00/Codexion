@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:30:25 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/13 14:46:25 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/14 11:53:39 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,5 @@ void    run_fifo_routine(t_simulation *sim)
         }
         pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
     }
+    printf("finich test\n");
 }

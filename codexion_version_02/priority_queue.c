@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 17:20:51 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/13 14:48:25 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/13 19:24:57 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ void push_to_priority_queue(t_queue *q, t_coder *coder, t_scheduler scheduler)
         return;
     }
 
+    pthread_mutex_lock(&coder->mutex_cond.mutex);
     q->heap[q->size]->coder = coder;
     q->heap[q->size]->deadline = coder->deadline;
-    pthread_mutex_lock(&coder->mutex_cond.mutex);
     if(coder->status == START)
     {
         coder->deadline = q->time_burnout + get_time();

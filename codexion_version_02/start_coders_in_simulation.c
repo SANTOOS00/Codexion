@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/06 03:42:54 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/13 16:50:23 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/14 12:05:15 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,14 @@
 
 
 
-void finich_monitor(t_simulation *sim)
+void finich_monitor_watcher(t_simulation *sim)
 {
 	pthread_mutex_lock(&sim->coders_cnt_lock.mutex);
 	sim->monitor_status = FINISHED_M;
 	pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
+	pthread_mutex_lock(&sim->watch_lock.mutex);
+	sim->watch_status = FINISHED_W;
+	pthread_mutex_unlock(&sim->watch_lock.mutex);
 }
 
 void *coders_routine(void *arg)
@@ -62,8 +65,9 @@ bool start_coders_in_simulation(t_simulation *sim)
 
 	}
 	join_coders(sim, sim->config.number_of_coders);
-	finich_monitor(sim);
-	join_monitor(sim);
+	finich_monitor_watcher(sim);
+	
 	join_watcher_tid(sim);
+	join_monitor(sim);
 	return (true);
 }
