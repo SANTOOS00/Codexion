@@ -19,7 +19,7 @@ void *monitor_routine(void *arg)
 
 	sim = (t_simulation *)arg;
 	pthread_mutex_lock(&sim->coders_cnt_lock.mutex);
-	while (sim->run_coders_counter != sim->config.number_of_coders && sim->monitor_status != ERROR_M)
+	while (sim->run_coders_counter != sim->config.number_of_coders)
 		pthread_cond_wait(&sim->coders_cnt_lock.cond, &sim->coders_cnt_lock.mutex);
 	if (sim->monitor_status == ERROR_M)
 	{
@@ -34,13 +34,11 @@ void *monitor_routine(void *arg)
 void join_monitor(t_simulation *sim)
 {
 	pthread_join(sim->monitor_tid, NULL);
-	printf("error\n");
 }
 
 void join_watcher_tid(t_simulation *sim)
 {
 	pthread_join(sim->watcher_tid, NULL);
-	printf("error\n");
 }
 
 bool run_monitor_simulation(t_simulation *sim)

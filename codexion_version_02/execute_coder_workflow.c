@@ -32,23 +32,15 @@ void enqueue_coder_request(t_coder *coder)
     while (!coder->has_dongle)
 		pthread_cond_wait(&coder->mutex_cond.cond, &coder->mutex_cond.mutex);
     pthread_mutex_unlock(&coder->mutex_cond.mutex);
-	if(get_status_coder(coder) == ERROR)
-		return ;
 }
 
-void works_coders_threads(t_coder *coder)
-{
-	
-	while(!get_is_burnout_monitor(coder->sim) && get_status_coder(coder) != FINISHED && get_status_coder(coder) != ERROR)
-	{
-		enqueue_coder_request(coder);
-		if (get_status_coder(coder) == ERROR)
-			return;
-		execute_coding_cycle(coder);
-	}
-}
 bool execute_coder_workflow(t_coder *coder)
 {
-	works_coders_threads(coder);
+	enqueue_coder_request(coder);
+	while(!get_is_burnout_monitor(coder->sim) && get_status_coder(coder) != FINISHED && get_status_coder(coder) != ERROR)
+	{
+		execute_coding_cycle(coder);
+		enqueue_coder_request(coder);
+	}
 	return (true);
 }

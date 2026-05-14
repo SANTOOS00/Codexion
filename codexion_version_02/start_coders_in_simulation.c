@@ -35,6 +35,7 @@ void *coders_routine(void *arg)
 	pthread_mutex_unlock(&coder->coders_cnt_lock->mutex);
 
 	execute_coder_workflow(coder);
+
 	return (NULL);
 }
 
@@ -43,7 +44,8 @@ void join_coders(t_simulation *sim, int number_coder_create)
 	int i;
 
 	i = 0;
-	while(i < number_coder_create )
+
+	while(i < number_coder_create)
 		pthread_join(sim->coders[i++]->thread, NULL);
 }
 
@@ -65,7 +67,7 @@ bool start_coders_in_simulation(t_simulation *sim)
 	{
 		if ((ret = pthread_create(&sim->coders[i]->thread, NULL, coders_routine, sim->coders[i])))
 		{
-			fprintf(stderr, "Error: pthread_create failed: %s\n", strerror(ret));
+			fprintf(stderr, "Error: pthread_create failed: %s \nid coder failed %d\n", strerror(ret), i);
 			exit_watcher_tid(sim);
 			exit_monitor_tid(sim);
 			exit_thread(sim, i);
