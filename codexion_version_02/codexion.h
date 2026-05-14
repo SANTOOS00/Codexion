@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/14 11:16:08 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/14 16:28:41 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ typedef struct s_config
 {
 	int					number_of_coders;
 	long long			time_to_burnout;
-	int					time_to_compile;
-	int					time_to_debug;
-	int					time_to_refactor;
+	long long			time_to_compile;
+	long long			time_to_debug;
+	long long			time_to_refactor;
 	int					number_of_compiles_required;
 	long long			dongle_cooldown;
 	t_scheduler			scheduler;
@@ -232,7 +232,7 @@ void        add_crossing_to_queue(t_coder_crossing *cro, t_queue *q, t_scheduler
 void        push_to_priority_queue(t_queue *q, t_coder *coder, t_scheduler sch);
 t_coder     *pop_queue(t_queue *q, t_scheduler scheduler);
 
-t_coder_status  get_stataus_coder(t_coder *coder);
+t_coder_status  get_status_coder(t_coder *coder);
 bool            get_is_burnout_monitor(t_simulation *sim);
 
 

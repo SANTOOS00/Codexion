@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 16:17:56 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/14 12:07:23 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/14 16:38:02 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,13 @@ void exit_coders(t_coder **coders, int size)
 {
     int i;
 
-    i = 0;
-    while(i < size)
-    {
-        pthread_mutex_lock(&coders[i]->mutex_cond.mutex);
-        coders[i]->status = ERROR;
-        coders[i]->has_dongle = true;
-        pthread_cond_broadcast(&coders[i]->mutex_cond.cond);
-        pthread_mutex_unlock(&coders[i]->mutex_cond.mutex);  
-        i++;
-    }
+    
 }
 
 void test(t_simulation *sim)
 {
     int i;
-    int size = 10;
+    int size;
     long long time_coder;
     int id;
 
@@ -44,7 +35,7 @@ void test(t_simulation *sim)
     while (true)
     {
         pthread_mutex_lock(&sim->watch_lock.mutex);
-        if (sim->monitor_status == FINISHED_W)
+        if (sim->watch_status == FINISHED_W)
         {
             pthread_mutex_unlock(&sim->watch_lock.mutex);
             break;   
@@ -61,7 +52,17 @@ void test(t_simulation *sim)
             pthread_mutex_lock(&sim->burnout_mutex);
             sim->is_burnout = true;
             pthread_mutex_unlock(&sim->burnout_mutex);
-            exit_coders(sim->coders, size);
+            i = 0;
+            while(i < size)
+            {
+                pthread_mutex_lock(&sim->coders[i]->mutex_cond.mutex);
+                sim->coders[i]->status = ERROR;
+                sim->coders[i]->has_dongle = true;
+                pthread_cond_broadcast(&sim->coders[i]->mutex_cond.cond);
+                pthread_mutex_unlock(&sim->coders[i]->mutex_cond.mutex);  
+                i++;
+            }
+            // exit_coders(sim->coders, size);
             break;
         }
         i++;
