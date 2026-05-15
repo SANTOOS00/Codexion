@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/06 03:50:54 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/14 21:21:34 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/15 21:05:13 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ void enqueue_coder_request(t_coder *coder)
 
 bool execute_coder_workflow(t_coder *coder)
 {
-	enqueue_coder_request(coder);
-	while(!get_is_burnout_monitor(coder->sim) && get_status_coder(coder) != FINISHED && get_status_coder(coder) != ERROR)
+	// enqueue_coder_request(coder);
+	while(get_status_coder(coder) != FINISHED && get_status_coder(coder) != ERROR)
 	{
-		execute_coding_cycle(coder);
 		enqueue_coder_request(coder);
+		execute_coding_cycle(coder);
 	}
 	return (true);
 }

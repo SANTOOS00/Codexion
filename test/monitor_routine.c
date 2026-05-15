@@ -1,38 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   controller.c                                       :+:      :+:    :+:   */
+/*   monitor_routine.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/12 15:58:46 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/15 21:12:13 by moerrais         ###   ########.fr       */
+/*   Created: 2026/05/15 22:21:10 by moerrais          #+#    #+#             */
+/*   Updated: 2026/05/15 22:51:24 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-
-
-void run_watch(t_simulation *sim)
+void activate_watcher(t_simulation *sim)
 {
     pthread_mutex_lock(&sim->watch_lock.mutex);
     sim->is_watch_waiting = true;
-    pthread_cond_broadcast(&sim->watch_lock.cond);
-	pthread_mutex_unlock(&sim->watch_lock.mutex);
-
+    pthread_cond_broadcast(&sim->watch_lock.cond);    
+    pthread_mutex_unlock(&sim->watch_lock.mutex);
 }
 
-void run_start_coders(t_simulation *sim)
+void activate_coders(t_simulation *sim)
 {
     int i;
-    int size;
 
-    pthread_mutex_lock(&sim->coders_cnt_lock.mutex);
-    size = sim->config.number_of_coders;
-    pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
     i = 0;
-    while (i < size)
+    while(i < sim->config.number_of_coders)
     {
         pthread_mutex_lock(&sim->coders[i]->mutex_cond.mutex);
         sim->coders[i]->has_dongle = true;
@@ -40,18 +33,23 @@ void run_start_coders(t_simulation *sim)
         pthread_mutex_unlock(&sim->coders[i]->mutex_cond.mutex);
         i++;
     }
-    
 }
 
-void initiate_crossing_logic(t_simulation *sim)
+void *monitor_routine(void *arg)
 {
-    run_start_coders(sim);
-    run_watch(sim);
-    pthread_mutex_lock(&sim->coders_cnt_lock.mutex);
-    sim->time_start = get_time();
-    pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
-    if (sim->config.scheduler == FIFO)
-        run_fifo_routine(sim);
-    if (sim->config.scheduler == EDF)
-        run_edf_routine(sim);
+	t_simulation *sim;
+
+	sim = (t_simulation *)arg;
+	pthread_mutex_lock(&sim->coders_cnt_lock.mutex);
+	while (sim->run_coders_counter != sim->config.number_of_coders)
+		pthread_cond_wait(&sim->coders_cnt_lock.cond, &sim->coders_cnt_lock.mutex);
+	if (sim->monitor_status == ERROR_M)
+	{
+		pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
+		return (NULL);
+	}
+	pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
+    activate_coders(sim);
+    activate_watcher(sim);
+	return (NULL);
 }

@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   threads_orchestrator.c                             :+:      :+:    :+:   */
+/*   free_2d_array.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/05 22:11:10 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/15 21:20:15 by moerrais         ###   ########.fr       */
+/*   Created: 2026/05/04 19:18:41 by moerrais          #+#    #+#             */
+/*   Updated: 2026/05/10 17:23:53 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "codexion.h"
+#include "../codexion.h"
 
-bool start_simulation(t_simulation *sim)
+void free_2d_array(void **arr, int size)
 {
-	if (run_monitor_simulation(sim) == false)	
-		return (clean_resource(sim), false);
-	if (start_coders_in_simulation(sim) == false)
-		return (clean_resource(sim), false);	
-	return (true);
-		
+	int i;
+
+	i = 0;
+	while(i < size)
+		free(arr[i++]);
+	free(arr);
 }

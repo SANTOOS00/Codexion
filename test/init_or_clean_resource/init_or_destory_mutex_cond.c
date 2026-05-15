@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   threads_orchestrator.c                             :+:      :+:    :+:   */
+/*   init_or_destory_mutex_cond.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/05 22:11:10 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/15 21:20:15 by moerrais         ###   ########.fr       */
+/*   Created: 2026/05/05 04:06:08 by moerrais          #+#    #+#             */
+/*   Updated: 2026/05/13 16:32:00 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "codexion.h"
+#include "../codexion.h"
 
-bool start_simulation(t_simulation *sim)
+bool init_mutex_cond(t_mutex_cond *mutex_cond)
 {
-	if (run_monitor_simulation(sim) == false)	
-		return (clean_resource(sim), false);
-	if (start_coders_in_simulation(sim) == false)
-		return (clean_resource(sim), false);	
+	if (pthread_mutex_init(&mutex_cond->mutex, NULL) != 0)
+		return (false);
+	if (pthread_cond_init(&mutex_cond->cond, NULL) != 0)
+	{
+		pthread_mutex_destroy(&mutex_cond->mutex);
+		return (false);
+	}
 	return (true);
-		
 }

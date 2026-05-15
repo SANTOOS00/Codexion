@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:30:25 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/14 20:18:09 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/15 21:03:08 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,11 @@ void    run_fifo_routine(t_simulation *sim)
 {
     t_coder *coder;
     long long time_to_burnout;
-    while (1)
+
+    while (check_status_monitor(sim) != FINISHED_M)
     {
+        if (check_burnout(sim))
+            break;
         pthread_mutex_lock(&sim->crossing->mutex_crossing);
         if (sim->crossing->size)
             add_crossing_to_queue(sim->crossing, sim->queue, FIFO);
@@ -61,7 +64,5 @@ void    run_fifo_routine(t_simulation *sim)
         }        
         else
             usleep(1000);
-        if (check_status_monitor(sim) == FINISHED_M || check_burnout(sim))
-            break;
     }
 }

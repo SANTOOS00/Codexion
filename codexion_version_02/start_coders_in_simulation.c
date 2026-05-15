@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/06 03:42:54 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/14 21:21:50 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/15 21:10:10 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,11 @@ void *coders_routine(void *arg)
 	pthread_cond_broadcast(&coder->coders_cnt_lock->cond);
 	pthread_mutex_unlock(&coder->coders_cnt_lock->mutex);
 
+	pthread_mutex_lock(&coder->mutex_cond.mutex);
+	coder->has_dongle = false;
+    while (!coder->has_dongle)
+		pthread_cond_wait(&coder->mutex_cond.cond, &coder->mutex_cond.mutex);
+    pthread_mutex_unlock(&coder->mutex_cond.mutex);
 	execute_coder_workflow(coder);
 
 	return (NULL);

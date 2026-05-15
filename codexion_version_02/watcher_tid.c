@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 16:17:56 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/14 21:08:54 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/15 21:02:26 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void exit_coders(t_coder **coders, int size)
     int i;
 
     i = 0;
+    usleep(1000);
     while(i < size)
     {
         pthread_mutex_lock(&coders[i]->mutex_cond.mutex);
@@ -55,9 +56,10 @@ void check_burned_out(t_simulation *sim)
         pthread_mutex_lock(&sim->coders[i]->mutex_cond.mutex);
         time_coder = sim->coders[i]->deadline;
         id = sim->coders[i]->id;
+        t_coder_status s = sim->coders[i]->status;
         pthread_mutex_unlock(&sim->coders[i]->mutex_cond.mutex);
 
-        if (time_coder != 0 && get_time() > time_coder)
+        if (time_coder != 0 && get_time() > time_coder && s != FINISHED)
         {
             printf("%lld %d burned out\n", time_new, id);
             pthread_mutex_lock(&sim->burnout_mutex);
@@ -70,7 +72,7 @@ void check_burned_out(t_simulation *sim)
         if (i == size)
         {
             i = 0;
-            usleep(1000);
+            usleep(500);
         }
     }
 }

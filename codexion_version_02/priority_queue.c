@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 17:20:51 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/14 20:23:00 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/15 19:13:52 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,20 +127,19 @@ t_coder *pop_queue(t_queue *q, t_scheduler scheduler)
     }    
     coder = q->heap[0]->coder;
 
-    pthread_mutex_unlock(&q->mutex_queue);
     if (scheduler == FIFO)
     {
         if (!is_valid_dongl_left_right(q->heap[0]->coder))
+        {
+            pthread_mutex_unlock(&q->mutex_queue);
             return (NULL);
+        }
             
         pick_up_dongle(coder);
-        pthread_mutex_unlock(&q->mutex_queue);
-
         shift_queue_elements(q);
         q->size--;
-
-        pthread_mutex_unlock(&q->mutex_queue);
     }
+    pthread_mutex_unlock(&q->mutex_queue);
 
     return (coder);
 }
