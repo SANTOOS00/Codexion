@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/05 04:05:58 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/16 13:56:31 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/16 16:02:50 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,17 @@ void destroy_mutex_cond(t_mutex_cond *mutex_cond)
 }
 
 
+void destroy_mutex_prints(t_simulation *sim)
+{
+	pthread_mutex_destroy(&sim->mutex_print);
+} 
+
 void clean_mutex_cond_simulation(t_simulation *simulation)
 {
 	pthread_mutex_destroy(&simulation->burnout_mutex);
 	destroy_mutex_cond(&simulation->coders_cnt_lock);
 	destroy_mutex_cond(&simulation->watch_lock);
+	destroy_mutex_prints(simulation);
 }
 
 

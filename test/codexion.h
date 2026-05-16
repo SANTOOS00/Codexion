@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/16 14:36:11 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/16 16:09:23 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ typedef struct s_coder
 	t_coder_status 		status;
 	t_mutex_cond 		mutex_cond;	
 		
-	t_queue_normal 	*queue_normal;	
+	t_queue_normal 		*queue_normal;	
 	t_simulation		*sim;
 }	t_coder;
 
@@ -149,7 +149,7 @@ typedef struct s_simulation
     pthread_t           monitor_tid;
     pthread_t           watcher_tid;
 
-
+	pthread_mutex_t		mutex_print;
     t_config            config; 
     long long           time_start;
 
@@ -275,7 +275,7 @@ void		destroy_mutex_cond_coders(t_coder **coders,int size);
 
 
 
-
+void print_coder_action(t_coder *coder, char *action);
 
 
 /// routine threads coder and monitor and watcher

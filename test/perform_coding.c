@@ -6,17 +6,24 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 10:37:14 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/16 12:50:11 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/16 16:09:53 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
+void print_coder_action(t_coder *coder, char *action)
+{
+    pthread_mutex_lock(&coder->sim->mutex_print);
+    printf("%lld %d %s\n", get_time_start_end(coder->sim), coder->id, action);    
+    pthread_mutex_unlock(&coder->sim->mutex_print);    
+}
+
 void ft_compiling_coder(t_coder *coder)
 {
     pthread_mutex_lock(&coder->mutex_cond.mutex);
 	coder->compilation_count++;
-    printf("%lld %d is compiling\n", get_time_start_end(coder->sim), coder->id);
+    print_coder_action(coder, "is compiling");
     usleep(coder->sim->config.time_to_compile * 1000);    
     pthread_mutex_unlock(&coder->mutex_cond.mutex);
 }
@@ -24,7 +31,7 @@ void ft_compiling_coder(t_coder *coder)
 void ft_debugging_coder(t_coder *coder)
 {
     pthread_mutex_lock(&coder->mutex_cond.mutex);
-    printf("%lld %d is debugging\n", get_time_start_end(coder->sim), coder->id);
+    print_coder_action(coder, "is debugging");
     usleep(coder->config->time_to_debug * 1000);
     pthread_mutex_unlock(&coder->mutex_cond.mutex);
 }
@@ -32,7 +39,7 @@ void ft_debugging_coder(t_coder *coder)
 void ft_refactoring_coder(t_coder *coder)
 {
     pthread_mutex_lock(&coder->mutex_cond.mutex);
-    printf("%lld %d is refactoring\n", get_time_start_end(coder->sim), coder->id);
+    print_coder_action(coder, "is refactoring");
     usleep(coder->config->time_to_refactor * 1000);
     pthread_mutex_unlock(&coder->mutex_cond.mutex);
 }

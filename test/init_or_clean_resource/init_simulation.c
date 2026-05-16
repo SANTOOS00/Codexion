@@ -6,12 +6,18 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 18:59:05 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/16 13:55:34 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/16 16:02:39 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../codexion.h"
 
+bool init_mutex_prints(t_simulation *sim)
+{
+	if (pthread_mutex_init(&sim->mutex_print, NULL) != 0)
+		return (false);
+	return (true);
+}
 
 void reset_simulation_vars(t_simulation *sim)
 {
@@ -42,7 +48,14 @@ bool ft_set_simulation_intial_state(int argc, char **argv, t_simulation *simulat
 		destroy_mutex_cond(&simulation->coders_cnt_lock);
 		destroy_mutex_cond(&simulation->watch_lock);
 		return (false);
-	}	
+	}
+	if (init_mutex_prints(simulation) == false)
+	{
+		destroy_mutex_cond(&simulation->coders_cnt_lock);
+		destroy_mutex_cond(&simulation->watch_lock);
+		pthread_mutex_destroy(&simulation->burnout_mutex);
+		return(false);
+	}
 	return (true);
 }
 
