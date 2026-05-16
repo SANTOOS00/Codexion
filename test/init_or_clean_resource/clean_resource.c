@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/05 04:05:58 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/13 16:34:38 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/16 13:56:31 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,6 @@ void clean_resource(t_simulation *simulation)
 	clean_dongles(simulation->dongles, simulation->config.number_of_coders);
 	clean_coders(simulation->coders, simulation->config.number_of_coders);
 	clean_queue(simulation->queue);
-	clean_crossing(simulation->crossing);
+	clean_queue_normal(simulation->queue_normal);
 	clean_mutex_cond_simulation(simulation);
 }

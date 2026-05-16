@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/15 22:26:32 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/16 14:36:11 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ typedef enum e_watch_status
 } t_watch_status;
 
 
-typedef struct s_coder_crossing t_coder_crossing;
+typedef struct s_queue_normal t_queue_normal;
 typedef struct s_simulation t_simulation;
 
 typedef struct s_config
@@ -108,11 +108,11 @@ typedef struct s_coder
 	t_coder_status 		status;
 	t_mutex_cond 		mutex_cond;	
 		
-	t_coder_crossing 	*crossing;	
+	t_queue_normal 	*queue_normal;	
 	t_simulation		*sim;
 }	t_coder;
 
-typedef struct s_coder_crossing
+typedef struct s_queue_normal
 {
 	t_coder 		**heap;
 
@@ -121,7 +121,7 @@ typedef struct s_coder_crossing
 
 	pthread_mutex_t mutex_crossing;
 
-} t_coder_crossing;
+} t_queue_normal;
 
 typedef struct s_dongle_request
 {
@@ -157,7 +157,7 @@ typedef struct s_simulation
     t_coder             **coders;
     t_dongle            **dongles;
     t_queue             *queue;
-    t_coder_crossing    *crossing;
+    t_queue_normal    *queue_normal;
 
 
     t_monitor_status    monitor_status;
@@ -180,8 +180,8 @@ typedef struct s_simulation
 /*           دوال المساعدة، الوقت، ومعالجة المدخلات (Parsing)                 */
 /* ************************************************************************** */
 
-// long long   get_time(void);
-// long long   get_time_start_end(t_simulation *sim);
+long long   get_time(void);
+long long   get_time_start_end(t_simulation *sim);
 bool        parse_args(int ac, char **av, t_config *config);
 
 
@@ -195,7 +195,7 @@ bool        init_coders(t_simulation *simulation);
 t_coder     **alloc_coders(int coders_number);
 bool        alloc_and_init_dongles(t_simulation *simulation);
 bool        ft_init_queue(t_simulation *sim);
-bool        ft_init_coder_crossing(t_simulation *sim);
+bool		ft_init_queue_normal(t_simulation *sim);
 bool        ft_set_coders_initial_state(t_simulation *simulation);
 bool        init_mutex_cond(t_mutex_cond *mutex_cond);
 
@@ -206,20 +206,22 @@ bool        init_mutex_cond(t_mutex_cond *mutex_cond);
 /* ************************************************************************** */
 
 bool        start_simulation(t_simulation *sim);
-// bool        start_coders_in_simulation(t_simulation *sim);
-// bool        run_monitor_simulation(t_simulation *sim);
-// void        *watcher_tid_routine(void *arg);
+void		coder_main_loop(t_coder *coder);
+void		*coder_routine(void *arg);
+void		*watcher_routine(void *arg);
+void		*monitor_routine(void *arg);
 
-// سير عمل المبرمج (Coder Lifecycle)
+// سير عمل المبرمج 
+void		perform_coding(t_coder *coder);
 // bool        execute_coder_workflow(t_coder *coder);
 // void        execute_coding_cycle(t_coder *coder);
-// void        pick_up_dongle(t_coder *coder);
-// void        return_dongles(t_coder *coder);
+void        pick_up_dongle(t_coder *coder);
+void        return_dongles(t_coder *coder);
 
 // // منطق عبور التقاطع (Crossing Logic)
 // void        initiate_crossing_logic(t_simulation *sim);
-// void        run_fifo_routine(t_simulation *sim);
-// void        run_edf_routine(t_simulation *sim);
+void        run_fifo_routine(t_simulation *sim);
+void        run_edf_routine(t_simulation *sim);
 
 
 /* ************************************************************************** */
@@ -227,13 +229,16 @@ bool        start_simulation(t_simulation *sim);
 /*                 إدارة الطابور، الجدولة، وحالة المبرمجين                     */
 /* ************************************************************************** */
 
-void        push_crossing(t_coder *coder);
-void        add_crossing_to_queue(t_coder_crossing *cro, t_queue *q, t_scheduler sch);
-void        push_to_priority_queue(t_queue *q, t_coder *coder, t_scheduler sch);
-t_coder     *pop_queue(t_queue *q, t_scheduler scheduler);
+
+void			push_normal_queue(t_coder *coder);
+void 			add_queue_normal_to_queue(t_queue_normal *queue_normal, t_queue *queue, t_scheduler scheduler);
+void        	push_to_priority_queue(t_queue *q, t_coder *coder, t_scheduler sch);
+void 			push_normal_queue(t_coder *coder);
+void			heapify_up(t_queue *q, int index);
+t_coder			*pop_queue(t_queue *q, t_scheduler scheduler);
 
 t_coder_status  get_status_coder(t_coder *coder);
-bool            get_is_burnout_monitor(t_simulation *sim);
+// bool            get_is_burnout_monitor(t_simulation *sim);
 
 
 /* ************************************************************************** */
@@ -261,7 +266,7 @@ void        clean_mutex_cond_simulation(t_simulation *simulation);
 void        clean_mutex_dongles(t_dongle **dongles, int size);
 void        clean_dongles(t_dongle **dongles, int size);
 void        clean_queue(t_queue *queue);
-void        clean_crossing(t_coder_crossing *cro);
+void		clean_queue_normal(t_queue_normal *queue_normal);
 void        clean_coders(t_coder **coders, int size);
 void        free_2d_array(void **arr, int size);
 void        clean_resource(t_simulation *simulation);
@@ -271,21 +276,9 @@ void		destroy_mutex_cond_coders(t_coder **coders,int size);
 
 
 
-// void ft_refactoring_coder(t_coder *coder);
-// void ft_compiling_coder(t_coder *coder);
-// void ft_debugging_coder(t_coder *coder);
-
-
-
-
-
 
 
 /// routine threads coder and monitor and watcher
-void *coder_routine(void *arg);
-void *watcher_routine(void *arg);
-void *monitor_routine(void *arg);
-
 
 /// join  threads 
 

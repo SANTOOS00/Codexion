@@ -1,30 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   watcher_routine.c                                  :+:      :+:    :+:   */
+/*   monitor_edf_mode.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/15 22:21:22 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/16 14:47:13 by moerrais         ###   ########.fr       */
+/*   Created: 2026/05/12 15:25:56 by moerrais          #+#    #+#             */
+/*   Updated: 2026/05/12 16:14:05 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-void *watcher_routine(void *arg)
+void	run_edf_routine(t_simulation *sim)
 {
-	t_simulation *sim;
+    printf("monitor edf ok\n");
 
-	sim = (t_simulation *)arg;
-	pthread_mutex_lock(&sim->watch_lock.mutex);
-	while (!sim->is_watch_waiting)
-		pthread_cond_wait(&sim->watch_lock.cond, &sim->watch_lock.mutex);
-	if (sim->watch_status == ERROR_W)
-    {
-        pthread_mutex_unlock(&sim->watch_lock.mutex);
-		return (NULL);
-    }
-	pthread_mutex_unlock(&sim->watch_lock.mutex);
-	return (NULL);
 }

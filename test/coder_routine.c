@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 21:46:11 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/15 22:53:30 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/16 12:06:20 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,6 @@ void *coder_routine(void *arg)
     increment_coders_counter(coder);
     if (wait_all_coders_created(coder) == false)
         return (NULL);
-    // printf("is \n");
+    coder_main_loop(coder);
     return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 22:21:10 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/15 22:51:24 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/16 14:05:25 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,14 @@ void activate_coders(t_simulation *sim)
     }
 }
 
+void fifo_or_edf(t_simulation *sim)
+{
+    if (sim->config.scheduler == FIFO)
+        run_fifo_routine(sim);
+    else if (sim->config.scheduler == EDF)
+        run_edf_routine(sim);
+}
+
 void *monitor_routine(void *arg)
 {
 	t_simulation *sim;
@@ -51,5 +59,6 @@ void *monitor_routine(void *arg)
 	pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
     activate_coders(sim);
     activate_watcher(sim);
+    fifo_or_edf(sim);
 	return (NULL);
 }

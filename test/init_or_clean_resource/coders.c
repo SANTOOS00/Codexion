@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 19:27:24 by moerrais          #+#    #+#             */
-/*   Updated: 2026/05/13 16:31:23 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/05/16 13:52:56 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ bool ft_set_coders_initial_state(t_simulation *simulation)
 		coder->status = START;
 	
 
-		coder->crossing = simulation->crossing;
+		coder->queue_normal = simulation->queue_normal;
 		coder->sim	= simulation;
 		coder->deadline = 0;
 		i++;
