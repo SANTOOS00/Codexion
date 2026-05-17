@@ -12,6 +12,45 @@
 
 #include "codexion.h"
 
+t_watch_status get_status_watcher(t_simulation *sim)
+{
+	t_watch_status status;
+	pthread_mutex_lock(&sim->watch_lock.mutex);
+	status = sim->watch_status;
+	pthread_mutex_unlock(&sim->watch_lock.mutex);
+	return (status);
+}
+
+
+void detect_burnout_in_coders(t_simulation *sim)
+{
+	int i;
+
+
+	i = 0;
+	while (1)
+	{
+		if (get_status_watcher(sim) == FINISHED_W)
+			break;
+		while (i < sim->config.number_of_coders)
+		{
+			if (get_status_watcher(sim) == FINISHED_W)
+				break;
+			if (get_status_coder(sim->coders[i]) != FINISHED)
+			{
+				pthread_mutex_lock(&sim->coders[i]->mutex_cond.mutex);
+				if(get_time() > sim->coders[i]->deadline)
+				{
+					printf("is bournout\n");
+				}
+				pthread_mutex_unlock(&sim->coders[i]->mutex_cond.mutex);
+			}
+			i++;
+		}
+		i = 0;
+	}
+}
+
 void *watcher_routine(void *arg)
 {
 	t_simulation *sim;
@@ -26,5 +65,6 @@ void *watcher_routine(void *arg)
 		return (NULL);
     }
 	pthread_mutex_unlock(&sim->watch_lock.mutex);
+	detect_burnout_in_coders(sim);
 	return (NULL);
 }

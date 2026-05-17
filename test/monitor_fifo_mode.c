@@ -57,8 +57,6 @@ void    run_fifo_routine(t_simulation *sim)
 
     while (check_status_monitor(sim) != FINISHED_M)
     {
-        // if (check_size_queue(sim->queue) == 0 && check_size_queue_normal(sim->queue_normal) == 0)
-        //     break;
         add_queue_normal_to_queue(sim->queue_normal, sim->queue, FIFO);
         if (check_burnout(sim))
             break;
