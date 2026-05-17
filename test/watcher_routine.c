@@ -42,6 +42,7 @@ void detect_burnout_in_coders(t_simulation *sim)
 				if(get_time() > sim->coders[i]->deadline)
 				{
 					printf("is bournout\n");
+					
 				}
 				pthread_mutex_unlock(&sim->coders[i]->mutex_cond.mutex);
 			}
