@@ -15,12 +15,12 @@
 bool	parse_args(int ac, char **av, t_config *config)
 {
 	config->number_of_coders = 3;
-	config->time_to_burnout = 500;
+	config->time_to_burnout = 300;
 	config->time_to_compile = 100;
 	config->time_to_debug = 100;
 	config->time_to_refactor = 100;
-	config->dongle_cooldown = 10;
-	config->number_of_compiles_required = 2;
-	config->scheduler = FIFO;
+	config->number_of_compiles_required = 5;
+	config->dongle_cooldown = 0;
+	config->scheduler = EDF;
 	return true;
 }

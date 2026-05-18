@@ -15,4 +15,24 @@ long long get_time_start_end(t_simulation *sim)
 	time = get_time() - sim->time_start;
 	pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
 	return (time);
-}	
+}
+
+struct timespec get_time_add_time_wait(long long time_wait_ms)
+{
+    struct timespec spec_ts;
+    struct timeval val_ts;
+    
+    gettimeofday(&val_ts, NULL);
+
+    val_ts.tv_sec += time_wait_ms / 1000;
+    val_ts.tv_usec += (time_wait_ms % 1000) * 1000;
+    if (val_ts.tv_usec >= 1000000)
+    {
+        val_ts.tv_sec++;
+        val_ts.tv_usec -= 1000000;
+    }
+
+    spec_ts.tv_sec = val_ts.tv_sec;
+    spec_ts.tv_nsec = val_ts.tv_usec * 1000;
+    return (spec_ts);
+}

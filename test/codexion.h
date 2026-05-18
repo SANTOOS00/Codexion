@@ -33,6 +33,7 @@ typedef enum e_coder_status
     DEBUGGING,
     REFACTORING,
     FINISHED,
+	IS_BURNOUT,
     ERROR
 } t_coder_status;
 
@@ -182,6 +183,7 @@ typedef struct s_simulation
 
 long long   get_time(void);
 long long   get_time_start_end(t_simulation *sim);
+struct timespec get_time_add_time_wait(long long time_wait_ms);
 bool        parse_args(int ac, char **av, t_config *config);
 
 
@@ -220,8 +222,7 @@ void        return_dongles(t_coder *coder);
 
 // // منطق عبور التقاطع (Crossing Logic)
 // void        initiate_crossing_logic(t_simulation *sim);
-void        run_fifo_routine(t_simulation *sim);
-void        run_edf_routine(t_simulation *sim);
+void    run_fifo_or_edf_routine(t_simulation *sim, t_scheduler scheduler);
 
 
 /* ************************************************************************** */
@@ -234,9 +235,11 @@ void			push_normal_queue(t_coder *coder);
 void 			add_queue_normal_to_queue(t_queue_normal *queue_normal, t_queue *queue, t_scheduler scheduler);
 void        	push_to_priority_queue(t_queue *q, t_coder *coder, t_scheduler sch);
 void 			push_normal_queue(t_coder *coder);
+bool 			is_greater(t_dongle_request *req1, t_dongle_request *req2);
+void			heapify_down(t_queue *q, int parent);
 void			heapify_up(t_queue *q, int index);
 t_coder			*pop_queue(t_queue *q, t_scheduler scheduler);
-
+int				parent_index(int index);
 t_coder_status  get_status_coder(t_coder *coder);
 // bool            get_is_burnout_monitor(t_simulation *sim);
 

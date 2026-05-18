@@ -25,6 +25,7 @@ t_monitor_status check_status_monitor(t_simulation *sim)
 bool check_burnout(t_simulation *sim)
 {
     bool check;
+
     pthread_mutex_lock(&sim->burnout_mutex);
     check = sim->is_burnout;
     pthread_mutex_unlock(&sim->burnout_mutex);
@@ -41,26 +42,16 @@ int check_size_queue(t_queue *queue)
     return (size);
 }
 
-int check_size_queue_normal(t_queue_normal *queue_normal)
-{
-    int size;
-    
-    pthread_mutex_lock(&queue_normal->mutex_crossing);
-    size = queue_normal->size;
-    pthread_mutex_unlock(&queue_normal->mutex_crossing);
-    return (size);
-}
-
-void    run_fifo_routine(t_simulation *sim)
+void    run_fifo_or_edf_routine(t_simulation *sim, t_scheduler scheduler)
 {
     t_coder *coder;
 
     while (check_status_monitor(sim) != FINISHED_M)
     {
-        add_queue_normal_to_queue(sim->queue_normal, sim->queue, FIFO);
+        add_queue_normal_to_queue(sim->queue_normal, sim->queue, scheduler);
         if (check_burnout(sim))
             break;
-        coder = pop_queue(sim->queue, FIFO);
+        coder = pop_queue(sim->queue, scheduler);
         if (!coder)
             usleep(500);
         else
@@ -70,5 +61,6 @@ void    run_fifo_routine(t_simulation *sim)
             pthread_cond_broadcast(&coder->mutex_cond.cond);
             pthread_mutex_unlock(&coder->mutex_cond.mutex);
         }
+
     }
 }

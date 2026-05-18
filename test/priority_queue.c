@@ -79,20 +79,48 @@ void shift_queue_elements(t_queue *q)
     }
 }
 
+
+
+t_coder *get_coder_li3ndo_dongle_and_priorty_a3la(t_queue *q)
+{
+    t_coder *coder;
+    int i;
+
+    i = 0;
+    while (i < q->size)
+    {
+        if(is_valid_dongl_left_right(q->heap[i]->coder))
+        {
+            coder = q->heap[i]->coder;
+            q->heap[i]->coder = q->heap[q->size]->coder;
+            q->heap[i]->deadline = q->heap[q->size]->deadline;
+            q->size--;
+            if (is_greater(q->heap[i], q->heap[parent_index(i)]))
+                heapify_up(q, i);
+            else
+                heapify_down(q, i);
+            return (coder);
+        }
+        i++;
+    }
+    return (NULL);
+}
+
+
 t_coder *pop_queue(t_queue *q, t_scheduler scheduler)
 {
     t_coder *coder = NULL;
     int i = 1;
 
     pthread_mutex_lock(&q->mutex_queue);
-    if (q->size == 0) {
+    if (q->size == 0)
+    {
         pthread_mutex_unlock(&q->mutex_queue);
         return (NULL);
-    }    
-    coder = q->heap[0]->coder;
-
+    }
     if (scheduler == FIFO)
     {
+        coder = q->heap[0]->coder;
         if (!is_valid_dongl_left_right(q->heap[0]->coder))
         {
             pthread_mutex_unlock(&q->mutex_queue);
@@ -100,6 +128,11 @@ t_coder *pop_queue(t_queue *q, t_scheduler scheduler)
         }
         shift_queue_elements(q);
         q->size--;
+    }
+    else if (scheduler == EDF)
+    {
+        coder = get_coder_li3ndo_dongle_and_priorty_a3la(q);
+        return (coder);
     }
     pthread_mutex_unlock(&q->mutex_queue);
 

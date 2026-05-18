@@ -19,8 +19,7 @@ SRC = init_or_clean_resource/queue.c\
 	  heapify_up_or_down.c\
 	  main.c\
 	  manager_simulation.c\
-	  monitor_edf_mode.c\
-	  monitor_fifo_mode.c\
+	  monitor_fifo_or_edf_mode.c\
 	  monitor_routine.c\
 	  perform_coding.c\
 	  pick_up_dongle.c\

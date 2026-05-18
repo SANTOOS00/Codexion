@@ -34,6 +34,8 @@ void enqueue_coder_request(t_coder *coder)
     if (get_status_coder(coder) == START && coder->id % 2 != 0)
         usleep(1000);
     push_normal_queue(coder);
+    if (get_status_coder(coder) == IS_BURNOUT)
+        return ;
     pthread_mutex_lock(&coder->mutex_cond.mutex);
     coder->has_dongle = false;
     while (!coder->has_dongle)
@@ -45,11 +47,12 @@ void coder_main_loop(t_coder *coder)
 {
     update_burnout_timer(coder, *coder->config);
     while(1)
-    {
-        enqueue_coder_request(coder);
+    {   
         if (get_status_coder(coder) == FINISHED)
             break;
-        
+        enqueue_coder_request(coder);
+        if (get_status_coder(coder) == IS_BURNOUT)
+            break;
         update_burnout_timer(coder, *coder->config);
         pick_up_dongle(coder);
         perform_coding(coder);

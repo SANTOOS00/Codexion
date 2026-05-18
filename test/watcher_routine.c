@@ -21,15 +21,38 @@ t_watch_status get_status_watcher(t_simulation *sim)
 	return (status);
 }
 
+void stop_coders(t_simulation *sim)
+{
+	int i;
+
+	i = 0;
+	while(i < sim->config.number_of_coders)
+	{
+		pthread_mutex_lock(&sim->coders[i]->mutex_cond.mutex);
+		sim->coders[i]->status = IS_BURNOUT;
+		sim->coders[i]->has_dongle = true;
+		pthread_cond_broadcast(&sim->coders[i]->mutex_cond.cond);
+		pthread_mutex_unlock(&sim->coders[i]->mutex_cond.mutex);
+		i++;
+	}
+}
+
+void stop_monitor(t_simulation *sim)
+{
+	pthread_mutex_lock(&sim->coders_cnt_lock.mutex);
+	sim->monitor_status = FINISHED_M;
+	pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
+}
 
 void detect_burnout_in_coders(t_simulation *sim)
 {
 	int i;
+	bool is_Check_boun;
 
-
-	i = 0;
+	is_Check_boun = false;
 	while (1)
 	{
+		i = 0;
 		if (get_status_watcher(sim) == FINISHED_W)
 			break;
 		while (i < sim->config.number_of_coders)
@@ -39,16 +62,27 @@ void detect_burnout_in_coders(t_simulation *sim)
 			if (get_status_coder(sim->coders[i]) != FINISHED)
 			{
 				pthread_mutex_lock(&sim->coders[i]->mutex_cond.mutex);
-				if(get_time() > sim->coders[i]->deadline)
+				if(sim->coders[i]->deadline != 0 && get_time() > sim->coders[i]->deadline)
 				{
-					printf("is bournout\n");
-					
+					pthread_mutex_unlock(&sim->coders[i]->mutex_cond.mutex);
+					stop_monitor(sim);
+					stop_coders(sim);
+    				print_coder_action(sim->coders[i], "is bournout");					
+					is_Check_boun = true;
+					break;
 				}
-				pthread_mutex_unlock(&sim->coders[i]->mutex_cond.mutex);
+				else
+				{
+					pthread_mutex_unlock(&sim->coders[i]->mutex_cond.mutex);
+					usleep(1000);
+				}
 			}
+			if(is_Check_boun)
+				break;
 			i++;
 		}
-		i = 0;
+		if (is_Check_boun)
+			break;
 	}
 }
 

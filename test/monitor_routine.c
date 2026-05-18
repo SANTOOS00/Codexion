@@ -35,19 +35,21 @@ void activate_coders(t_simulation *sim)
     }
 }
 
-void fifo_or_edf(t_simulation *sim)
-{
-    if (sim->config.scheduler == FIFO)
-        run_fifo_routine(sim);
-    else if (sim->config.scheduler == EDF)
-        run_edf_routine(sim);
-}
 
 void init_time_start(t_simulation *sim)
 {
     pthread_mutex_lock(&sim->coders_cnt_lock.mutex);
 	sim->time_start = get_time();
 	pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
+}
+bool get_status_monitor(t_simulation *sim)
+{
+    bool status;
+
+    pthread_mutex_lock(&sim->coders_cnt_lock.mutex);
+    status = sim->is_burnout;
+    pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
+    return (status);
 }
 
 void *monitor_routine(void *arg)
@@ -67,6 +69,6 @@ void *monitor_routine(void *arg)
     activate_coders(sim);
     activate_watcher(sim);
     init_time_start(sim);
-    fifo_or_edf(sim);
+    run_fifo_or_edf_routine(sim, sim->config.scheduler);
 	return (NULL);
 }
