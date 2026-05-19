@@ -181,10 +181,10 @@ typedef struct s_simulation
 /*           دوال المساعدة، الوقت، ومعالجة المدخلات (Parsing)                 */
 /* ************************************************************************** */
 
-long long   get_time(void);
-long long   get_time_start_end(t_simulation *sim);
-struct timespec get_time_add_time_wait(long long time_wait_ms);
-bool        parse_args(int ac, char **av, t_config *config);
+long long   		get_time(void);
+long long			get_time_start_end(t_simulation *sim);
+struct timespec		get_time_add_time_wait(long long time_wait_ms);
+bool        		parse_args(int ac, char **av, t_config *config);
 
 
 /* ************************************************************************** */
@@ -215,14 +215,14 @@ void		*monitor_routine(void *arg);
 
 // سير عمل المبرمج 
 void		perform_coding(t_coder *coder);
-// bool        execute_coder_workflow(t_coder *coder);
-// void        execute_coding_cycle(t_coder *coder);
 void        pick_up_dongle(t_coder *coder);
 void        return_dongles(t_coder *coder);
 
 // // منطق عبور التقاطع (Crossing Logic)
 // void        initiate_crossing_logic(t_simulation *sim);
-void    run_fifo_or_edf_routine(t_simulation *sim, t_scheduler scheduler);
+void    	run_fifo_or_edf_routine(t_simulation *sim);
+void    	run_fifo_routine(t_simulation *sim);
+void    	run_edf_routine(t_simulation *sim);
 
 
 /* ************************************************************************** */
@@ -285,3 +285,9 @@ void print_coder_action(t_coder *coder, char *action);
 
 /// join  threads 
 
+
+
+
+int check_size_queue(t_queue *queue);
+bool check_burnout(t_simulation *sim);
+t_monitor_status check_status_monitor(t_simulation *sim);

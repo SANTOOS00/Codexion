@@ -35,13 +35,13 @@ void activate_coders(t_simulation *sim)
     }
 }
 
-
 void init_time_start(t_simulation *sim)
 {
     pthread_mutex_lock(&sim->coders_cnt_lock.mutex);
 	sim->time_start = get_time();
 	pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
 }
+
 bool get_status_monitor(t_simulation *sim)
 {
     bool status;
@@ -69,6 +69,6 @@ void *monitor_routine(void *arg)
     activate_coders(sim);
     activate_watcher(sim);
     init_time_start(sim);
-    run_fifo_or_edf_routine(sim, sim->config.scheduler);
+    run_fifo_or_edf_routine(sim);
 	return (NULL);
 }

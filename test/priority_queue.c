@@ -37,7 +37,7 @@ void push_to_priority_queue(t_queue *q, t_coder *coder, t_scheduler scheduler)
         q->heap[q->size]->deadline = coder->deadline;
     }
     pthread_mutex_unlock(&coder->mutex_cond.mutex);    
-
+    
     if (scheduler == EDF)
         heapify_up(q, q->size);
     q->size++;
@@ -81,7 +81,7 @@ void shift_queue_elements(t_queue *q)
 
 
 
-t_coder *get_coder_li3ndo_dongle_and_priorty_a3la(t_queue *q)
+t_coder *pop_highest_priority_ready_coder(t_queue *q)
 {
     t_coder *coder;
     int i;
@@ -92,8 +92,8 @@ t_coder *get_coder_li3ndo_dongle_and_priorty_a3la(t_queue *q)
         if(is_valid_dongl_left_right(q->heap[i]->coder))
         {
             coder = q->heap[i]->coder;
-            q->heap[i]->coder = q->heap[q->size]->coder;
-            q->heap[i]->deadline = q->heap[q->size]->deadline;
+            q->heap[i]->coder = q->heap[q->size - 1]->coder;
+            q->heap[i]->deadline = q->heap[q->size - 1]->deadline;
             q->size--;
             if (is_greater(q->heap[i], q->heap[parent_index(i)]))
                 heapify_up(q, i);
@@ -131,7 +131,8 @@ t_coder *pop_queue(t_queue *q, t_scheduler scheduler)
     }
     else if (scheduler == EDF)
     {
-        coder = get_coder_li3ndo_dongle_and_priorty_a3la(q);
+        coder = pop_highest_priority_ready_coder(q);
+        pthread_mutex_unlock(&q->mutex_queue);
         return (coder);
     }
     pthread_mutex_unlock(&q->mutex_queue);

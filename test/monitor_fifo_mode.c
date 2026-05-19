@@ -42,16 +42,16 @@ int check_size_queue(t_queue *queue)
     return (size);
 }
 
-void    run_fifo_or_edf_routine(t_simulation *sim, t_scheduler scheduler)
+void    run_fifo_routine(t_simulation *sim)
 {
     t_coder *coder;
 
     while (check_status_monitor(sim) != FINISHED_M)
     {
-        add_queue_normal_to_queue(sim->queue_normal, sim->queue, scheduler);
+        add_queue_normal_to_queue(sim->queue_normal, sim->queue, FIFO);
         if (check_burnout(sim))
             break;
-        coder = pop_queue(sim->queue, scheduler);
+        coder = pop_queue(sim->queue, FIFO);
         if (!coder)
             usleep(500);
         else
