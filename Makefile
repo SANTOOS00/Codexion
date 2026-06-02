@@ -1,0 +1,53 @@
+NAME_PROGRAN = codexion
+
+CC = cc
+
+FLAGS = -pthread -Wall -Wextra -Werror
+
+SRC = src/init/queue.c\
+	  src/init/queue_normal.c\
+	  src/init/init_simulation.c \
+	  src/init/coders.c \
+	  src/init/dongles.c \
+	  src/init/free_2d_array.c\
+	  src/init/init_or_destory_mutex_cond.c\
+	  src/cleanup/clean_resource.c\
+      src/parse_args/parse_args.c \
+	  src/coder_main_loop.c\
+	  src/coder_routine.c\
+	  src/exit_threads.c\
+	  src/heapify_up_or_down.c\
+	  src/main.c\
+	  src/manager_simulation.c\
+	  src/monitor_edf_mode.c\
+	  src/monitor_fifo_mode.c\
+	  src/run_fifo_or_edf_mode.c\
+	  src/monitor_routine.c\
+	  src/perform_coding.c\
+	  src/pick_up_dongle.c\
+	  src/priority_queue.c\
+	  src/queue_normal_manager.c\
+	  src/return_dongles.c\
+	  src/thread_joiner.c\
+	  src/time_utils.c\
+	  src/watcher_routine.c
+
+
+
+OBG = $(SRC:.c=.o)
+
+all: $(NAME_PROGRAN)
+
+$(NAME_PROGRAN): $(OBG)
+	$(CC) $(FLAGS) $(OBG) -o $(NAME_PROGRAN)
+
+%.o: %.c codexion.h
+	$(CC) $(FLAGS) -c $< -o $@
+
+clean:
+	rm -f $(OBG)
+
+fclean: clean
+	rm -f $(NAME_PROGRAN)
+
+re: fclean all
