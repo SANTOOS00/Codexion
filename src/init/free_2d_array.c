@@ -12,13 +12,12 @@
 
 #include "../include/codexion.h"
 
-
-void free_2d_array(void **arr, int size)
+void	free_2d_array(void **arr, int size)
 {
 	int i;
 
 	i = 0;
-	while(i < size)
+	while (i < size)
 		free(arr[i++]);
 	free(arr);
 }

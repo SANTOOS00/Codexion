@@ -10,12 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../include/codexion.h"
 
-bool is_valid_integer(char *str_number)
+bool	is_valid_integer(char *str_number)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str_number[i])
@@ -29,9 +28,10 @@ bool is_valid_integer(char *str_number)
 	return (true);
 }
 
-bool validate_numeric_arguments(char **av)
+bool	validate_numeric_arguments(char **av)
 {
-	int i;
+	int	i;
+
 	char arg_type[7][35] = {
 		"number_of_coders",
 		"time_to_burnout",
@@ -39,20 +39,18 @@ bool validate_numeric_arguments(char **av)
 		"time_to_debug",
 		"time_to_refactor",
 		"number_of_compiles_required",
-		"dongle_cooldown", 
+		"dongle_cooldown",
 	};
 	i = 1;
 	while (i < 8)
 	{
 		if (is_valid_integer(av[i]) == false)
 		{
-			fprintf(stderr,
-				"error: '%s' ('%s') is not a valid integer"
-				, arg_type[i - 1], av[i]);
+			fprintf(stderr, "error: '%s' ('%s') is not a valid integer",
+				arg_type[i - 1], av[i]);
 			return (false);
 		}
 		i++;
 	}
 	return (true);
 }
-

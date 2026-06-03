@@ -23,8 +23,6 @@ void	destroy_mutex_prints(t_simulation *sim)
 	pthread_mutex_destroy(&sim->mutex_print);
 }
 
-
-
 void	clean_dongles(t_dongle **dongles, int size)
 {
 	clean_mutex_dongles(dongles, size);
@@ -35,8 +33,8 @@ void	clean_coders(t_coder **coders, int size)
 {
 	destroy_mutex_cond_coders(coders, size);
 	free_2d_array((void **)coders, size);
-	
 }
+
 void	clean_resource(t_simulation *simulation)
 {
 	clean_dongles(simulation->dongles, simulation->config.number_of_coders);

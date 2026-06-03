@@ -12,10 +12,10 @@
 
 #include "../include/codexion.h"
 
-t_dongle **dongles_alloc(int dongles_number)
+t_dongle	**dongles_alloc(int dongles_number)
 {
-	t_dongle **dongles;
-	int i;
+	t_dongle	**dongles;
+	int			i;
 
 	i = 0;
 	dongles = (t_dongle **)malloc(sizeof(t_dongle *) * dongles_number);
@@ -31,13 +31,13 @@ t_dongle **dongles_alloc(int dongles_number)
 	return (dongles);
 }
 
-void clean_mutex_dongles(t_dongle **dongles, int size)
+void	clean_mutex_dongles(t_dongle **dongles, int size)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!dongles)
-		return;
+		return ;
 	while (i < size)
 	{
 		destroy_mutex_cond(&dongles[i]->m_cn_dongle);
@@ -45,12 +45,12 @@ void clean_mutex_dongles(t_dongle **dongles, int size)
 	}
 }
 
-bool init_mutex_dongles(t_dongle **dongles, int dongles_number)
+bool	init_mutex_dongles(t_dongle **dongles, int dongles_number)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
-	while(i < dongles_number)
+	while (i < dongles_number)
 	{
 		if (init_mutex_cond(&dongles[i]->m_cn_dongle) == false)
 		{
@@ -62,9 +62,9 @@ bool init_mutex_dongles(t_dongle **dongles, int dongles_number)
 	return (true);
 }
 
-void init_dongles_state(t_dongle **dongles, t_config config)
+void	init_dongles_state(t_dongle **dongles, t_config config)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < config.number_of_coders)
@@ -76,16 +76,17 @@ void init_dongles_state(t_dongle **dongles, t_config config)
 	}
 }
 
-bool alloc_and_init_dongles(t_simulation *simulation)
+bool	alloc_and_init_dongles(t_simulation *simulation)
 {
 	t_dongle **dongles;
-
 
 	dongles = dongles_alloc(simulation->config.number_of_coders);
 	if (!dongles)
 		return (false);
-	if (init_mutex_dongles(dongles, simulation->config.number_of_coders) == false)
-		return (free_2d_array((void **)dongles, simulation->config.number_of_coders), false);
+	if (init_mutex_dongles(dongles,
+			simulation->config.number_of_coders) == false)
+		return (free_2d_array((void **)dongles,
+				simulation->config.number_of_coders), false);
 	init_dongles_state(dongles, simulation->config);
 	simulation->dongles = dongles;
 	return (true);

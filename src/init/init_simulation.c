@@ -20,14 +20,14 @@ void	clean_mutex_cond_simulation(t_simulation *simulation)
 	destroy_mutex_prints(simulation);
 }
 
-bool init_mutex_prints(t_simulation *sim)
+bool	init_mutex_prints(t_simulation *sim)
 {
 	if (pthread_mutex_init(&sim->mutex_print, NULL) != 0)
 		return (false);
 	return (true);
 }
 
-void reset_simulation_vars(t_simulation *sim)
+void	reset_simulation_vars(t_simulation *sim)
 {
 	sim->is_burnout = false;
 	sim->run_coders_counter = 0;
@@ -38,15 +38,15 @@ void reset_simulation_vars(t_simulation *sim)
 	sim->watch_status = START_W;
 }
 
-
-bool ft_set_simulation_intial_state(int argc, char **argv, t_simulation *simulation)
+bool	ft_set_simulation_intial_state(int argc, char **argv,
+		t_simulation *simulation)
 {
 	reset_simulation_vars(simulation);
 	if (parse_args(argc, argv, simulation) == false)
 		return (false);
 	if (init_mutex_cond(&simulation->coders_cnt_lock) == false)
 		return (false);
-	if (init_mutex_cond(&simulation->watch_lock)== false)
+	if (init_mutex_cond(&simulation->watch_lock) == false)
 	{
 		destroy_mutex_cond(&simulation->coders_cnt_lock);
 		return (false);
@@ -62,12 +62,12 @@ bool ft_set_simulation_intial_state(int argc, char **argv, t_simulation *simulat
 		destroy_mutex_cond(&simulation->coders_cnt_lock);
 		destroy_mutex_cond(&simulation->watch_lock);
 		pthread_mutex_destroy(&simulation->burnout_mutex);
-		return(false);
+		return (false);
 	}
 	return (true);
 }
 
-bool ft_init_simulation(int argc, char **argv, t_simulation *simulation)
+bool	ft_init_simulation(int argc, char **argv, t_simulation *simulation)
 {
 	if (ft_set_simulation_intial_state(argc, argv, simulation) == false)
 		return (false);
@@ -89,7 +89,7 @@ bool ft_init_simulation(int argc, char **argv, t_simulation *simulation)
 		clean_mutex_cond_simulation(simulation);
 	}
 
-	if (ft_init_queue_normal(simulation)== false)
+	if (ft_init_queue_normal(simulation) == false)
 	{
 		clean_coders(simulation->coders, simulation->config.number_of_coders);
 		clean_dongles(simulation->dongles, simulation->config.number_of_coders);
@@ -98,5 +98,5 @@ bool ft_init_simulation(int argc, char **argv, t_simulation *simulation)
 		return (false);
 	}
 	ft_set_coders_initial_state(simulation);
-	return (true);	
+	return (true);
 }

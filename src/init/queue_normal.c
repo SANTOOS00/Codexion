@@ -12,17 +12,16 @@
 
 #include "../include/codexion.h"
 
-
-void clean_queue_normal(t_queue_normal *queue_normal)
+void	clean_queue_normal(t_queue_normal *queue_normal)
 {
-    pthread_mutex_destroy(&queue_normal->mutex_crossing);
+	pthread_mutex_destroy(&queue_normal->mutex_crossing);
 	free(queue_normal->heap);
-    free(queue_normal);
+	free(queue_normal);
 }
 
-static void  free_2d_arrays(t_coder **heap, int size)
+static void	free_2d_arrays(t_coder **heap, int size)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < size)
@@ -30,11 +29,9 @@ static void  free_2d_arrays(t_coder **heap, int size)
 	free(heap);
 }
 
-
-
-t_queue_normal *alloc_queue_normal(int coders_number)
+t_queue_normal	*alloc_queue_normal(int coders_number)
 {
-	t_queue_normal *queue_normal;
+	t_queue_normal	*queue_normal;
 
 	queue_normal = (t_queue_normal *)malloc(sizeof(t_queue_normal));
 	if (!queue_normal)
@@ -45,13 +42,12 @@ t_queue_normal *alloc_queue_normal(int coders_number)
 		free(queue_normal);
 		return (NULL);
 	}
-
 	queue_normal->size = 0;
 	queue_normal->capacity = coders_number;
 	return (queue_normal);
 }
 
-bool ft_init_queue_normal(t_simulation *sim)
+bool	ft_init_queue_normal(t_simulation *sim)
 {
 	t_queue_normal *queue_normal;
 

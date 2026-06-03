@@ -18,20 +18,20 @@ t_coder	**alloc_coders(int coders_number)
 	int		i;
 
 	i = 0;
-	coders = (t_coder **) malloc(sizeof(t_coder *) * coders_number);
+	coders = (t_coder **)malloc(sizeof(t_coder *) * coders_number);
 	if (!coders)
 		return (NULL);
 	while (i < coders_number)
 	{
-		coders[i] = (t_coder *) malloc(sizeof(t_coder));
+		coders[i] = (t_coder *)malloc(sizeof(t_coder));
 		if (!coders[i])
-			return (free_2d_array((void **) coders, i), NULL);
+			return (free_2d_array((void **)coders, i), NULL);
 		i++;
 	}
 	return (coders);
 }
 
-bool ft_set_coders_initial_state(t_simulation *simulation)
+bool	ft_set_coders_initial_state(t_simulation *simulation)
 {
 	t_config	config;
 	t_coder		*coder;
@@ -49,7 +49,8 @@ bool ft_set_coders_initial_state(t_simulation *simulation)
 		coder->compilation_count = 0;
 		coder->config = &simulation->config;
 		coder->left_dongle = simulation->dongles[i];
-		coder->right_dongle = simulation->dongles[(i + 1) % config.number_of_coders];
+		coder->right_dongle = simulation->dongles[(i + 1)
+			% config.number_of_coders];
 		coder->run_coders_counter = &simulation->run_coders_counter;
 		coder->coders_cnt_lock = &simulation->coders_cnt_lock;
 		coder->status = START;
@@ -70,7 +71,7 @@ void	destroy_mutex_cond_coders(t_coder **coders, int size)
 		destroy_mutex_cond(&coders[i++]->mutex_cond);
 }
 
-bool init_mutex_cond_coders(t_coder * *coders, int size)
+bool	init_mutex_cond_coders(t_coder **coders, int size)
 {
 	int	i;
 
@@ -87,19 +88,19 @@ bool init_mutex_cond_coders(t_coder * *coders, int size)
 	return (true);
 }
 
-bool init_coders(t_simulation *simulation)
+bool	init_coders(t_simulation *simulation)
 {
 	t_coder	**coders;
 
 	coders = alloc_coders(simulation->config.number_of_coders);
 	if (!coders)
 		return (false);
-	if (init_mutex_cond_coders(coders, simulation->config.number_of_coders) == false)
+	if (init_mutex_cond_coders(coders,
+			simulation->config.number_of_coders) == false)
 	{
-		free_2d_array((void **) coders, simulation->config.number_of_coders);
+		free_2d_array((void **)coders, simulation->config.number_of_coders);
 		return (false);
 	}
 	simulation->coders = coders;
 	return (true);
-
 }

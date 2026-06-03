@@ -12,22 +12,19 @@
 
 #include "include/codexion.h"
 
-
-
-
-
-
-bool create_coders(t_simulation *sim)
+bool	create_coders(t_simulation *sim)
 {
-	int i;
-	int ret;
+	int	i;
+	int	ret;
 
 	i = 0;
 	while (i < sim->config.number_of_coders)
 	{
-		if ((ret = pthread_create(&sim->coders[i]->thread, NULL, coder_routine, sim->coders[i])))
+		if ((ret = pthread_create(&sim->coders[i]->thread, NULL, coder_routine,
+					sim->coders[i])))
 		{
-			fprintf(stderr, "Error: pthread_create failed: %s \nid coder failed %d\n", strerror(ret), i);
+			fprintf(stderr, "Error: pthread_create failed: %s \nid coder failed
+				%d\n", strerror(ret), i);
 			exit_coders(sim, i);
 			return (false);
 		}
@@ -36,9 +33,9 @@ bool create_coders(t_simulation *sim)
 	return (true);
 }
 
-bool start_simulation(t_simulation *sim)
+bool	start_simulation(t_simulation *sim)
 {
-	if(pthread_create(&sim->monitor_tid, NULL, monitor_routine, sim) != 0)
+	if (pthread_create(&sim->monitor_tid, NULL, monitor_routine, sim) != 0)
 		return (false);
 	if (pthread_create(&sim->watcher_tid, NULL, watcher_routine, sim) != 0)
 	{

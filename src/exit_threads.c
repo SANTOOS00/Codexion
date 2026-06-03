@@ -12,7 +12,7 @@
 
 #include "include/codexion.h"
 
-void exit_monitor(t_simulation *sim)
+void	exit_monitor(t_simulation *sim)
 {
 	pthread_mutex_lock(&sim->coders_cnt_lock.mutex);
 	sim->monitor_status = ERROR_M;
@@ -22,8 +22,7 @@ void exit_monitor(t_simulation *sim)
 	join_monitor(sim);
 }
 
-
-void exit_watcher(t_simulation *sim)
+void	exit_watcher(t_simulation *sim)
 {
 	pthread_mutex_lock(&sim->watch_lock.mutex);
 	sim->watch_status = ERROR_W;
@@ -33,13 +32,13 @@ void exit_watcher(t_simulation *sim)
 	join_watcher(sim);
 }
 
-void exit_coders(t_simulation *sim, int number_coders)
+void	exit_coders(t_simulation *sim, int number_coders)
 {
 	int i;
-	
+
 	i = 0;
 	usleep(1000);
-	while(i < number_coders)
+	while (i < number_coders)
 	{
 		pthread_mutex_lock(&sim->coders[i]->mutex_cond.mutex);
 		sim->coders[i]->has_dongle = true;

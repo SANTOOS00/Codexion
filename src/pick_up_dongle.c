@@ -12,7 +12,7 @@
 
 #include "include/codexion.h"
 
-void pick_up_left_dongle(t_coder *coder)
+void	pick_up_left_dongle(t_coder *coder)
 {
 	pthread_mutex_lock(&coder->left_dongle->m_cn_dongle.mutex);
 	(coder->left_dongle->is_available) = false;
@@ -20,7 +20,7 @@ void pick_up_left_dongle(t_coder *coder)
 	pthread_mutex_unlock(&coder->left_dongle->m_cn_dongle.mutex);
 }
 
-void pick_up_right_dongle(t_coder *coder)
+void	pick_up_right_dongle(t_coder *coder)
 {
 	pthread_mutex_lock(&coder->right_dongle->m_cn_dongle.mutex);
 	(coder->right_dongle->is_available) = false;
@@ -28,8 +28,8 @@ void pick_up_right_dongle(t_coder *coder)
 	pthread_mutex_unlock(&coder->right_dongle->m_cn_dongle.mutex);
 }
 
-void pick_up_dongle(t_coder *coder)
-{	
-	pick_up_left_dongle(coder);	
+void	pick_up_dongle(t_coder *coder)
+{
+	pick_up_left_dongle(coder);
 	pick_up_right_dongle(coder);
 }

@@ -12,26 +12,26 @@
 
 #include "include/codexion.h"
 
-void join_monitor(t_simulation *sim)
+void	join_monitor(t_simulation *sim)
 {
 	pthread_join(sim->monitor_tid, NULL);
 }
 
-void join_watcher(t_simulation *sim)
+void	join_watcher(t_simulation *sim)
 {
 	pthread_join(sim->watcher_tid, NULL);
 }
 
-void join_coders(t_simulation *sim, int number_coders)
+void	join_coders(t_simulation *sim, int number_coders)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while(i < sim->config.number_of_coders)
-        pthread_join(sim->coders[i++]->thread, NULL);
+	i = 0;
+	while (i < sim->config.number_of_coders)
+		pthread_join(sim->coders[i++]->thread, NULL);
 }
 
-void finich_monitor_and_watcher(t_simulation *sim)
+void	finich_monitor_and_watcher(t_simulation *sim)
 {
 	pthread_mutex_lock(&sim->coders_cnt_lock.mutex);
 	sim->monitor_status = FINISHED_M;
@@ -41,10 +41,10 @@ void finich_monitor_and_watcher(t_simulation *sim)
 	pthread_mutex_unlock(&sim->watch_lock.mutex);
 }
 
-void join_threads(t_simulation *sim)
+void	join_threads(t_simulation *sim)
 {
-    join_coders(sim, sim->config.number_of_coders);
-    finich_monitor_and_watcher(sim);
-    join_monitor(sim);
-    join_watcher(sim);
+	join_coders(sim, sim->config.number_of_coders);
+	finich_monitor_and_watcher(sim);
+	join_monitor(sim);
+	join_watcher(sim);
 }

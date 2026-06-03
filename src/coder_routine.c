@@ -12,41 +12,37 @@
 
 #include "include/codexion.h"
 
-
-
-
-
-void increment_coders_counter(t_coder *coder)
+void	increment_coders_counter(t_coder *coder)
 {
-    pthread_mutex_lock(&coder->coders_cnt_lock->mutex);
+	pthread_mutex_lock(&coder->coders_cnt_lock->mutex);
 	(*coder->run_coders_counter)++;
 	pthread_cond_broadcast(&coder->coders_cnt_lock->cond);
 	pthread_mutex_unlock(&coder->coders_cnt_lock->mutex);
 }
 
-bool wait_all_coders_created(t_coder *coder)
+bool	wait_all_coders_created(t_coder *coder)
 {
-    pthread_mutex_lock(&coder->mutex_cond.mutex);
+	pthread_mutex_lock(&coder->mutex_cond.mutex);
 	coder->has_dongle = false;
-    while (!coder->has_dongle)
+	while (!coder->has_dongle)
 		pthread_cond_wait(&coder->mutex_cond.cond, &coder->mutex_cond.mutex);
-    if (coder->status == ERROR)
-    {
-        pthread_mutex_unlock(&coder->mutex_cond.mutex);
-        return(false);
-    }
-    pthread_mutex_unlock(&coder->mutex_cond.mutex);
-    return (true);
+	if (coder->status == ERROR)
+	{
+		pthread_mutex_unlock(&coder->mutex_cond.mutex);
+		return (false);
+	}
+	pthread_mutex_unlock(&coder->mutex_cond.mutex);
+	return (true);
 }
 
-void *coder_routine(void *arg)
+void	*coder_routine(void *arg)
 {
-    t_coder *coder;
+	t_coder *coder;
 
-    coder = (t_coder *)arg;
-    increment_coders_counter(coder);
-    if (wait_all_coders_created(coder) == false)
-        return (NULL);
-    coder_main_loop(coder);
-    return (NULL);
+	coder = (t_coder *)arg;
+	increment_coders_counter(coder);
+	if (wait_all_coders_created(coder) == false)
+		return (NULL);
+	coder_main_loop(coder);
+	return (NULL);
 }
