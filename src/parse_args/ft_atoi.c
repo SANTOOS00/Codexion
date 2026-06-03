@@ -2,8 +2,8 @@
 
 long	ft_atoi(char *string_number)
 {
-	int         i;
-	long        res;
+	int i;
+	long res;
 
 	i = 0;
 	res = 0;

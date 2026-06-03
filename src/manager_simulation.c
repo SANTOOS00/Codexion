@@ -21,10 +21,10 @@ bool	create_coders(t_simulation *sim)
 	while (i < sim->config.number_of_coders)
 	{
 		if ((ret = pthread_create(&sim->coders[i]->thread, NULL, coder_routine,
-					sim->coders[i])))
+			 sim->coders[i])))
 		{
-			fprintf(stderr, "Error: pthread_create failed: %s \nid coder failed
-				%d\n", strerror(ret), i);
+			fprintf(stderr, "Error: pthread_create failed: %s \nid coder failed"
+				"%d\n", strerror(ret), i);
 			exit_coders(sim, i);
 			return (false);
 		}
