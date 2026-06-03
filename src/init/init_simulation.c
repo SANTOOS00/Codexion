@@ -42,7 +42,7 @@ void reset_simulation_vars(t_simulation *sim)
 bool ft_set_simulation_intial_state(int argc, char **argv, t_simulation *simulation)
 {
 	reset_simulation_vars(simulation);
-	if (parse_args(argc, argv, &simulation->config) == false)
+	if (parse_args(argc, argv, simulation) == false)
 		return (false);
 	if (init_mutex_cond(&simulation->coders_cnt_lock) == false)
 		return (false);

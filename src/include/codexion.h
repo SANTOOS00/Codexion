@@ -192,10 +192,15 @@ typedef struct s_simulation
 long long   		get_time(void);
 long long			get_time_start_end(t_simulation *sim);
 struct timespec		get_time_add_time_wait(long long time_wait_ms);
-bool        		parse_args(int ac, char **av, t_config *config);
+bool        		parse_args(int ac, char **av, t_simulation *sim);
 bool				is_valid_integer(char *str_number);
 bool				validate_numeric_arguments(char **av);
-bool				string_to_int(char **args, t_config *config);
+bool				string_to_int(char **argv, t_config *config);
+long				ft_atoi(char *string_number);
+void				error_out_of_range(const char *arg_name, const char *value);
+bool				parser_time_val(char **av, t_config *config);
+bool				parse_required_compiles(char **av, t_config *config);
+
 
 /* ************************************************************************** */
 /*                            INITIALIZATION (ALLOC & INIT)                   */

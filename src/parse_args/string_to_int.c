@@ -14,50 +14,31 @@
 #include "../include/codexion.h"
 
 
-
-long ft_atio(char *string_number)
-{
-    int i;
-    long res;
-    int digit;
-
-    i = 0;
-    res = 0;
-    if (string_number[i] == '+')
-        i++;
-    // while (string_number[i] != '\0')
-    // {
-    //     digit = string_number[i] - '0';
-    //     if (res > (INT_MAX - digit) / 10)
-    //         return (-1);
-    //     res = 10 * res + (string_number[i] - '0');
-    //     i++;
-    // }
-    return (res);
-}
-
-bool parser_number_of_coders(char **args, t_config *config)
+bool parse_number_of_coders(char **argv, t_config *config)
 {
     long val;
 
-    val = ft_atio(args[1]);
+    val = ft_atoi(argv[1]);
     if (val == -1)
         return (false);
-    // if (val == 0)
-    // {
-    //     return (false);
-    // }
-    printf("Ss\n");
+    if (val == 0)
+        return (false);
     config->number_of_coders = val;
     return (true);
 }
 
-bool string_to_int(char **args, t_config *config)
+bool string_to_int(char **argv, t_config *config)
 {
-    t_config *config_parser;
-    if (parser_number_of_coders(args, config) == false)
+    if (parse_number_of_coders(argv, config) == false)
+    {
+        fprintf(stderr,
+                "Error: 'number_of_coders' must be between 1 and INT_MAX (got '%s').\n",
+                argv[1]);
         return (false);
-    // printf("%ld\n", config->number_of_coders);
-    // config->number_of_coders = config_parser->number_of_coders;
+    }
+    if (parser_time_val(argv, config) == false)
+        return (false);
+    if (parse_required_compiles(argv, config) == false)
+        return (false);
     return (true);
 }

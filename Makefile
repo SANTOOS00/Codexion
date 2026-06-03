@@ -14,6 +14,11 @@ SRC = src/init/queue.c\
 	  src/cleanup/clean_resource.c\
       src/parse_args/parse_args.c \
       src/parse_args/validate_numeric_arguments.c \
+      src/parse_args/string_to_int.c \
+      src/parse_args/error_handler.c \
+      src/parse_args/parser_time_val.c \
+      src/parse_args/parse_compiles_required.c \
+      src/parse_args/ft_atoi.c \
 	  src/coder_main_loop.c\
 	  src/coder_routine.c\
 	  src/exit_threads.c\

@@ -20,7 +20,7 @@ bool is_valid_integer(char *str_number)
 	i = 0;
 	while (str_number[i])
 	{
-		if (str_number[i] == '+')
+		if (str_number[i] == '+' || str_number[i] == '-')
 			i++;
 		if (!(str_number[i] >= '0' && str_number[i] <= '9'))
 			return (false);
@@ -42,7 +42,7 @@ bool validate_numeric_arguments(char **av)
 		"dongle_cooldown", 
 	};
 	i = 1;
-	while (i < 9)
+	while (i < 8)
 	{
 		if (is_valid_integer(av[i]) == false)
 		{
