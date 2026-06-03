@@ -13,6 +13,7 @@ SRC = src/init/queue.c\
 	  src/init/init_or_destory_mutex_cond.c\
 	  src/cleanup/clean_resource.c\
       src/parse_args/parse_args.c \
+      src/parse_args/validate_numeric_arguments.c \
 	  src/coder_main_loop.c\
 	  src/coder_routine.c\
 	  src/exit_threads.c\

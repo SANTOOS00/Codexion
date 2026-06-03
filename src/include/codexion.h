@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/02 22:27:55 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/03 16:41:39 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <sys/time.h>
 #include <time.h>
 #include <stdbool.h>
+#include <limits.h>
 
 
 typedef enum e_scheduler
@@ -192,7 +193,9 @@ long long   		get_time(void);
 long long			get_time_start_end(t_simulation *sim);
 struct timespec		get_time_add_time_wait(long long time_wait_ms);
 bool        		parse_args(int ac, char **av, t_config *config);
-
+bool				is_valid_integer(char *str_number);
+bool				validate_numeric_arguments(char **av);
+bool				string_to_int(char **args, t_config *config);
 
 /* ************************************************************************** */
 /*                            INITIALIZATION (ALLOC & INIT)                   */
