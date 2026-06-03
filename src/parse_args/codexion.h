@@ -19,6 +19,15 @@
 #include <time.h>
 #include <stdbool.h>
 
+typedef enum e_arg_type
+{
+	number_of_coders,
+	time_to_burnout,
+	time_to_compile,
+	time_to_refactor,
+	number_of_compiles_required,
+	dongle_cooldown,
+} t_arg_type;
 
 typedef enum e_scheduler
 {
@@ -53,15 +62,6 @@ typedef enum e_watch_status
 	ERROR_W
 } t_watch_status;
 
-typedef enum e_arg_type
-{
-	number_of_coders,
-	time_to_burnout,
-	time_to_compile,
-	time_to_refactor,
-	number_of_compiles_required,
-	dongle_cooldown,
-} t_arg_type;
 
 typedef struct s_queue_normal t_queue_normal;
 typedef struct s_simulation t_simulation;

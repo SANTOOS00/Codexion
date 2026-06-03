@@ -10,19 +10,57 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/codexion.h"
+#include "codexion.h"
 
 
-bool	parse_args(int ac, char **av, t_config *config)
+bool parse_number(char **av, t_config *config)
 {
-	//"./codexion [number_of_coders] [time_to_burnout] [time_to_compile] [time_to_refactor] [number_of_compiles_required] [dongle_cooldown] [scheduling_algorithm]"
-	config->number_of_coders = 300;
-	config->time_to_burnout = 1;
-	config->time_to_compile = 10;
-	config->time_to_debug = 10;
-	config->time_to_refactor = 10;
-	config->number_of_compiles_required = 110000;
-	config->dongle_cooldown = 0;
-	config->scheduler = EDF;
+	int i;
+	char srg_type[6][35] = {
+		"[number_of_coders]",
+		"[time_to_burnout]",
+		"[time_to_compile]",
+		"[time_to_refactor]",
+		"[number_of_compiles_required]",
+		"[dongle_cooldown]", 
+	};
+
+	fprintf(stderr, "error: %s is number interger", );
+
+	// check_number();
+	return (1);
+}
+
+
+t_scheduler parse_fifo_or_edf(char **av, t_config *config)
+{
+	return 1;
+}
+
+// bool	parse_args(int ac, char **av, t_config *config)
+int	main(int ac, char **av)
+{
+	t_config *config;
+
+	int val_return;
+
+	if (ac != 9)
+	{
+		fprintf(stderr, "./codexion [number_of_coders] [time_to_burnout] "
+		"[time_to_compile] [time_to_refactor] "
+		"[number_of_compiles_required] "
+		"[dongle_cooldown] [scheduling_algorithm]\n");
+		return (false);
+	}
+
+	if (parse_number(av, config) == false)
+	{
+		return (false);
+	}
+	if (parse_fifo_or_edf(av, config) == false)
+	{
+		fprintf(stderr, "error: [scheduling_algorithm] is string (fifo or edf)");
+		return (false);
+	}
 	return true;
 }
