@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/16 14:26:27 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/02 21:58:17 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/04 21:31:29 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,16 @@ bool	is_greater(t_dongle_request *req1, t_dongle_request *req2)
 	return (req1->deadline < req2->deadline);
 }
 
+bool	is_same_deadline(t_dongle_request *req1, t_dongle_request *req2)
+{
+	return (req1->deadline == req2->deadline);
+}
+bool	compare_coder_id(t_dongle_request *req1, t_dongle_request *req2)
+{
+	
+	return (req1->coder->id < req2->coder->id);
+}
+
 void	heapify_up(t_queue *q, int index)
 {
 	int	parent;
@@ -48,7 +58,9 @@ void	heapify_up(t_queue *q, int index)
 	while (index > 0)
 	{
 		parent = parent_index(index);
-		if (is_greater(q->heap[index], q->heap[parent]))
+		if (is_greater(q->heap[index], q->heap[parent]) 
+		&& (is_same_deadline(q->heap[index], q->heap[parent]) 
+		&& compare_coder_id(q->heap[index], q->heap[parent])))
 		{
 			ft_swap(&q->heap[index], &q->heap[parent]);
 			index = parent;
