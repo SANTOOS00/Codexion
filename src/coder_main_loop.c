@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/06 03:50:54 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/02 21:46:28 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/04 21:00:16 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	enqueue_coder_request(t_coder *coder)
 	if (get_status_coder(coder) == START && coder->id % 2 != 0)
 		usleep(1000);
 	push_normal_queue(coder);
+	printf("push coder id %d\n", coder->id);
 	if (get_status_coder(coder) == IS_BURNOUT)
 		return ;
 	pthread_mutex_lock(&coder->mutex_cond.mutex);
@@ -45,6 +46,7 @@ void	enqueue_coder_request(t_coder *coder)
 
 void	coder_main_loop(t_coder *coder)
 {
+	printf("id coder %d\n", coder->id);
 	update_burnout_timer(coder, *coder->config);
 	while (1)
 	{

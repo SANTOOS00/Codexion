@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 17:20:51 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/02 22:15:32 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/04 20:52:49 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,12 @@ t_coder	*pop_highest_priority_ready_coder(t_queue *q)
 	i = 0;
 	while (i < q->size)
 	{
+		printf("coders id %d  \n", q->heap[i]->coder->id);
+		i++;
+	}
+	i = 0 ;
+	while (i < q->size)
+	{
 		if (is_valid_dongl_left_right(q->heap[i]->coder))
 		{
 			coder = q->heap[i]->coder;
@@ -121,8 +127,10 @@ t_coder	*pop_queue(t_queue *q, t_scheduler scheduler)
 	}
 	else if (scheduler == EDF)
 	{
+		// printf("is edf\n");
 		coder = pop_highest_priority_ready_coder(q);
 		pthread_mutex_unlock(&q->mutex_queue);
+		// printf("id coder %d\n", coder->id);
 		return (coder);
 	}
 	pthread_mutex_unlock(&q->mutex_queue);

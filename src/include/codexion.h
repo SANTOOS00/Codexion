@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/03 16:41:39 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/04 21:08:36 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,6 +221,7 @@ bool        init_mutex_cond(t_mutex_cond *mutex_cond);
 /* *********************************************************** */
 
 bool        start_simulation(t_simulation *sim);
+void		start_coder_and_watcher(t_simulation *sim);
 void		coder_main_loop(t_coder *coder);
 void		*coder_routine(void *arg);
 void		*watcher_routine(void *arg);

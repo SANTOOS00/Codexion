@@ -2,7 +2,8 @@ NAME_PROGRAN = codexion
 
 CC = cc
 
-FLAGS = -pthread -Wall -Wextra -Werror
+FLAGS = -pthread  -fsanitize=thread -g3
+#-Wall -Wextra -Werror
 
 SRC = src/init/queue.c\
 	  src/init/queue_normal.c\
@@ -36,6 +37,7 @@ SRC = src/init/queue.c\
 	  src/return_dongles.c\
 	  src/thread_joiner.c\
 	  src/time_utils.c\
+	  src/start_coders_and_watcher.c\
 	  src/watcher_routine.c
 
 
