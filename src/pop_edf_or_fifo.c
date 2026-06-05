@@ -85,6 +85,8 @@ t_coder	*pop_edf_or_fifo(t_queue *q, t_scheduler scheduler)
 	t_coder	*coder;
 
 	coder = NULL;
+	if (q->capacity == 1)
+		return (NULL);
 	if (scheduler == FIFO)
 	{
 		coder = q->heap[0]->coder;
