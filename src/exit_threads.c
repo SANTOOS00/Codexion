@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:46:14 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/02 21:58:14 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/05 18:01:20 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	exit_watcher(t_simulation *sim)
 
 void	exit_coders(t_simulation *sim, int number_coders)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	usleep(1000);

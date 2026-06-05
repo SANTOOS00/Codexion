@@ -12,7 +12,6 @@
 
 #include "include/codexion.h"
 
-
 void	*monitor_routine(void *arg)
 {
 	t_simulation	*sim;

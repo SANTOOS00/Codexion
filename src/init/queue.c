@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/10 17:24:44 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/02 21:48:23 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/05 18:00:09 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,23 +24,13 @@ void	clean_queue(t_queue *queue)
 	free(queue);
 }
 
-bool	ft_init_queue(t_simulation *sim)
+bool	alloc_heap(t_simulation *sim, t_queue *queue)
 {
-	t_queue	*queue;
-	int		i;
-	int		j;
+	int	i;
+	int	j;
 
-	j = 0;
 	i = 0;
-	queue = (t_queue *)malloc(sizeof(t_queue));
-	if (!queue)
-		return (false);
-	if (pthread_mutex_init(&queue->mutex_queue, NULL) != 0)
-		return (free(queue), false);
-	queue->heap = (t_dongle_request **)malloc(sizeof(t_dongle_request *)
-			* sim->config.number_of_coders);
-	if (!queue->heap)
-		return (free(queue), false);
+	j = 0;
 	while (i < sim->config.number_of_coders)
 	{
 		queue->heap[i] = (t_dongle_request *)malloc(sizeof(t_dongle_request));
@@ -53,6 +43,30 @@ bool	ft_init_queue(t_simulation *sim)
 			return (false);
 		}
 		i++;
+	}
+	return (true);
+}
+
+bool	ft_init_queue(t_simulation *sim)
+{
+	t_queue	*queue;
+
+	queue = (t_queue *)malloc(sizeof(t_queue));
+	if (!queue)
+		return (false);
+	if (pthread_mutex_init(&queue->mutex_queue, NULL) != 0)
+		return (free(queue), false);
+	queue->heap = (t_dongle_request **)malloc(sizeof(t_dongle_request *)
+			* sim->config.number_of_coders);
+	if (!queue->heap)
+	{
+		pthread_mutex_destroy(&queue->mutex_queue);
+		return (free(queue), false);
+	}
+	if (alloc_heap(sim, queue) == false)
+	{
+		pthread_mutex_destroy(&queue->mutex_queue);
+		return (false);
 	}
 	queue->capacity = sim->config.number_of_coders;
 	queue->time_burnout = sim->config.time_to_burnout;

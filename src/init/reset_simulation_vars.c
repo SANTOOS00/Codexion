@@ -1,31 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   priority_queue.c                                   :+:      :+:    :+:   */
+/*   reset_simulation_vars.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/12 17:20:51 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/05 19:01:05 by moerrais         ###   ########.fr       */
+/*   Created: 2026/06/05 17:42:43 by moerrais          #+#    #+#             */
+/*   Updated: 2026/06/05 17:48:24 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/codexion.h"
+#include "../include/codexion.h"
 
-t_coder	*pop_queue(t_queue *q, t_scheduler scheduler)
+void	reset_simulation_vars(t_simulation *sim)
 {
-	t_coder	*coder;
-	int		i;
-
-	coder = NULL;
-	i = 1;
-	pthread_mutex_lock(&q->mutex_queue);
-	if (q->size == 0)
-	{
-		pthread_mutex_unlock(&q->mutex_queue);
-		return (NULL);
-	}
-	coder = pop_edf_or_fifo(q, scheduler);
-	pthread_mutex_unlock(&q->mutex_queue);
-	return (coder);
+	sim->is_burnout = false;
+	sim->run_coders_counter = 0;
+	sim->is_watch_waiting = true;
+	sim->monitor_status = START_M;
+	sim->time_start = 0;
+	sim->is_watch_waiting = false;
+	sim->watch_status = START_W;
 }

@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 16:14:55 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/03 16:58:53 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/05 16:07:45 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,23 +30,22 @@ bool	is_valid_integer(char *str_number)
 
 bool	validate_numeric_arguments(char **av)
 {
-	int	i;
+	char	arg_type[7][35];
+	int		i;
 
-	char arg_type[7][35] = {
-		"number_of_coders",
-		"time_to_burnout",
-		"time_to_compile",
-		"time_to_debug",
-		"time_to_refactor",
-		"number_of_compiles_required",
-		"dongle_cooldown",
-	};
+	strcpy(arg_type[0], "number_of_coders");
+	strcpy(arg_type[1], "time_to_burnout");
+	strcpy(arg_type[2], "time_to_compile");
+	strcpy(arg_type[3], "time_to_debug");
+	strcpy(arg_type[4], "time_to_refactor");
+	strcpy(arg_type[5], "number_of_compiles_required");
+	strcpy(arg_type[6], "dongle_cooldown");
 	i = 1;
 	while (i < 8)
 	{
 		if (is_valid_integer(av[i]) == false)
 		{
-			fprintf(stderr, "error: '%s' ('%s') is not a valid integer",
+			fprintf(stderr, "error: '%s' ('%s') is not a valid integer\n",
 				arg_type[i - 1], av[i]);
 			return (false);
 		}

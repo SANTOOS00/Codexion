@@ -1,31 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   priority_queue.c                                   :+:      :+:    :+:   */
+/*   priority_queue_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/12 17:20:51 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/05 19:01:05 by moerrais         ###   ########.fr       */
+/*   Created: 2026/06/05 19:15:58 by moerrais          #+#    #+#             */
+/*   Updated: 2026/06/05 19:29:15 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/codexion.h"
 
-t_coder	*pop_queue(t_queue *q, t_scheduler scheduler)
+int	parent_index(int index)
 {
-	t_coder	*coder;
-	int		i;
+	return ((index - 1) / 2);
+}
 
-	coder = NULL;
-	i = 1;
-	pthread_mutex_lock(&q->mutex_queue);
-	if (q->size == 0)
-	{
-		pthread_mutex_unlock(&q->mutex_queue);
-		return (NULL);
-	}
-	coder = pop_edf_or_fifo(q, scheduler);
-	pthread_mutex_unlock(&q->mutex_queue);
-	return (coder);
+int	cheld_left_index(int index)
+{
+	return ((2 * index) + 1);
+}
+
+int	cheld_right_index(int index)
+{
+	return ((2 * index) + 2);
+}
+
+bool	is_greater(t_dongle_request *req1, t_dongle_request *req2)
+{
+	return (req1->deadline < req2->deadline);
+}
+
+bool	is_same_deadline(t_dongle_request *req1, t_dongle_request *req2)
+{
+	return (req1->deadline == req2->deadline);
 }

@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 21:58:28 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/02 21:58:29 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/05 18:07:31 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	run_edf_routine(t_simulation *sim)
 {
-	t_coder *coder;
+	t_coder	*coder;
 
 	while (check_status_monitor(sim) != FINISHED_M)
 	{

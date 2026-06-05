@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 22:21:22 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/02 22:16:42 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/05 19:51:23 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,80 +22,42 @@ t_watch_status	get_status_watcher(t_simulation *sim)
 	return (status);
 }
 
-void	stop_coders(t_simulation *sim)
-{
-	int	i;
-
-	i = 0;
-	while (i < sim->config.number_of_coders)
-	{
-		pthread_mutex_lock(&sim->coders[i]->mutex_cond.mutex);
-		sim->coders[i]->status = IS_BURNOUT;
-		sim->coders[i]->has_dongle = true;
-		pthread_cond_broadcast(&sim->coders[i]->mutex_cond.cond);
-		pthread_mutex_unlock(&sim->coders[i]->mutex_cond.mutex);
-		i++;
-	}
-}
-
-void	stop_monitor(t_simulation *sim)
-{
-	pthread_mutex_lock(&sim->coders_cnt_lock.mutex);
-	sim->monitor_status = FINISHED_M;
-	pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
-}
-
 void	detect_burnout_in_coders(t_simulation *sim)
 {
-	int		i;
-	bool	is_Check_boun;
+	bool		ischeckboun;
+	int			i;
 
-	is_Check_boun = false;
-	while (1)
+	ischeckboun = false;
+	while (!ischeckboun)
 	{
 		i = 0;
 		if (get_status_watcher(sim) == FINISHED_W)
 			break ;
-		while (i < sim->config.number_of_coders)
+		while (!ischeckboun && i < sim->config.number_of_coders)
 		{
 			if (get_status_watcher(sim) == FINISHED_W)
 				break ;
 			if (get_status_coder(sim->coders[i]) != FINISHED)
 			{
-				pthread_mutex_lock(&sim->coders[i]->mutex_cond.mutex);
-				if (sim->coders[i]->deadline != 0
-					&& get_time() > sim->coders[i]->deadline)
-				{
-					pthread_mutex_unlock(&sim->coders[i]->mutex_cond.mutex);
-					stop_monitor(sim);
-					stop_coders(sim);
-					print_coder_action(sim->coders[i], "is bournout");
-					is_Check_boun = true;
-					break ;
-				}
-				else
-				{
-					pthread_mutex_unlock(&sim->coders[i]->mutex_cond.mutex);
-					usleep(1000);
-				}
+				if (check_coder_burnout(sim, i))
+					ischeckboun = true;
 			}
-			if (is_Check_boun)
-				break ;
 			i++;
 		}
-		if (is_Check_boun)
+		if (ischeckboun)
 			break ;
 	}
 }
 
 void	*watcher_routine(void *arg)
 {
-	t_simulation *sim;
+	t_simulation	*sim;
 
 	sim = (t_simulation *)arg;
 	pthread_mutex_lock(&sim->watch_lock.mutex);
 	while (!sim->is_watch_waiting)
-		pthread_cond_wait(&sim->watch_lock.cond, &sim->watch_lock.mutex);
+		pthread_cond_wait(&sim->watch_lock.cond,
+			&sim->watch_lock.mutex);
 	if (sim->watch_status == ERROR_W)
 	{
 		pthread_mutex_unlock(&sim->watch_lock.mutex);

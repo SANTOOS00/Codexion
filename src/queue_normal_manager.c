@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 16:15:36 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/02 22:15:57 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/05 19:03:59 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,11 @@ void	add_queue_normal_to_queue(t_queue_normal *queue_normal, t_queue *queue,
 
 void	push_normal_queue(t_coder *coder)
 {
-	t_queue_normal *queue_normal;
+	t_queue_normal	*queue_normal;
 
 	queue_normal = coder->queue_normal;
 	pthread_mutex_lock(&queue_normal->mutex_crossing);
 	queue_normal->heap[queue_normal->size] = coder;
-
 	queue_normal->size++;
 	pthread_mutex_unlock(&queue_normal->mutex_crossing);
 }

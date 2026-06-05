@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 21:15:23 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/04 21:15:24 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/05 16:00:53 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 long	ft_atoi(char *string_number)
 {
-	int i;
-	long res;
+	long	res;
+	int		i;
 
 	i = 0;
 	res = 0;

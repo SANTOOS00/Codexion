@@ -1,31 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   priority_queue.c                                   :+:      :+:    :+:   */
+/*   try_take_dongle.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/12 17:20:51 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/05 19:01:05 by moerrais         ###   ########.fr       */
+/*   Created: 2026/06/05 18:12:52 by moerrais          #+#    #+#             */
+/*   Updated: 2026/06/05 18:15:19 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/codexion.h"
 
-t_coder	*pop_queue(t_queue *q, t_scheduler scheduler)
+bool	try_take_dongle(t_dongle *dongle)
 {
-	t_coder	*coder;
-	int		i;
+	bool	success;
 
-	coder = NULL;
-	i = 1;
-	pthread_mutex_lock(&q->mutex_queue);
-	if (q->size == 0)
+	pthread_mutex_lock(&dongle->m_cn_dongle.mutex);
+	if (!(get_time() - dongle->last_release_time >= dongle->cooldown_time))
 	{
-		pthread_mutex_unlock(&q->mutex_queue);
-		return (NULL);
+		pthread_mutex_unlock(&dongle->m_cn_dongle.mutex);
+		return (false);
 	}
-	coder = pop_edf_or_fifo(q, scheduler);
-	pthread_mutex_unlock(&q->mutex_queue);
-	return (coder);
+	success = dongle->is_available;
+	pthread_mutex_unlock(&dongle->m_cn_dongle.mutex);
+	return (success);
 }

@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 22:14:14 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/02 22:14:18 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/05 17:29:07 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,11 @@ t_coder	**alloc_coders(int coders_number)
 
 bool	ft_set_coders_initial_state(t_simulation *simulation)
 {
-	t_config	config;
-	t_coder		*coder;
-	int			i;
+	t_coder	*coder;
+	int		i;
 
 	i = 0;
-	config = simulation->config;
-	while (i < config.number_of_coders)
+	while (i < simulation->config.number_of_coders)
 	{
 		coder = simulation->coders[i];
 		coder->id = i + 1;
@@ -50,7 +48,7 @@ bool	ft_set_coders_initial_state(t_simulation *simulation)
 		coder->config = &simulation->config;
 		coder->left_dongle = simulation->dongles[i];
 		coder->right_dongle = simulation->dongles[(i + 1)
-			% config.number_of_coders];
+			% simulation->config.number_of_coders];
 		coder->run_coders_counter = &simulation->run_coders_counter;
 		coder->coders_cnt_lock = &simulation->coders_cnt_lock;
 		coder->status = START;

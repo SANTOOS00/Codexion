@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 19:04:20 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/02 21:57:11 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/05 17:34:45 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	init_dongles_state(t_dongle **dongles, t_config config)
 
 bool	alloc_and_init_dongles(t_simulation *simulation)
 {
-	t_dongle **dongles;
+	t_dongle	**dongles;
 
 	dongles = dongles_alloc(simulation->config.number_of_coders);
 	if (!dongles)

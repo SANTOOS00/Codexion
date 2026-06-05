@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 16:19:23 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/04 21:15:29 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/05 17:25:55 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,16 @@ bool	parse_scheduler_type(char **av, t_config *config)
 
 bool	parse_args(int ac, char **av, t_simulation *sim)
 {
-	t_config config;
+	t_config	config;
 
 	if (ac != 9)
 	{
 		fprintf(stderr,
-				"Usage: ./codexion [number_of_coders] "
-				"[time_to_burnout] [time_to_compile] "
-				"[time_to_debug] [time_to_refactor] "
-				"[number_of_compiles_required] [dongle_cooldown] "
-				"[scheduler: fifo|edf]\n");
+			"Usage: ./codexion [number_of_coders] "
+			"[time_to_burnout] [time_to_compile] "
+			"[time_to_debug] [time_to_refactor] "
+			"[number_of_compiles_required] [dongle_cooldown] "
+			"[scheduler: fifo|edf]\n");
 		return (false);
 	}
 	if (validate_numeric_arguments(av) == false)

@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 16:19:23 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/03 17:00:21 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/05 17:25:07 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ bool	string_to_int(char **argv, t_config *config)
 	if (parse_number_of_coders(argv, config) == false)
 	{
 		fprintf(stderr,
-			"Error: 'number_of_coders' must be between 1 and INT_MAX (got '%s').\n",
+			"Error: 'number_of_coders' "
+			"must be between 1 and INT_MAX (got '%s').\n",
 			argv[1]);
 		return (false);
 	}

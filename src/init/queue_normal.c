@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:47:02 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/02 21:48:15 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/05 17:47:38 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_queue_normal	*alloc_queue_normal(int coders_number)
 
 bool	ft_init_queue_normal(t_simulation *sim)
 {
-	t_queue_normal *queue_normal;
+	t_queue_normal	*queue_normal;
 
 	queue_normal = alloc_queue_normal(sim->config.number_of_coders);
 	if (!queue_normal)
