@@ -18,8 +18,7 @@ long long	get_time(void)
 	long long		time_ms;
 
 	gettimeofday(&tv, NULL);
-	time_ms = (long long)tv.tv_sec * 1000
-		+ (long long)tv.tv_usec / 1000;
+	time_ms = (long long)tv.tv_sec * 1000 + (long long)tv.tv_usec / 1000;
 	return (time_ms);
 }
 
@@ -35,8 +34,8 @@ long long	get_time_start_end(t_simulation *sim)
 
 struct timespec	get_time_add_time_wait(long long time_wait_ms)
 {
-	struct timespec		spects;
-	struct timeval		valts;
+	struct timespec	spects;
+	struct timeval	valts;
 
 	gettimeofday(&valts, NULL);
 	valts.tv_sec += time_wait_ms / 1000;

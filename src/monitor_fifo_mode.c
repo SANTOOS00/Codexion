@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:30:25 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/02 21:58:33 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/06 02:52:39 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	run_fifo_routine(t_simulation *sim)
 			usleep(500);
 		else
 		{
+			pick_up_dongle(coder);
 			pthread_mutex_lock(&coder->mutex_cond.mutex);
 			coder->has_dongle = true;
 			pthread_cond_broadcast(&coder->mutex_cond.cond);

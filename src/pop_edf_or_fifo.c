@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 18:16:29 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/05 19:02:04 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/06 03:44:46 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,10 @@ void	push_to_priority_queue(t_queue *q, t_coder *coder,
 	}
 	pthread_mutex_unlock(&coder->mutex_cond.mutex);
 	if (scheduler == EDF)
+	{
+		heapify_down(q, q->size);
 		heapify_up(q, q->size);
+	}
 	q->size++;
 	pthread_mutex_unlock(&q->mutex_queue);
 }
@@ -57,27 +60,30 @@ void	shift_queue_elements(t_queue *q)
 
 t_coder	*pop_highest_priority_ready_coder(t_queue *q)
 {
-	t_coder	*coder;
 	int		i;
+	int		best;
+	t_coder	*coder;
 
+	best = -1;
 	i = 0;
 	while (i < q->size)
 	{
 		if (is_valid_dongl_left_right(q->heap[i]->coder))
 		{
-			coder = q->heap[i]->coder;
-			q->heap[i]->coder = q->heap[q->size - 1]->coder;
-			q->heap[i]->deadline = q->heap[q->size - 1]->deadline;
-			q->size--;
-			if (is_greater(q->heap[i], q->heap[parent_index(i)]))
-				heapify_up(q, i);
-			else
-				heapify_down(q, i);
-			return (coder);
+			if (best == -1 || is_greater(q->heap[best], q->heap[i]))
+				best = i;
 		}
 		i++;
 	}
-	return (NULL);
+	if (best == -1)
+		return (NULL);
+	coder = q->heap[best]->coder;
+	q->heap[best]->coder = q->heap[q->size - 1]->coder;
+	q->heap[best]->deadline = q->heap[q->size - 1]->deadline;
+	q->size--;
+	heapify_down(q, best);
+	heapify_up(q, best);
+	return (coder);
 }
 
 t_coder	*pop_edf_or_fifo(t_queue *q, t_scheduler scheduler)
@@ -85,10 +91,10 @@ t_coder	*pop_edf_or_fifo(t_queue *q, t_scheduler scheduler)
 	t_coder	*coder;
 
 	coder = NULL;
-	if (q->capacity == 1)
-		return (NULL);
 	if (scheduler == FIFO)
 	{
+		if (q->capacity == 1)
+			return (NULL);
 		coder = q->heap[0]->coder;
 		if (!is_valid_dongl_left_right(q->heap[0]->coder))
 			return (NULL);
@@ -97,6 +103,8 @@ t_coder	*pop_edf_or_fifo(t_queue *q, t_scheduler scheduler)
 	}
 	else if (scheduler == EDF)
 	{
+		if (q->capacity == 1)
+			return (NULL);
 		coder = pop_highest_priority_ready_coder(q);
 		return (coder);
 	}

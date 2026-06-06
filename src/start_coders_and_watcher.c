@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 21:06:44 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/05 19:54:04 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/06 03:45:37 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ bool	get_status_monitor(t_simulation *sim)
 
 void	start_coder_and_watcher(t_simulation *sim)
 {
-	usleep(1000);
+	usleep(1500);
 	activate_coders(sim);
 	activate_watcher(sim);
 	init_time_start(sim);

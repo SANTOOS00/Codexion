@@ -24,8 +24,8 @@ t_watch_status	get_status_watcher(t_simulation *sim)
 
 void	detect_burnout_in_coders(t_simulation *sim)
 {
-	bool		ischeckboun;
-	int			i;
+	bool	ischeckboun;
+	int		i;
 
 	ischeckboun = false;
 	while (!ischeckboun)
@@ -56,8 +56,7 @@ void	*watcher_routine(void *arg)
 	sim = (t_simulation *)arg;
 	pthread_mutex_lock(&sim->watch_lock.mutex);
 	while (!sim->is_watch_waiting)
-		pthread_cond_wait(&sim->watch_lock.cond,
-			&sim->watch_lock.mutex);
+		pthread_cond_wait(&sim->watch_lock.cond, &sim->watch_lock.mutex);
 	if (sim->watch_status == ERROR_W)
 	{
 		pthread_mutex_unlock(&sim->watch_lock.mutex);

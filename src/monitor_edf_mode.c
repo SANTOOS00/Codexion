@@ -6,11 +6,21 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 21:58:28 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/05 18:07:31 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/06 03:49:32 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/codexion.h"
+
+bool	size_queue_normal(t_queue_normal *q)
+{
+	int	size;
+
+	pthread_mutex_lock(&q->mutex_crossing);
+	size = q->size;
+	pthread_mutex_unlock(&q->mutex_crossing);
+	return (size > 0);
+}
 
 void	run_edf_routine(t_simulation *sim)
 {
@@ -21,15 +31,19 @@ void	run_edf_routine(t_simulation *sim)
 		add_queue_normal_to_queue(sim->queue_normal, sim->queue, EDF);
 		if (check_burnout(sim))
 			break ;
-		coder = pop_queue(sim->queue, EDF);
-		if (!coder)
-			usleep(500);
-		else
+		else if (!size_queue_normal(sim->queue_normal))
 		{
-			pthread_mutex_lock(&coder->mutex_cond.mutex);
-			coder->has_dongle = true;
-			pthread_cond_broadcast(&coder->mutex_cond.cond);
-			pthread_mutex_unlock(&coder->mutex_cond.mutex);
+			coder = pop_queue(sim->queue, EDF);
+			if (coder)
+			{
+				pick_up_dongle(coder);
+				pthread_mutex_lock(&coder->mutex_cond.mutex);
+				coder->has_dongle = true;
+				pthread_cond_broadcast(&coder->mutex_cond.cond);
+				pthread_mutex_unlock(&coder->mutex_cond.mutex);
+			}		
 		}
+		else
+			usleep(500);
 	}
 }
