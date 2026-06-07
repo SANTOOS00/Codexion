@@ -70,7 +70,7 @@ t_coder	*pop_highest_priority_ready_coder(t_queue *q)
 	{
 		if (is_valid_dongl_left_right(q->heap[i]->coder))
 		{
-			if (best == -1 || is_greater(q->heap[best], q->heap[i]))
+			if (best == -1 || is_greater(q->heap[i], q->heap[best]))
 				best = i;
 		}
 		i++;

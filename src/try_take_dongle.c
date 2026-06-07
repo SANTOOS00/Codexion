@@ -12,17 +12,32 @@
 
 #include "include/codexion.h"
 
-bool	try_take_dongle(t_dongle *dongle)
+// bool	try_take_dongle(t_dongle *dongle)
+// {
+// 	bool	success;
+
+// 	pthread_mutex_lock(&dongle->m_cn_dongle.mutex);
+// 	if (!(get_time() - dongle->last_release_time >= dongle->cooldown_time))
+// 	{
+// 		pthread_mutex_unlock(&dongle->m_cn_dongle.mutex);
+// 		return (false);
+// 	}
+// 	success = dongle->is_available;
+// 	pthread_mutex_unlock(&dongle->m_cn_dongle.mutex);
+// 	return (success);
+// }
+
+bool try_take_dongle(t_dongle *dongle)
 {
 	bool	success;
 
 	pthread_mutex_lock(&dongle->m_cn_dongle.mutex);
-	if (!(get_time() - dongle->last_release_time >= dongle->cooldown_time))
+	success = false;
+	if (get_time() - dongle->last_release_time >= dongle->cooldown_time
+		&& dongle->is_available)
 	{
-		pthread_mutex_unlock(&dongle->m_cn_dongle.mutex);
-		return (false);
+		success = true;
 	}
-	success = dongle->is_available;
 	pthread_mutex_unlock(&dongle->m_cn_dongle.mutex);
 	return (success);
 }

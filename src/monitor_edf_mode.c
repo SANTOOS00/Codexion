@@ -28,22 +28,19 @@ void	run_edf_routine(t_simulation *sim)
 
 	while (check_status_monitor(sim) != FINISHED_M)
 	{
-		add_queue_normal_to_queue(sim->queue_normal, sim->queue, EDF);
+		add_queue_normal_to_queue(sim->queue_normal, sim->queue, FIFO);
 		if (check_burnout(sim))
 			break ;
-		else if (!size_queue_normal(sim->queue_normal))
-		{
-			coder = pop_queue(sim->queue, EDF);
-			if (coder)
-			{
-				pick_up_dongle(coder);
-				pthread_mutex_lock(&coder->mutex_cond.mutex);
-				coder->has_dongle = true;
-				pthread_cond_broadcast(&coder->mutex_cond.cond);
-				pthread_mutex_unlock(&coder->mutex_cond.mutex);
-			}		
-		}
-		else
+		coder = pop_queue(sim->queue, EDF);
+		if (!coder)
 			usleep(500);
+		else
+		{
+			pick_up_dongle(coder);
+			pthread_mutex_lock(&coder->mutex_cond.mutex);
+			coder->has_dongle = true;
+			pthread_cond_broadcast(&coder->mutex_cond.cond);
+			pthread_mutex_unlock(&coder->mutex_cond.mutex);
+		}
 	}
 }

@@ -35,18 +35,42 @@ void	stop_monitor(t_simulation *sim)
 	pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
 }
 
-bool	check_coder_burnout(t_simulation *sim, int i)
+// bool	check_coder_burnout(t_simulation *sim, int i)
+// {
+// 	pthread_mutex_lock(&sim->coders[i]->mutex_cond.mutex);	
+// 	if (sim->coders[i]->deadline != 0 && get_time() > sim->coders[i]->deadline)
+// 	{
+// 		pthread_mutex_unlock(&sim->coders[i]->mutex_cond.mutex);
+// 		stop_monitor(sim);
+// 		stop_coders(sim);
+// 		print_coder_action(sim->coders[i], "is burnout");
+// 		return (true);
+// 	}
+// 	pthread_mutex_unlock(&sim->coders[i]->mutex_cond.mutex);
+// 	usleep(500);
+// 	return (false);
+// }
+
+bool check_coder_burnout(t_simulation *sim, int i)
 {
+	bool burned = false;
+
 	pthread_mutex_lock(&sim->coders[i]->mutex_cond.mutex);
-	if (sim->coders[i]->deadline != 0 && get_time() > sim->coders[i]->deadline)
+	if (sim->coders[i]->deadline != 0 &&
+		get_time() > sim->coders[i]->deadline)
 	{
-		pthread_mutex_unlock(&sim->coders[i]->mutex_cond.mutex);
-		stop_monitor(sim);
-		stop_coders(sim);
-		print_coder_action(sim->coders[i], "is burnout");
-		return (true);
+		burned = true;
 	}
 	pthread_mutex_unlock(&sim->coders[i]->mutex_cond.mutex);
-	usleep(1000);
-	return (false);
+
+	if (burned)
+	{
+		print_coder_action(sim->coders[i], "is burnout");
+		stop_monitor(sim);
+		stop_coders(sim);
+		return true;
+	}
+
+	usleep(500);
+	return false;
 }

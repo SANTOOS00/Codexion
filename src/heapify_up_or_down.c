@@ -29,7 +29,10 @@ void	heapify_up(t_queue *q, int index)
 	{
 		parent = parent_index(index);
 		if (is_greater(q->heap[index], q->heap[parent]))
+		{
 			ft_swap(&q->heap[index], &q->heap[parent]);
+			index = parent;
+		}
 		else if (is_same_deadline(q->heap[index], q->heap[parent])
 			&& q->heap[index]->coder->id < q->heap[parent]->coder->id)
 		{
@@ -52,10 +55,10 @@ void	heapify_down(t_queue *q, int parent)
 		cheld_left = cheld_left_index(parent);
 		cheld_right = cheld_right_index(parent);
 		index = parent;
-		if (cheld_left < q->size && is_greater(q->heap[parent],
-				q->heap[cheld_left]))
+		if (cheld_left < q->size && is_greater(q->heap[cheld_left],
+				q->heap[parent]))
 			index = cheld_left;
-		if (cheld_right < q->size && is_greater(q->heap[parent],
+		if (cheld_right < q->size && is_greater(q->heap[cheld_right],
 				q->heap[cheld_right]))
 			index = cheld_right;
 		if (index == parent)

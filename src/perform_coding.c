@@ -25,7 +25,6 @@ void	ft_compiling_coder(t_coder *coder)
 	struct timespec	time;
 
 	time_wait = coder->config->time_to_compile;
-	time = get_time_add_time_wait(time_wait);
 	pthread_mutex_lock(&coder->mutex_cond.mutex);
 	coder->compilation_count++;
 	if (coder->status == IS_BURNOUT)
@@ -34,6 +33,7 @@ void	ft_compiling_coder(t_coder *coder)
 		return ;
 	}
 	print_coder_action(coder, "is compiling");
+	time = get_time_add_time_wait(time_wait);
 	pthread_cond_timedwait(&coder->mutex_cond.cond, &coder->mutex_cond.mutex,
 		&time);
 	pthread_mutex_unlock(&coder->mutex_cond.mutex);
@@ -45,13 +45,13 @@ void	ft_debugging_coder(t_coder *coder)
 	struct timespec	time;
 
 	time_wait = coder->config->time_to_debug;
-	time = get_time_add_time_wait(time_wait);
 	pthread_mutex_lock(&coder->mutex_cond.mutex);
 	if (coder->status == IS_BURNOUT)
 	{
 		pthread_mutex_unlock(&coder->mutex_cond.mutex);
 		return ;
 	}
+	time = get_time_add_time_wait(time_wait);
 	print_coder_action(coder, "is debugging");
 	pthread_cond_timedwait(&coder->mutex_cond.cond, &coder->mutex_cond.mutex,
 		&time);
@@ -64,7 +64,6 @@ void	ft_refactoring_coder(t_coder *coder)
 	struct timespec	time;
 
 	time_wait = coder->config->time_to_refactor;
-	time = get_time_add_time_wait(time_wait);
 	pthread_mutex_lock(&coder->mutex_cond.mutex);
 	if (coder->status == IS_BURNOUT)
 	{
@@ -72,6 +71,7 @@ void	ft_refactoring_coder(t_coder *coder)
 		return ;
 	}
 	print_coder_action(coder, "is refactoring");
+	time = get_time_add_time_wait(time_wait);
 	pthread_cond_timedwait(&coder->mutex_cond.cond, &coder->mutex_cond.mutex,
 		&time);
 	pthread_mutex_unlock(&coder->mutex_cond.mutex);

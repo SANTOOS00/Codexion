@@ -26,7 +26,6 @@ void	detect_burnout_in_coders(t_simulation *sim)
 {
 	bool	ischeckboun;
 	int		i;
-
 	ischeckboun = false;
 	while (!ischeckboun)
 	{
