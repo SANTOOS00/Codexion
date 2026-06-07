@@ -54,8 +54,15 @@ bool	get_status_monitor(t_simulation *sim)
 
 void	start_coder_and_watcher(t_simulation *sim)
 {
-	usleep(1500);
+	int i;
 	activate_coders(sim);
+	while (i != sim->queue_normal->capacity)
+	{
+		pthread_mutex_lock(&sim->queue->mutex_queue);
+		i = sim->queue_normal->size;
+		pthread_mutex_unlock(&sim->queue->mutex_queue);
+		usleep(500);
+	}
 	activate_watcher(sim);
 	init_time_start(sim);
 	run_fifo_or_edf_routine(sim);

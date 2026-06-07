@@ -70,7 +70,5 @@ bool check_coder_burnout(t_simulation *sim, int i)
 		stop_coders(sim);
 		return true;
 	}
-
-	usleep(500);
 	return false;
 }
