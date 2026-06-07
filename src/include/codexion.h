@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/05 19:38:52 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/07 03:35:27 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,6 +223,8 @@ void				error_out_of_range(const char *arg, const char *val);
 
 bool				parser_time_val(char **av, t_config *config);
 bool				parse_required_compiles(char **av, t_config *config);
+
+void				update_burnout_timer(t_coder *coder, t_config config);
 
 /*
 ** ================= INIT =================

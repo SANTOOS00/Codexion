@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 21:06:44 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/06 03:45:37 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/07 03:19:14 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,15 @@ bool	get_status_monitor(t_simulation *sim)
 void	start_coder_and_watcher(t_simulation *sim)
 {
 	int i;
-	activate_coders(sim);
-	while (i != sim->queue_normal->capacity)
-	{
-		pthread_mutex_lock(&sim->queue->mutex_queue);
-		i = sim->queue_normal->size;
-		pthread_mutex_unlock(&sim->queue->mutex_queue);
-		usleep(500);
-	}
+	// while (i != sim->queue_normal->capacity)
+	// {
+		// 	pthread_mutex_lock(&sim->queue->mutex_queue);
+		// 	i = sim->queue_normal->size;
+		// 	pthread_mutex_unlock(&sim->queue->mutex_queue);
+		// 	usleep(5);
+		// }
 	activate_watcher(sim);
 	init_time_start(sim);
+	activate_coders(sim);
 	run_fifo_or_edf_routine(sim);
 }

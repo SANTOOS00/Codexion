@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 19:36:24 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/05 19:51:49 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/07 03:59:45 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,18 +57,18 @@ bool check_coder_burnout(t_simulation *sim, int i)
 
 	pthread_mutex_lock(&sim->coders[i]->mutex_cond.mutex);
 	if (sim->coders[i]->deadline != 0 &&
-		get_time() > sim->coders[i]->deadline)
+		get_time() >= sim->coders[i]->deadline)
 	{
 		burned = true;
 	}
 	pthread_mutex_unlock(&sim->coders[i]->mutex_cond.mutex);
-
 	if (burned)
 	{
-		print_coder_action(sim->coders[i], "is burnout");
 		stop_monitor(sim);
 		stop_coders(sim);
+		print_coder_action(sim->coders[i], "is burnout");
 		return true;
 	}
+	usleep(1000);
 	return false;
 }

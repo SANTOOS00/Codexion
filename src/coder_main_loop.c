@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/06 03:50:54 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/06 02:52:23 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/07 03:43:37 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void	enqueue_coder_request(t_coder *coder)
 
 void	coder_main_loop(t_coder *coder)
 {
-	update_burnout_timer(coder, *coder->config);
 	while (1)
 	{
 		if (get_status_coder(coder) == FINISHED)
@@ -53,7 +52,6 @@ void	coder_main_loop(t_coder *coder)
 		enqueue_coder_request(coder);
 		if (get_status_coder(coder) == IS_BURNOUT)
 			break ;
-		update_burnout_timer(coder, *coder->config);
 		perform_coding(coder);
 	}
 }

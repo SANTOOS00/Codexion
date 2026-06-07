@@ -7,7 +7,30 @@
 # include <time.h>
 # include <stdbool.h>
 # include <limits.h>
+typedef enum e_coder_status
+{
+	START,
+	COMPILING,
+	DEBUGGING,
+	REFACTORING,
+	FINISHED,
+	IS_BURNOUT,
+	ERROR
+}	t_coder_status;
 
+typedef enum e_monitor_status
+{
+	START_M,
+	FINISHED_M,
+	ERROR_M
+}	t_monitor_status;
+
+typedef enum e_watch_status
+{
+	START_W,
+	FINISHED_W,
+	ERROR_W
+} t_watch_status;
 typedef struct s_dongle
 {
 	bool			is_available;
@@ -21,8 +44,7 @@ typedef struct s_coder
 	int				id;
 	bool			has_dongle;
 	long long		deadline;
-	t_dongle		*left_dongle;
-	t_dongle		*right_dongle;
+
 
 }	t_coder;
 
@@ -39,140 +61,84 @@ typedef struct s_queue
 	int					capacity;
 	long long			time_burnout;
 }	t_queue;
-
-long long	get_time(void)
+typedef struct s_simulation
 {
-	struct timeval	tv;
-	long long		time_ms;
+	pthread_t			monitor_tid;
+	pthread_t			watcher_tid;
 
-	gettimeofday(&tv, NULL);
-	time_ms = (long long)tv.tv_sec * 1000 + (long long)tv.tv_usec / 1000;
-	return (time_ms);
+	pthread_mutex_t		mutex_print;
+
+	long long			time_start;
+
+	t_coder				**coders;
+
+	t_queue				*queue;
+
+
+	t_monitor_status	monitor_status;
+	int					run_coders_counter;
+
+	bool				is_watch_waiting;
+
+	bool				is_burnout;
+	pthread_mutex_t		burnout_mutex;
+}	t_simulation;
+
+t_watch_status	get_status_watcher(t_simulation *sim)
+{
+	t_watch_status	status;
+
+	pthread_mutex_lock(&sim->watch_lock.mutex);
+	status = sim->watch_status;
+	pthread_mutex_unlock(&sim->watch_lock.mutex);
+	return (status);
 }
 
-int	parent_index(int index)
+bool check_coder_burnout(t_simulation *sim, int i)
 {
-	return ((index - 1) / 2);
-}
+	bool burned = false;
 
-int	cheld_left_index(int index)
-{
-	return ((2 * index) + 1);
-}
-
-int	cheld_right_index(int index)
-{
-	return ((2 * index) + 2);
-}
-
-bool	is_dongle_available(t_dongle *dongle)
-{
-	bool	success;
-	if (!(get_time() - dongle->last_release_time >= dongle->cooldown_time))
+	pthread_mutex_lock(&sim->coders[i]->mutex_cond.mutex);
+	if (sim->coders[i]->deadline != 0 &&
+		get_time() >= sim->coders[i]->deadline)
 	{
-		return (false);
+		burned = true;
 	}
-	success = dongle->is_available;
-	return (success);
-}
-bool	is_valid_dongl_left_right(t_coder *coder)
-{
-	return (is_dongle_available(coder->left_dongle)
-		&& is_dongle_available(coder->right_dongle));
-}
+	pthread_mutex_unlock(&sim->coders[i]->mutex_cond.mutex);
 
-
-bool	is_greater(t_dongle_request *req1, t_dongle_request *req2)
-{
-	return (req1->deadline < req2->deadline);
-}
-
-bool	is_same_deadline(t_dongle_request *req1, t_dongle_request *req2)
-{
-	return (req1->deadline == req2->deadline);
-}
-
-
-
-void	ft_swap(t_dongle_request **s1, t_dongle_request **s2)
-{
-	t_dongle_request	*temp;
-
-	temp = *s1;
-	*s1 = *s2;
-	*s2 = temp;
-}
-
-void	heapify_up(t_queue *q, int index)
-{
-	int	parent;
-
-	while (index > 0)
+	if (burned)
 	{
-		parent = parent_index(index);
-		if (is_greater(q->heap[index], q->heap[parent]))
-        {
-			ft_swap(&q->heap[index], &q->heap[parent]);
-            index = parent; 
-        }
-		else if (is_same_deadline(q->heap[index], q->heap[parent])
-			&& q->heap[index]->coder->id < q->heap[parent]->coder->id)
-		{
-			ft_swap(&q->heap[index], &q->heap[parent]);
-			index = parent;
-		}
-		else
-			break ;
+		print_coder_action(sim->coders[i], "is burnout");
+		stop_monitor(sim);
+		stop_coders(sim);
+		return true;
 	}
+	return false;
 }
 
-void	heapify_down(t_queue *q, int parent)
-{
-	int	cheld_left;
-	int	cheld_right;
-	int	index;
 
-	while (parent < q->size)
-	{
-		cheld_left = cheld_left_index(parent);
-		cheld_right = cheld_right_index(parent);
-		index = parent;
-		if (cheld_left < q->size && is_greater(q->heap[cheld_left],
-				q->heap[parent]))
-			index = cheld_left;
-		if (cheld_right < q->size && is_greater(q->heap[cheld_right],
-				q->heap[parent]))
-			index = cheld_right;
-		if (index == parent)
-			break ;
-		ft_swap(&q->heap[index], &q->heap[parent]);
-		parent = index;
-	}
-}
-t_coder	*pop_highest_priority_ready_coder(t_queue *q)
+void	detect_burnout_in_coders(t_simulation *sim)
 {
+	bool	ischeckboun;
 	int		i;
-	int		best;
-	t_coder	*coder;
-
-	best = -1;
-	i = 0;
-	while (i < q->size)
+	ischeckboun = false;
+	while (!ischeckboun)
 	{
-		if (is_valid_dongl_left_right(q->heap[i]->coder))
+		i = 0;
+		if (get_status_watcher(sim) == FINISHED_W)
+			break ;
+		while (!ischeckboun && i < sim->config.number_of_coders)
 		{
-			if (best == -1 || is_greater(q->heap[i], q->heap[best]))
-				best = i;
+			if (get_status_watcher(sim) == FINISHED_W)
+				break ;
+			if (get_status_coder(sim->coders[i]) != FINISHED)
+			{
+				if (check_coder_burnout(sim, i))
+					ischeckboun = true;
+			}
+			i++;
 		}
-		i++;
+		if (ischeckboun)
+			break ;
 	}
-	if (best == -1)
-		return (NULL);
-	coder = q->heap[best]->coder;
-	q->heap[best]->coder = q->heap[q->size - 1]->coder;
-	q->heap[best]->deadline = q->heap[q->size - 1]->deadline;
-	q->size--;
-	heapify_down(q, best);
-	heapify_up(q, best);
-	return (coder);
 }
