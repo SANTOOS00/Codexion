@@ -29,11 +29,19 @@ t_coder_status	get_status_coder(t_coder *coder)
 	return (status);
 }
 
+void test_name(t_coder *coder)
+{
+	if (get_status_coder(coder) == START)
+		push_normal_queue(coder);
+	else
+		push_to_priority_queue(coder->queue, coder, coder->config->scheduler);
+}
+
 void	enqueue_coder_request(t_coder *coder)
 {
 	if (get_status_coder(coder) == START && coder->id % 2 != 0)
 		usleep(1000);
-	push_normal_queue(coder);
+	test_name(coder);
 	if (get_status_coder(coder) == IS_BURNOUT)
 		return ;
 	pthread_mutex_lock(&coder->mutex_cond.mutex);

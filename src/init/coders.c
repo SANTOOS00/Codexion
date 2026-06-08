@@ -52,7 +52,7 @@ bool	ft_set_coders_initial_state(t_simulation *simulation)
 		coder->run_coders_counter = &simulation->run_coders_counter;
 		coder->coders_cnt_lock = &simulation->coders_cnt_lock;
 		coder->status = START;
-		coder->queue_normal = simulation->queue_normal;
+		coder->queue = simulation->queue;
 		coder->sim = simulation;
 		coder->deadline = 0;
 		i++;

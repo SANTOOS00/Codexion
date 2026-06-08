@@ -32,6 +32,7 @@ void	ft_compiling_coder(t_coder *coder)
 		pthread_mutex_unlock(&coder->mutex_cond.mutex);
 		return ;
 	}
+	coder->status = COMPILING;
 	print_coder_action(coder, "is compiling");
 	time = get_time_add_time_wait(time_wait);
 	pthread_cond_timedwait(&coder->mutex_cond.cond, &coder->mutex_cond.mutex,
@@ -51,6 +52,7 @@ void	ft_debugging_coder(t_coder *coder)
 		pthread_mutex_unlock(&coder->mutex_cond.mutex);
 		return ;
 	}
+	coder->status = DEBUGGING;
 	time = get_time_add_time_wait(time_wait);
 	print_coder_action(coder, "is debugging");
 	pthread_cond_timedwait(&coder->mutex_cond.cond, &coder->mutex_cond.mutex,
@@ -70,6 +72,7 @@ void	ft_refactoring_coder(t_coder *coder)
 		pthread_mutex_unlock(&coder->mutex_cond.mutex);
 		return ;
 	}
+	coder->status = REFACTORING;
 	print_coder_action(coder, "is refactoring");
 	time = get_time_add_time_wait(time_wait);
 	pthread_cond_timedwait(&coder->mutex_cond.cond, &coder->mutex_cond.mutex,

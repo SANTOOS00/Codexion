@@ -64,9 +64,9 @@ bool check_coder_burnout(t_simulation *sim, int i)
 	pthread_mutex_unlock(&sim->coders[i]->mutex_cond.mutex);
 	if (burned)
 	{
+		print_coder_action(sim->coders[i], "is burnout");
 		stop_monitor(sim);
 		stop_coders(sim);
-		print_coder_action(sim->coders[i], "is burnout");
 		return true;
 	}
 	usleep(1000);

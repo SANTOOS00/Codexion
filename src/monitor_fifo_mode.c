@@ -48,7 +48,7 @@ void	run_fifo_routine(t_simulation *sim)
 
 	while (check_status_monitor(sim) != FINISHED_M)
 	{
-		add_queue_normal_to_queue(sim->queue_normal, sim->queue, FIFO);
+		// add_queue_normal_to_queue(sim->queue_normal, sim->queue, FIFO);
 		if (check_burnout(sim))
 			break ;
 		coder = pop_queue(sim->queue, FIFO);
@@ -56,6 +56,7 @@ void	run_fifo_routine(t_simulation *sim)
 			usleep(500);
 		else
 		{
+			update_burnout_timer(coder, sim->config);
 			pick_up_dongle(coder);
 			pthread_mutex_lock(&coder->mutex_cond.mutex);
 			coder->has_dongle = true;

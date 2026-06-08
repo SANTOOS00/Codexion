@@ -34,14 +34,16 @@ void	detect_burnout_in_coders(t_simulation *sim)
 			break ;
 		while (!ischeckboun && i < sim->config.number_of_coders)
 		{
+			// if (get_status_coder(sim->coders[i]) == START)
+			// 	i++;
 			if (get_status_watcher(sim) == FINISHED_W)
 				break ;
-			if (get_status_coder(sim->coders[i]) != FINISHED)
+			else if (get_status_coder(sim->coders[i]) != FINISHED)
 			{
 				if (check_coder_burnout(sim, i))
 					ischeckboun = true;
+				i++;
 			}
-			i++;
 		}
 		if (ischeckboun)
 			break ;

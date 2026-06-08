@@ -73,6 +73,7 @@ typedef enum e_arg_type
 */
 
 typedef struct s_queue_normal	t_queue_normal;
+typedef struct s_queue			t_queue;
 typedef struct s_simulation		t_simulation;
 
 /*
@@ -140,7 +141,7 @@ typedef struct s_coder
 	t_coder_status	status;
 	t_mutex_cond	mutex_cond;
 
-	t_queue_normal	*queue_normal;
+	t_queue			*queue;
 	t_simulation	*sim;
 }	t_coder;
 
@@ -253,6 +254,7 @@ void				coder_main_loop(t_coder *coder);
 void				*coder_routine(void *arg);
 void				*watcher_routine(void *arg);
 void				*monitor_routine(void *arg);
+void				activate_watcher(t_simulation *sim);
 
 void				perform_coding(t_coder *coder);
 void				pick_up_dongle(t_coder *coder);
@@ -284,12 +286,12 @@ bool				check_coder_burnout(t_simulation *sim, int i);
 */
 
 void				push_normal_queue(t_coder *coder);
-void				add_queue_normal_to_queue(t_queue_normal *qn,
-						t_queue *q, t_scheduler s);
+// void				add_queue_normal_to_queue(t_queue_normal *qn,
+// 						t_queue *q, t_scheduler s);
 void				push_to_priority_queue(t_queue *q,
 						t_coder *c, t_scheduler s);
 
-void				heapify_down(t_queue *q, int parent);
+int					heapify_down(t_queue *q, int parent);
 void				heapify_up(t_queue *q, int index);
 
 t_coder				*pop_queue(t_queue *q, t_scheduler s);
