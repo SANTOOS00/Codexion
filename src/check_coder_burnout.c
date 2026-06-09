@@ -54,7 +54,6 @@ void	stop_monitor(t_simulation *sim)
 bool check_coder_burnout(t_simulation *sim, int i)
 {
 	bool burned = false;
-
 	pthread_mutex_lock(&sim->coders[i]->mutex_cond.mutex);
 	if (sim->coders[i]->deadline != 0 &&
 		get_time() >= sim->coders[i]->deadline)

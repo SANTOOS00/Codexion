@@ -23,6 +23,7 @@ void	increment_coders_counter(t_coder *coder)
 bool	wait_all_coders_created(t_coder *coder)
 {
 	pthread_mutex_lock(&coder->mutex_cond.mutex);
+	
 	coder->has_dongle = false;
 	while (!coder->has_dongle)
 		pthread_cond_wait(&coder->mutex_cond.cond, &coder->mutex_cond.mutex);

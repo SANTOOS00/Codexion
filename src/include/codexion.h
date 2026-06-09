@@ -253,8 +253,10 @@ void				start_coder_and_watcher(t_simulation *sim);
 void				coder_main_loop(t_coder *coder);
 void				*coder_routine(void *arg);
 void				*watcher_routine(void *arg);
+
 void				*monitor_routine(void *arg);
 void				activate_watcher(t_simulation *sim);
+void				increment_coders_counter(t_coder *coder);
 
 void				perform_coding(t_coder *coder);
 void				pick_up_dongle(t_coder *coder);

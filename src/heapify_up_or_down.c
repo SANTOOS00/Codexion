@@ -67,10 +67,10 @@ int		heapify_down(t_queue *q, int parent)
 		cheld_left = cheld_left_index(parent);
 		cheld_right = cheld_right_index(parent);
 		index = parent;
-		if (cheld_right < q->size && (is_greater(q->heap[cheld_right], q->heap[parent]) || test_name_com(q->heap[cheld_right],q->heap[parent])))
-			index = cheld_right;
 		if (cheld_left < q->size && (is_greater(q->heap[cheld_left], q->heap[parent]) || test_name_com(q->heap[cheld_left],q->heap[parent])))
 			index = cheld_left;
+		if (cheld_right < q->size && (is_greater(q->heap[cheld_right], q->heap[parent]) || test_name_com(q->heap[cheld_right],q->heap[parent])))
+			index = cheld_right;
 		if (index == parent)
 			break ;
 		ft_swap(&q->heap[index], &q->heap[parent]);

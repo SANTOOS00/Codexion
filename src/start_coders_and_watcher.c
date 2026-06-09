@@ -57,17 +57,14 @@ void	start_coder_and_watcher(t_simulation *sim)
 	int i;
 
 	i = 0;
-	usleep(1000000);
-	// printf("ssss\n");
 	activate_coders(sim);
-	// while (i != sim->queue->capacity)
-	// {
-	// 	// printf("i => %d\n", i);
-	// 	pthread_mutex_lock(&sim->queue->mutex_queue);
-	// 	i = sim->queue->size;
-	// 	pthread_mutex_unlock(&sim->queue->mutex_queue);
-	// 	usleep(5);
-	// }
+	pthread_mutex_lock(&sim->coders_cnt_lock.mutex);
+
+	while (sim->run_coders_counter != sim->config.number_of_coders)
+		pthread_cond_wait(&sim->coders_cnt_lock.cond,
+			&sim->coders_cnt_lock.mutex);
+	pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
+	activate_watcher(sim);
 	init_time_start(sim);
 	run_fifo_or_edf_routine(sim);
 }

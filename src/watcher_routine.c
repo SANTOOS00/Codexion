@@ -55,6 +55,7 @@ void	*watcher_routine(void *arg)
 	t_simulation	*sim;
 
 	sim = (t_simulation *)arg;
+	
 	pthread_mutex_lock(&sim->watch_lock.mutex);
 	while (!sim->is_watch_waiting)
 		pthread_cond_wait(&sim->watch_lock.cond, &sim->watch_lock.mutex);

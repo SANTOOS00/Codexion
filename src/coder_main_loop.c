@@ -41,6 +41,7 @@ void	enqueue_coder_request(t_coder *coder)
 {
 	if (get_status_coder(coder) == START && coder->id % 2 != 0)
 		usleep(1000);
+	increment_coders_counter(coder);
 	test_name(coder);
 	if (get_status_coder(coder) == IS_BURNOUT)
 		return ;

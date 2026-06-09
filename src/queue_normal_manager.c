@@ -57,7 +57,5 @@ void	push_normal_queue(t_coder *coder)
 	queue->heap[queue->size]->coder = coder;
 	queue->heap[queue->size]->deadline = coder->deadline;
 	queue->size++;
-	if (queue->size == queue->capacity)
-		activate_watcher(coder->sim);
 	pthread_mutex_unlock(&queue->mutex_queue);
 }
