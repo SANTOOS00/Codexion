@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 18:59:05 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/05 17:58:41 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/12 17:07:11 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,18 +56,6 @@ bool	ft_set_simulation_intial_state(int argc, char **argv,
 	return (true);
 }
 
-bool	init_queue_normal(t_simulation *simulation)
-{
-	if (ft_init_queue_normal(simulation) == false)
-	{
-		clean_coders(simulation->coders, simulation->config.number_of_coders);
-		clean_dongles(simulation->dongles, simulation->config.number_of_coders);
-		clean_queue(simulation->queue);
-		clean_mutex_cond_simulation(simulation);
-		return (false);
-	}
-	return (true);
-}
 
 bool	ft_init_simulation(int argc, char **argv, t_simulation *simulation)
 {
@@ -91,8 +79,6 @@ bool	ft_init_simulation(int argc, char **argv, t_simulation *simulation)
 		clean_mutex_cond_simulation(simulation);
 		return (false);
 	}
-	if (init_queue_normal(simulation) == false)
-		return (false);
 	ft_set_coders_initial_state(simulation);
 	return (true);
 }

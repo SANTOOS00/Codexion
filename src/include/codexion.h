@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/07 03:35:27 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/13 18:06:43 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ typedef enum e_arg_type
 ** ============== FORWARD DECLARATION ==============
 */
 
-typedef struct s_queue_normal	t_queue_normal;
 typedef struct s_queue			t_queue;
 typedef struct s_simulation		t_simulation;
 
@@ -138,38 +137,27 @@ typedef struct s_coder
 	int				*run_coders_counter;
 	t_mutex_cond	*coders_cnt_lock;
 
+	t_queue 		*queue;
 	t_coder_status	status;
 	t_mutex_cond	mutex_cond;
 
-	t_queue			*queue;
 	t_simulation	*sim;
 }	t_coder;
-
-/*
-** ================= QUEUE NORMAL =================
-*/
-
-typedef struct s_queue_normal
-{
-	t_coder			**heap;
-	int				size;
-	int				capacity;
-	pthread_mutex_t	mutex_crossing;
-}	t_queue_normal;
 
 /*
 ** ================= PRIORITY QUEUE =================
 */
 
-typedef struct s_dongle_request
-{
-	t_coder		*coder;
-	long long	deadline;
-}	t_dongle_request;
+// typedef struct s_dongle_request
+// {
+// 	t_coder		*coder;
+// 	long long	deadline;
+// 	pthread_mutex_t	mutex;
+// }	t_dongle_request;
 
 typedef struct s_queue
 {
-	t_dongle_request	**heap;
+	t_coder				**coders;
 	int					size;
 	int					capacity;
 	long long			time_burnout;
@@ -192,7 +180,6 @@ typedef struct s_simulation
 	t_coder				**coders;
 	t_dongle			**dongles;
 	t_queue				*queue;
-	t_queue_normal		*queue_normal;
 
 	t_monitor_status	monitor_status;
 	int					run_coders_counter;
@@ -226,6 +213,8 @@ bool				parser_time_val(char **av, t_config *config);
 bool				parse_required_compiles(char **av, t_config *config);
 
 void				update_burnout_timer(t_coder *coder, t_config config);
+void				increment_coders_counter(t_coder *coder);
+bool				is_valid_dongl_left_right(t_coder *coder);
 
 /*
 ** ================= INIT =================
@@ -238,7 +227,6 @@ t_coder				**alloc_coders(int n);
 
 bool				alloc_and_init_dongles(t_simulation *sim);
 bool				ft_init_queue(t_simulation *sim);
-bool				ft_init_queue_normal(t_simulation *sim);
 
 bool				ft_set_coders_initial_state(t_simulation *sim);
 bool				init_mutex_cond(t_mutex_cond *m);
@@ -253,10 +241,7 @@ void				start_coder_and_watcher(t_simulation *sim);
 void				coder_main_loop(t_coder *coder);
 void				*coder_routine(void *arg);
 void				*watcher_routine(void *arg);
-
 void				*monitor_routine(void *arg);
-void				activate_watcher(t_simulation *sim);
-void				increment_coders_counter(t_coder *coder);
 
 void				perform_coding(t_coder *coder);
 void				pick_up_dongle(t_coder *coder);
@@ -272,10 +257,10 @@ void				run_edf_routine(t_simulation *sim);
 
 int					cheld_left_index(int index);
 int					cheld_right_index(int index);
-bool				is_same_deadline(t_dongle_request *req1,
-						t_dongle_request *req2);
-bool				is_greater(t_dongle_request *r1,
-						t_dongle_request *r2);
+bool				is_same_deadline(t_coder *coder_1,
+						t_coder *coder_2);
+bool				is_greater(t_coder *coder_1,
+						t_coder *coder_2);
 
 /*
 ** ================= EXTRA =================
@@ -288,16 +273,16 @@ bool				check_coder_burnout(t_simulation *sim, int i);
 */
 
 void				push_normal_queue(t_coder *coder);
-// void				add_queue_normal_to_queue(t_queue_normal *qn,
-// 						t_queue *q, t_scheduler s);
 void				push_to_priority_queue(t_queue *q,
 						t_coder *c, t_scheduler s);
 
-int					heapify_down(t_queue *q, int parent);
+t_coder				*pop_queue_edf(t_queue *q);
+void				heapify_down(t_queue *q, int parent);
 void				heapify_up(t_queue *q, int index);
 
-t_coder				*pop_queue(t_queue *q, t_scheduler s);
+// t_coder				*pop_queue(t_queue *q, t_scheduler s);
 t_coder				*pop_edf_or_fifo(t_queue *q, t_scheduler scheduler);
+t_coder				*pop_queue_fifo(t_queue *q);
 bool				try_take_dongle(t_dongle *dongle);
 int					parent_index(int index);
 
@@ -327,7 +312,6 @@ void				clean_mutex_dongles(t_dongle **d, int size);
 void				clean_dongles(t_dongle **d, int size);
 
 void				clean_queue(t_queue *q);
-void				clean_queue_normal(t_queue_normal *qn);
 
 void				clean_coders(t_coder **c, int size);
 void				free_2d_array(void **arr, int size);

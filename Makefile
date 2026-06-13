@@ -5,7 +5,6 @@ CC = cc
 FLAGS = -pthread -Wall -Wextra -Werror
 
 SRC = src/init/queue.c\
-	  src/init/queue_normal.c\
 	  src/init/reset_simulation_vars.c\
 	  src/init/init_simulation.c \
 	  src/init/coders.c \
@@ -35,8 +34,8 @@ SRC = src/init/queue.c\
 	  src/priority_queue.c\
 	  src/priority_queue_utils.c\
 	  src/check_coder_burnout.c\
-	  src/queue_normal_manager.c\
-	  src/pop_edf_or_fifo.c\
+	  src/pop_fifo.c\
+	  src/pop_edf.c\
 	  src/return_dongles.c\
 	  src/thread_joiner.c\
 	  src/try_take_dongle.c\

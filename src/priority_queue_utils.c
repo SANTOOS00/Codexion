@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 19:15:58 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/05 19:29:15 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/13 12:45:44 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ int	cheld_right_index(int index)
 	return ((2 * index) + 2);
 }
 
-bool	is_greater(t_dongle_request *req1, t_dongle_request *req2)
+bool	is_greater(t_coder *coder_1, t_coder *coder_2)
 {
-	return (req1->deadline < req2->deadline);
+	return (coder_1->deadline < coder_2->deadline);
 }
 
-bool	is_same_deadline(t_dongle_request *req1, t_dongle_request *req2)
+bool	is_same_deadline(t_coder *coder_1, t_coder *coder_2)
 {
-	return (req1->deadline == req2->deadline);
+	return (coder_1->deadline == coder_2->deadline);
 }

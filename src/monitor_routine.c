@@ -26,7 +26,6 @@ void	*monitor_routine(void *arg)
 		pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
 		return (NULL);
 	}
-	sim->run_coders_counter = 0;
 	pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
 	start_coder_and_watcher(sim);
 	return (NULL);

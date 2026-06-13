@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 21:06:44 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/07 03:19:14 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/13 18:35:45 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,15 @@ bool	get_status_monitor(t_simulation *sim)
 
 void	start_coder_and_watcher(t_simulation *sim)
 {
-	int i;
+	pthread_mutex_lock(&sim->coders_cnt_lock.mutex);
+	sim->run_coders_counter = 0;
+	pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
 
-	i = 0;
 	activate_coders(sim);
 	pthread_mutex_lock(&sim->coders_cnt_lock.mutex);
-
 	while (sim->run_coders_counter != sim->config.number_of_coders)
-		pthread_cond_wait(&sim->coders_cnt_lock.cond,
-			&sim->coders_cnt_lock.mutex);
+	pthread_cond_wait(&sim->coders_cnt_lock.cond,
+		&sim->coders_cnt_lock.mutex);
 	pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
 	activate_watcher(sim);
 	init_time_start(sim);

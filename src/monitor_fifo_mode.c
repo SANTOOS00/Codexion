@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:30:25 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/06 02:52:39 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/13 18:06:30 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,32 +32,21 @@ bool	check_burnout(t_simulation *sim)
 	return (check);
 }
 
-int	check_size_queue(t_queue *queue)
-{
-	int	size;
-
-	pthread_mutex_lock(&queue->mutex_queue);
-	size = queue->size;
-	pthread_mutex_unlock(&queue->mutex_queue);
-	return (size);
-}
-
 void	run_fifo_routine(t_simulation *sim)
 {
 	t_coder	*coder;
 
 	while (check_status_monitor(sim) != FINISHED_M)
 	{
-		// add_queue_normal_to_queue(sim->queue_normal, sim->queue, FIFO);
 		if (check_burnout(sim))
 			break ;
-		coder = pop_queue(sim->queue, FIFO);
+		coder = pop_queue_fifo(sim->queue);
 		if (!coder)
 			usleep(500);
 		else
 		{
-			update_burnout_timer(coder, sim->config);
 			pick_up_dongle(coder);
+			update_burnout_timer(coder, sim->config);
 			pthread_mutex_lock(&coder->mutex_cond.mutex);
 			coder->has_dongle = true;
 			pthread_cond_broadcast(&coder->mutex_cond.cond);
