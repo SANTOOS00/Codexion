@@ -40,7 +40,10 @@ static void	detect_burnout_in_coders(t_simulation *sim)
 			if (get_status_coder(sim->coders[i]) != FINISHED)
 			{
 				if (check_coder_burnout(sim, i))
+				{
 					ischeckboun = true;
+					break;
+				}
 			}
 			i++;
 		}

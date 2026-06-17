@@ -274,9 +274,8 @@ bool				check_coder_burnout(t_simulation *sim, int i);
 ** ================= QUEUE =================
 */
 
-void				push_normal_queue(t_coder *coder);
-void				push_to_priority_queue(t_queue *q,
-						t_coder *c, t_scheduler s);
+
+void				push_to_priority_queue(t_coder *coder);
 
 t_coder				*pop_queue_edf(t_queue *q);
 void				heapify_down(t_queue *q, int parent);
@@ -329,7 +328,7 @@ void				print_coder_action(t_coder *coder, char *action);
 ** ================= EXTRA =================
 */
 
-int					check_size_queue(t_queue *q);
+
 bool				check_burnout(t_simulation *sim);
 t_monitor_status	check_status_monitor(t_simulation *sim);
 

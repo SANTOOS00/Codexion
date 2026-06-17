@@ -22,7 +22,7 @@ void	run_edf_routine(t_simulation *sim)
 			break ;
 		coder = pop_queue_edf(sim->queue);
 		if (!coder)
-			usleep(500);
+			usleep(150);
 		else
 		{
 			pick_up_dongle(coder);

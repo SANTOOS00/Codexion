@@ -14,31 +14,25 @@
 
 t_coder	*pop_queue_edf(t_queue *q)
 {
-	int		i;
-	int		best;
 	t_coder	*coder;
 
-	best = -1;
-	i = 0;
 	pthread_mutex_lock(&q->mutex_queue);
-	while (i < q->size)
-	{
-		if (is_valid_dongl_left_right(q->coders[i]))
-		{
-			if (best == -1 || is_greater(q->coders[i], q->coders[best]))
-				best = i;
-		}
-		i++;
-	}
-	if (best == -1)
+	if (q->size == 0)
 	{
 		pthread_mutex_unlock(&q->mutex_queue);
 		return (NULL);
 	}
-	coder = q->coders[best];
-	q->coders[best] = q->coders[q->size - 1];
-	q->size--;
-	heapify_up(q, best);
+	if (is_valid_dongl_left_right(q->coders[0]))
+	{
+		coder = q->coders[0];
+		q->coders[0] = q->coders[q->size - 1];
+		q->size--;
+		heapify_down(q, 0);
+		pthread_mutex_unlock(&q->mutex_queue);
+		return (coder);
+	}
 	pthread_mutex_unlock(&q->mutex_queue);
-	return (coder);
+	return (NULL);
+		
+
 }
