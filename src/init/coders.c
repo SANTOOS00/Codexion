@@ -42,6 +42,7 @@ bool	ft_set_coders_initial_state(t_simulation *simulation)
 		coder = simulation->coders[i];
 		coder->id = i + 1;
 		coder->has_dongle = false;
+		coder->is_waiting_coder = false;
 		coder->is_burnout = &simulation->is_burnout;
 		coder->burnout_mutex = &simulation->burnout_mutex;
 		coder->compilation_count = 0;

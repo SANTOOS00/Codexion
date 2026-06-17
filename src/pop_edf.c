@@ -26,7 +26,7 @@ t_coder	*pop_queue_edf(t_queue *q)
 		if (is_valid_dongl_left_right(q->coders[i]))
 		{
 			if (best == -1 || is_greater(q->coders[i], q->coders[best]))
-			best = i;
+				best = i;
 		}
 		i++;
 	}

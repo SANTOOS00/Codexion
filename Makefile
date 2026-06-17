@@ -40,7 +40,7 @@ SRC = src/init/queue.c\
 	  src/thread_joiner.c\
 	  src/try_take_dongle.c\
 	  src/time_utils.c\
-	  src/start_coders_and_watcher.c\
+	  src/wake_monitor.c\
 	  src/watcher_routine.c
 
 

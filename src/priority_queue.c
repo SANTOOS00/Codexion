@@ -33,8 +33,10 @@
 void	push_to_priority_queue(t_queue *q, t_coder *coder,
 		t_scheduler scheduler)
 {
+	
 	q->coders[q->size] = coder;
-	q->size++;
 	if (scheduler == EDF)
-		heapify_down(q, q->size);
+
+		heapify_up(q, q->size);
+	q->size++;
 }

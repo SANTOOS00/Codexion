@@ -121,20 +121,21 @@ typedef struct s_coder
 {
 	pthread_t		thread;
 	int				id;
-	bool			has_dongle;
+	bool			is_waiting_coder;
 	long long		deadline;
-
+	
 	bool			*is_burnout;
 	pthread_mutex_t	*burnout_mutex;
-
+	
 	int				compilation_count;
-
+	
 	t_config		*config;
-
+	
 	t_dongle		*left_dongle;
 	t_dongle		*right_dongle;
-
+	
 	int				*run_coders_counter;
+	bool			has_dongle;
 	t_mutex_cond	*coders_cnt_lock;
 
 	t_queue 		*queue;
@@ -250,6 +251,7 @@ void				return_dongles(t_coder *coder);
 void				run_fifo_or_edf_routine(t_simulation *sim);
 void				run_fifo_routine(t_simulation *sim);
 void				run_edf_routine(t_simulation *sim);
+void	watcher_wake_coders_and_monitor(t_simulation *sim);
 
 /*
 ** ================= PRIORITY QUEUE UTLIS =================
@@ -331,4 +333,10 @@ int					check_size_queue(t_queue *q);
 bool				check_burnout(t_simulation *sim);
 t_monitor_status	check_status_monitor(t_simulation *sim);
 
+void	watcher_wake_monitor(t_simulation *sim);
+
+
+
 #endif
+
+

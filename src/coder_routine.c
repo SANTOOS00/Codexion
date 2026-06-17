@@ -23,8 +23,8 @@ void	increment_coders_counter(t_coder *coder)
 bool	wait_all_coders_created(t_coder *coder)
 {
 	pthread_mutex_lock(&coder->mutex_cond.mutex);
-	coder->has_dongle = false;
-	while (!coder->has_dongle)
+	coder->is_waiting_coder = false;
+	while (!coder->is_waiting_coder)
 		pthread_cond_wait(&coder->mutex_cond.cond, &coder->mutex_cond.mutex);
 	if (coder->status == ERROR)
 	{
@@ -43,6 +43,7 @@ void	*coder_routine(void *arg)
 	increment_coders_counter(coder);
 	if (wait_all_coders_created(coder) == false)
 		return (NULL);
+
 	coder_main_loop(coder);
 	return (NULL);
 }
