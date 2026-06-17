@@ -33,12 +33,12 @@ void	heapify_up(t_queue *q, int index)
 			ft_swap(&q->coders[index], &q->coders[parent]);
 			index = parent;
 		}
-		// else if (is_same_deadline(q->heap[index], q->coders[parent])
-		// 	&& q->heap[index]->coder->id < q->coders[parent]->id)
-		// {
-		// 	ft_swap(&q->coders[index], &q->coders[parent]);
-		// 	index = parent;
-		// }
+		else if (is_same_deadline(q->coders[index], q->coders[parent])
+			&& q->coders[index]->id < q->coders[parent]->id)
+		{
+			ft_swap(&q->coders[index], &q->coders[parent]);
+			index = parent;
+		}
 		else
 			break ;
 	}
