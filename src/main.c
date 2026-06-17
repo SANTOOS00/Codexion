@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 18:31:06 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/05 18:02:20 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/17 21:18:20 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	main(int argc, char **argv)
 		clean_resource(&simulation);
 		return (1);
 	}
+	printf("sssss\n");
 	join_threads(&simulation);
 	clean_resource(&simulation);
 	return (0);

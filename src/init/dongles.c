@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 19:04:20 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/05 17:34:45 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/17 19:13:15 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	clean_mutex_dongles(t_dongle **dongles, int size)
 		return ;
 	while (i < size)
 	{
-		destroy_mutex_cond(&dongles[i]->m_cn_dongle);
+		pthread_mutex_destroy(&dongles[i]->mutex);
 		i++;
 	}
 }
@@ -52,7 +52,7 @@ bool	init_mutex_dongles(t_dongle **dongles, int dongles_number)
 	i = 0;
 	while (i < dongles_number)
 	{
-		if (init_mutex_cond(&dongles[i]->m_cn_dongle) == false)
+		if (pthread_mutex_init(&dongles[i]->mutex, NULL) != 0)
 		{
 			clean_mutex_dongles(dongles, i);
 			return (false);

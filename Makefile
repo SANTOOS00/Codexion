@@ -27,7 +27,6 @@ SRC = src/init/queue.c\
 	  src/manager_simulation.c\
 	  src/monitor_edf_mode.c\
 	  src/monitor_fifo_mode.c\
-	  src/run_fifo_or_edf_mode.c\
 	  src/monitor_routine.c\
 	  src/perform_coding.c\
 	  src/pick_up_dongle.c\
@@ -35,6 +34,7 @@ SRC = src/init/queue.c\
 	  src/priority_queue_utils.c\
 	  src/check_coder_burnout.c\
 	  src/pop_fifo.c\
+	  src/init_time_start.c\
 	  src/pop_edf.c\
 	  src/return_dongles.c\
 	  src/thread_joiner.c\

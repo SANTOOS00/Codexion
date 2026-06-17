@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 18:12:52 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/13 15:28:16 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/17 20:22:34 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@ bool 	try_take_dongle(t_dongle *dongle)
 {
 	bool	success;
 
-	pthread_mutex_lock(&dongle->m_cn_dongle.mutex);
+	pthread_mutex_lock(&dongle->mutex);
 	success = false;
 	if (get_time() - dongle->last_release_time >= dongle->cooldown_time
 		&& dongle->is_available)
 	{
 		success = true;
 	}
-	pthread_mutex_unlock(&dongle->m_cn_dongle.mutex);
+	pthread_mutex_unlock(&dongle->mutex);
 	return (success);
 }
 

@@ -1,18 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   run_fifo_or_edf_mode.c                             :+:      :+:    :+:   */
+/*   init_time_start.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/02 22:12:53 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/13 18:11:21 by moerrais         ###   ########.fr       */
+/*   Created: 2026/06/17 18:55:49 by moerrais          #+#    #+#             */
+/*   Updated: 2026/06/17 20:21:53 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/codexion.h"
 
-void init_time_start_coders(t_simulation *sim)
+
+void	set_simulation_start_time(t_simulation *sim)
+{
+	pthread_mutex_lock(&sim->coders_cnt_lock.mutex);
+	sim->time_start = get_time();
+	pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
+}
+
+void init_coders_deadlines(t_simulation *sim)
 {
 	int i;
 
@@ -21,11 +29,9 @@ void init_time_start_coders(t_simulation *sim)
 		sim->coders[i++]->deadline = sim->config.time_to_burnout + get_time();
 } 
 
-void	run_fifo_or_edf_routine(t_simulation *sim)
+
+void init_time_start(t_simulation *sim)
 {
-	init_time_start_coders(sim);
-	if (sim->config.scheduler == FIFO)
-		run_fifo_routine(sim);
-	else if (sim->config.scheduler == EDF)
-		run_edf_routine(sim);
+    init_coders_deadlines(sim);
+    set_simulation_start_time(sim);
 }

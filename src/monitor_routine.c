@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 22:21:10 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/04 21:21:09 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/17 21:21:45 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,20 +52,27 @@ static void	detect_burnout_in_coders(t_simulation *sim)
 	}
 }
 
-void	*monitor_routine(void *arg)
+bool wait_monitor(t_simulation *sim)
 {
-	t_simulation	*sim;
-
-	sim = (t_simulation *)arg;
 	pthread_mutex_lock(&sim->watch_lock.mutex);
 	while (!sim->is_watch_waiting)
 		pthread_cond_wait(&sim->watch_lock.cond, &sim->watch_lock.mutex);
 	if (sim->watch_status == ERROR_W)
 	{
 		pthread_mutex_unlock(&sim->watch_lock.mutex);
-		return (NULL);
+		return (false);
 	}
 	pthread_mutex_unlock(&sim->watch_lock.mutex);
+	return (true);
+}
+
+void	*monitor_routine(void *arg)
+{
+	t_simulation	*sim;
+
+	sim = (t_simulation *)arg;
+	if (wait_monitor(sim) == false)
+		return (NULL);
 	detect_burnout_in_coders(sim);
 	return (NULL);
 }

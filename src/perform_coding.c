@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 10:37:14 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/07 03:48:49 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/17 18:43:25 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	ft_compiling_coder(t_coder *coder)
 
 	time_wait = coder->config->time_to_compile;
 	pthread_mutex_lock(&coder->mutex_cond.mutex);
-	coder->compilation_count++;
 	if (coder->status == IS_BURNOUT)
 	{
 		pthread_mutex_unlock(&coder->mutex_cond.mutex);
@@ -90,8 +89,4 @@ void	perform_coding(t_coder *coder)
 	return_dongles(coder);
 	ft_debugging_coder(coder);
 	ft_refactoring_coder(coder);
-	pthread_mutex_lock(&coder->mutex_cond.mutex);
-	if (coder->compilation_count == coder->config->number_of_compiles_required)
-		coder->status = FINISHED;
-	pthread_mutex_unlock(&coder->mutex_cond.mutex);
 }

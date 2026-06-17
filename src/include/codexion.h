@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/13 18:06:43 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/17 19:10:19 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ typedef struct s_mutex_cond
 
 typedef struct s_dongle
 {
-	t_mutex_cond	m_cn_dongle;
+	pthread_mutex_t	mutex;
 	bool			is_available;
 	long long		cooldown_time;
 	long long		last_release_time;
@@ -332,10 +332,8 @@ void				print_coder_action(t_coder *coder, char *action);
 bool				check_burnout(t_simulation *sim);
 t_monitor_status	check_status_monitor(t_simulation *sim);
 
-void	watcher_wake_monitor(t_simulation *sim);
-
-
-
+void				watcher_wake_monitor(t_simulation *sim);
+void 				init_time_start(t_simulation *sim);
 #endif
 
 
