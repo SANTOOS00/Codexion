@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_coder_burnout.c                              :+:      :+:    :+:   */
+/*   watcher_shutdown.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/05 19:36:24 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/17 22:52:26 by moerrais         ###   ########.fr       */
+/*   Created: 2026/06/17 22:03:27 by moerrais          #+#    #+#             */
+/*   Updated: 2026/06/17 22:17:42 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/codexion.h"
 
-void	monitor_stop_coders(t_simulation *sim)
+void	watcher_stop_coders(t_simulation *sim)
 {
 	int	i;
 
@@ -20,7 +20,7 @@ void	monitor_stop_coders(t_simulation *sim)
 	while (i < sim->config.number_of_coders)
 	{
 		pthread_mutex_lock(&sim->coders[i]->mutex_cond.mutex);
-		sim->coders[i]->status = IS_BURNOUT;
+		sim->coders[i]->status = FINISHED;
 		sim->coders[i]->has_dongle = true;
 		pthread_cond_broadcast(&sim->coders[i]->mutex_cond.cond);
 		pthread_mutex_unlock(&sim->coders[i]->mutex_cond.mutex);
@@ -28,30 +28,9 @@ void	monitor_stop_coders(t_simulation *sim)
 	}
 }
 
-void	monitor_stop_watcher(t_simulation *sim)
+void	watcher_stop_monitor(t_simulation *sim)
 {
 	pthread_mutex_lock(&sim->coders_cnt_lock.mutex);
-	sim->watch_status = FINISHED_W;
+	sim->monitor_status = FINISHED_M;
 	pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
-}
-
-bool check_coder_burnout(t_simulation *sim, int i)
-{
-	bool burned = false;
-
-	pthread_mutex_lock(&sim->coders[i]->mutex_cond.mutex);
-	if (sim->coders[i]->deadline != 0 && get_time() > sim->coders[i]->deadline)
-	{
-		burned = true;
-	}
-	pthread_mutex_unlock(&sim->coders[i]->mutex_cond.mutex);
-	if (burned)
-	{
-		monitor_stop_coders(sim);
-		monitor_stop_watcher(sim);
-		print_coder_action(sim->coders[i], "is burnout");
-		return true;
-	}
-	// usleep(50);
-	return false;
 }

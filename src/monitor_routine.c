@@ -6,24 +6,30 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 22:21:10 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/17 21:21:45 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/17 23:04:37 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/codexion.h"
 
 
-t_watch_status	get_status_watcher(t_simulation *sim)
+t_monitor_status	get_status_monitor(t_simulation *sim)
 {
-	t_watch_status	status;
+	t_monitor_status	status;
 
 	pthread_mutex_lock(&sim->watch_lock.mutex);
-	status = sim->watch_status;
+	status = sim->monitor_status;
 	pthread_mutex_unlock(&sim->watch_lock.mutex);
 	return (status);
 }
 
-static void	detect_burnout_in_coders(t_simulation *sim)
+// bool wait_monitor(t_simulation *sim)
+// {
+// 	pthread_mutex_lock(sim->)
+// 	pthread_cond_timedwait()
+// }
+
+void	detect_burnout_in_coders(t_simulation *sim)
 {
 	bool	ischeckboun;
 	int		i;
@@ -31,12 +37,10 @@ static void	detect_burnout_in_coders(t_simulation *sim)
 	while (!ischeckboun)
 	{
 		i = 0;
-		if (get_status_watcher(sim) == FINISHED_W)
+		if (get_status_monitor(sim) == FINISHED_M)
 			break ;
 		while (!ischeckboun && i < sim->config.number_of_coders)
 		{
-			if (get_status_watcher(sim) == FINISHED_W)
-				break ;
 			if (get_status_coder(sim->coders[i]) != FINISHED)
 			{
 				if (check_coder_burnout(sim, i))
@@ -47,6 +51,8 @@ static void	detect_burnout_in_coders(t_simulation *sim)
 			}
 			i++;
 		}
+		if (wait_monitor(sim) == false)
+			break;
 		if (ischeckboun)
 			break ;
 	}
@@ -57,7 +63,7 @@ bool wait_monitor(t_simulation *sim)
 	pthread_mutex_lock(&sim->watch_lock.mutex);
 	while (!sim->is_watch_waiting)
 		pthread_cond_wait(&sim->watch_lock.cond, &sim->watch_lock.mutex);
-	if (sim->watch_status == ERROR_W)
+	if (sim->monitor_status == ERROR_W)
 	{
 		pthread_mutex_unlock(&sim->watch_lock.mutex);
 		return (false);

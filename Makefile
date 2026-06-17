@@ -25,9 +25,10 @@ SRC = src/init/queue.c\
 	  src/heapify_up_or_down.c\
 	  src/main.c\
 	  src/manager_simulation.c\
-	  src/monitor_edf_mode.c\
-	  src/monitor_fifo_mode.c\
+	  src/edf_mode.c\
+	  src/fifo_mode.c\
 	  src/monitor_routine.c\
+	  src/watcher_shutdown.c\
 	  src/perform_coding.c\
 	  src/pick_up_dongle.c\
 	  src/priority_queue.c\

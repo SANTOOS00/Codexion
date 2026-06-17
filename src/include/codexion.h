@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/17 19:10:19 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/17 23:07:25 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,11 +184,11 @@ typedef struct s_simulation
 
 	t_monitor_status	monitor_status;
 	int					run_coders_counter;
-	t_mutex_cond		coders_cnt_lock;
+	t_mutex_cond		monitor_mu_cond;
 
 	t_watch_status		watch_status;
 	bool				is_watch_waiting;
-	t_mutex_cond		watch_lock;
+	t_mutex_cond		watch_mu_cond;
 
 	bool				is_burnout;
 	pthread_mutex_t		burnout_mutex;
@@ -213,7 +213,7 @@ void				error_out_of_range(const char *arg, const char *val);
 bool				parser_time_val(char **av, t_config *config);
 bool				parse_required_compiles(char **av, t_config *config);
 
-void				update_burnout_timer(t_coder *coder, t_config config);
+void				update_burnout_timer(t_coder *coder);
 void				increment_coders_counter(t_coder *coder);
 bool				is_valid_dongl_left_right(t_coder *coder);
 
@@ -334,6 +334,12 @@ t_monitor_status	check_status_monitor(t_simulation *sim);
 
 void				watcher_wake_monitor(t_simulation *sim);
 void 				init_time_start(t_simulation *sim);
+void	watcher_stop_monitor(t_simulation *sim);
+void	watcher_stop_coders(t_simulation *sim);
+bool	is_burnout(t_simulation *sim);
+void start_coder_compilation_cycle(t_coder *coder);
+t_watch_status		get_watcher_status(t_simulation *sim);
+t_monitor_status	get_status_monitor(t_simulation *sim);
 #endif
 
 

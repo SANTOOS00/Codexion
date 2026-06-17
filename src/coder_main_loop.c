@@ -6,16 +6,16 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/06 03:50:54 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/17 21:10:04 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/17 21:57:28 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/codexion.h"
 
-void	update_burnout_timer(t_coder *coder, t_config config)
+void	update_burnout_timer(t_coder *coder)
 {
 	pthread_mutex_lock(&coder->mutex_cond.mutex);
-	coder->deadline = get_time() + config.time_to_burnout;
+	coder->deadline = get_time() + coder->config->time_to_burnout;
 	pthread_mutex_unlock(&coder->mutex_cond.mutex);
 }
 
@@ -48,7 +48,7 @@ void enqueue_coder_and_wait(t_coder *coder)
 	increment_coders_counter(coder);
 	pthread_mutex_lock(&coder->mutex_cond.mutex);
 	coder->has_dongle = false;
-	while (!coder->has_dongle)
+	while (!coder->has_dongle)	
 		pthread_cond_wait(&coder->mutex_cond.cond, &coder->mutex_cond.mutex);
 	pthread_mutex_unlock(&coder->mutex_cond.mutex);
 }
