@@ -51,7 +51,7 @@ void	*watcher_routine(void *arg)
 		return (NULL);
 	watcher_wake_monitor(sim);
 	watcher_wake_coders(sim);
-	init_time_start(sim);	
+	initialize_start_time(sim);	
 	run_fifo_or_edf_routine(sim);
 	return (NULL);
 }

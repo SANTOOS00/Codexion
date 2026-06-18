@@ -30,7 +30,7 @@ void init_coders_deadlines(t_simulation *sim)
 } 
 
 
-void init_time_start(t_simulation *sim)
+void initialize_start_time(t_simulation *sim)
 {
     init_coders_deadlines(sim);
     set_simulation_start_time(sim);

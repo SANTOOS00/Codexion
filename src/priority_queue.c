@@ -13,7 +13,7 @@
 #include "include/codexion.h"
 
 
-void	push_to_priority_queue(t_coder *coder)
+void	push_priority_queue(t_coder *coder)
 {
 	t_queue *queue;
 

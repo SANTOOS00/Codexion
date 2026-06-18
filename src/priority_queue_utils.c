@@ -17,12 +17,12 @@ int	parent_index(int index)
 	return ((index - 1) / 2);
 }
 
-int	cheld_left_index(int index)
+int	child_left_index(int index)
 {
 	return ((2 * index) + 1);
 }
 
-int	cheld_right_index(int index)
+int	child_right_index(int index)
 {
 	return ((2 * index) + 2);
 }

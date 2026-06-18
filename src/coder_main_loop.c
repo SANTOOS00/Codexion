@@ -47,7 +47,7 @@ void enqueue_coder_and_wait(t_coder *coder)
 bool	enqueue_coder_request(t_coder *coder)
 {
 	pthread_mutex_lock(&coder->queue->mutex_queue);
-	push_to_priority_queue(coder);
+	push_priority_queue(coder);
 	pthread_mutex_unlock(&coder->queue->mutex_queue);
 
 	pthread_mutex_lock(&coder->mutex_cond.mutex);

@@ -52,8 +52,8 @@ void	heapify_down(t_queue *q, int parent)
 
 	while (parent < q->size)
 	{
-		cheld_left = cheld_left_index(parent);
-		cheld_right = cheld_right_index(parent);
+		cheld_left = child_left_index(parent);
+		cheld_right = child_right_index(parent);
 		index = parent;
 		if (cheld_left < q->size && is_greater(q->coders[cheld_left],
 				q->coders[parent]))
