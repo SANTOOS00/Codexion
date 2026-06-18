@@ -55,6 +55,7 @@ typedef enum e_watch_status
 {
 	START_W,
 	FINISHED_W,
+	IS_BURNOUT_W,
 	ERROR_W
 }	t_watch_status;
 
@@ -136,7 +137,7 @@ typedef struct s_coder
 	
 	int				*run_coders_counter;
 	bool			has_dongle;
-	t_mutex_cond	*coders_cnt_lock;
+	t_mutex_cond	*watcher_mu_cond;
 
 	t_queue 		*queue;
 	t_coder_status	status;
@@ -281,9 +282,8 @@ t_coder				*pop_queue_edf(t_queue *q);
 void				heapify_down(t_queue *q, int parent);
 void				heapify_up(t_queue *q, int index);
 
-// t_coder				*pop_queue(t_queue *q, t_scheduler s);
-t_coder				*pop_edf_or_fifo(t_queue *q, t_scheduler scheduler);
-t_coder				*pop_queue_fifo(t_queue *q);
+t_coder				*pop_queue(t_simulation *sim, t_scheduler scheduler);
+void				run_fifo_or_edf_routine(t_simulation *sim);
 bool				try_take_dongle(t_dongle *dongle);
 int					parent_index(int index);
 
@@ -328,10 +328,6 @@ void				print_coder_action(t_coder *coder, char *action);
 ** ================= EXTRA =================
 */
 
-
-bool				check_burnout(t_simulation *sim);
-t_monitor_status	check_status_monitor(t_simulation *sim);
-
 void				watcher_wake_monitor(t_simulation *sim);
 void 				init_time_start(t_simulation *sim);
 void	watcher_stop_monitor(t_simulation *sim);
@@ -340,6 +336,10 @@ bool	is_burnout(t_simulation *sim);
 void start_coder_compilation_cycle(t_coder *coder);
 t_watch_status		get_watcher_status(t_simulation *sim);
 t_monitor_status	get_status_monitor(t_simulation *sim);
+
+t_watch_status	get_watcher_status(t_simulation *sim);
+t_monitor_status	get_status_monitor(t_simulation *sim);
+
 #endif
 
 

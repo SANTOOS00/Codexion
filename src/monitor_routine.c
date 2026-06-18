@@ -12,22 +12,22 @@
 
 #include "include/codexion.h"
 
-
-t_monitor_status	get_status_monitor(t_simulation *sim)
+bool wait_monitor(t_simulation *sim)
 {
-	t_monitor_status	status;
-
-	pthread_mutex_lock(&sim->watch_lock.mutex);
-	status = sim->monitor_status;
-	pthread_mutex_unlock(&sim->watch_lock.mutex);
-	return (status);
+	pthread_mutex_lock(&sim->monitor_mu_cond.mutex);
+	sim->is_watch_waiting = false;
+	while (!sim->is_watch_waiting)
+		pthread_cond_wait(&sim->monitor_mu_cond.cond, &sim->monitor_mu_cond.mutex);
+	if (sim->monitor_status == ERROR_W || sim->monitor_status == FINISHED_M)
+	{
+		pthread_mutex_unlock(&sim->monitor_mu_cond.mutex);
+		return (false);
+	}
+	pthread_mutex_unlock(&sim->monitor_mu_cond.mutex);
+	return (true);
 }
 
-// bool wait_monitor(t_simulation *sim)
-// {
-// 	pthread_mutex_lock(sim->)
-// 	pthread_cond_timedwait()
-// }
+
 
 void	detect_burnout_in_coders(t_simulation *sim)
 {
@@ -51,26 +51,12 @@ void	detect_burnout_in_coders(t_simulation *sim)
 			}
 			i++;
 		}
-		if (wait_monitor(sim) == false)
-			break;
 		if (ischeckboun)
 			break ;
 	}
 }
 
-bool wait_monitor(t_simulation *sim)
-{
-	pthread_mutex_lock(&sim->watch_lock.mutex);
-	while (!sim->is_watch_waiting)
-		pthread_cond_wait(&sim->watch_lock.cond, &sim->watch_lock.mutex);
-	if (sim->monitor_status == ERROR_W)
-	{
-		pthread_mutex_unlock(&sim->watch_lock.mutex);
-		return (false);
-	}
-	pthread_mutex_unlock(&sim->watch_lock.mutex);
-	return (true);
-}
+
 
 void	*monitor_routine(void *arg)
 {

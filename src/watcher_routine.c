@@ -28,16 +28,16 @@ void watcher_wake_coders(t_simulation *sim)
 }
 bool wait_watcher(t_simulation *sim)
 {
-	pthread_mutex_lock(&sim->coders_cnt_lock.mutex);
+	pthread_mutex_lock(&sim->watch_mu_cond.mutex);
 	while (sim->run_coders_counter != sim->config.number_of_coders)
-		pthread_cond_wait(&sim->coders_cnt_lock.cond,
-			&sim->coders_cnt_lock.mutex);
+		pthread_cond_wait(&sim->watch_mu_cond.cond,
+			&sim->watch_mu_cond.mutex);
 	if (sim->monitor_status == ERROR_M)
 	{
-		pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
+		pthread_mutex_unlock(&sim->watch_mu_cond.mutex);
 		return (false);	
 	}
-	pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
+	pthread_mutex_unlock(&sim->watch_mu_cond.mutex);
 	return (true);
 }
 
@@ -52,10 +52,7 @@ void	*watcher_routine(void *arg)
 	watcher_wake_monitor(sim);
 	watcher_wake_coders(sim);
 	init_time_start(sim);	
-	if (sim->config.scheduler == FIFO)
-		run_fifo_routine(sim);
-	else if (sim->config.scheduler == EDF)
-		run_edf_routine(sim);
+	run_fifo_or_edf_routine(sim);
 	return (NULL);
 }
 

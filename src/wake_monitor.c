@@ -14,8 +14,8 @@
 
 void	watcher_wake_monitor(t_simulation *sim)
 {
-	pthread_mutex_lock(&sim->watch_lock.mutex);
+	pthread_mutex_lock(&sim->monitor_mu_cond.mutex);
 	sim->is_watch_waiting = true;
-	pthread_cond_broadcast(&sim->watch_lock.cond);
-	pthread_mutex_unlock(&sim->watch_lock.mutex);
+	pthread_cond_broadcast(&sim->monitor_mu_cond.cond);
+	pthread_mutex_unlock(&sim->monitor_mu_cond.mutex);
 }

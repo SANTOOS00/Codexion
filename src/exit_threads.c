@@ -14,21 +14,21 @@
 
 void	exit_monitor(t_simulation *sim)
 {
-	pthread_mutex_lock(&sim->coders_cnt_lock.mutex);
+	pthread_mutex_lock(&sim->monitor_mu_cond.mutex);
 	sim->monitor_status = ERROR_M;
 	sim->run_coders_counter = sim->config.number_of_coders;
-	pthread_cond_broadcast(&sim->coders_cnt_lock.cond);
-	pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
+	pthread_cond_broadcast(&sim->monitor_mu_cond.cond);
+	pthread_mutex_unlock(&sim->monitor_mu_cond.mutex);
 	join_monitor(sim);
 }
 
 void	exit_watcher(t_simulation *sim)
 {
-	pthread_mutex_lock(&sim->watch_lock.mutex);
+	pthread_mutex_lock(&sim->watch_mu_cond.mutex);
 	sim->watch_status = ERROR_W;
 	sim->is_watch_waiting = true;
-	pthread_cond_broadcast(&sim->watch_lock.cond);
-	pthread_mutex_unlock(&sim->watch_lock.mutex);
+	pthread_cond_broadcast(&sim->watch_mu_cond.cond);
+	pthread_mutex_unlock(&sim->watch_mu_cond.mutex);
 	join_watcher(sim);
 }
 

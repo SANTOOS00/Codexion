@@ -26,9 +26,9 @@ long long	get_time_start_end(t_simulation *sim)
 {
 	long long	time;
 
-	pthread_mutex_lock(&sim->coders_cnt_lock.mutex);
+	pthread_mutex_lock(&sim->monitor_mu_cond.mutex);
 	time = get_time() - sim->time_start;
-	pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
+	pthread_mutex_unlock(&sim->monitor_mu_cond.mutex);
 	return (time);
 }
 

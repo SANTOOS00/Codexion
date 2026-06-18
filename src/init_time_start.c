@@ -15,9 +15,9 @@
 
 void	set_simulation_start_time(t_simulation *sim)
 {
-	pthread_mutex_lock(&sim->coders_cnt_lock.mutex);
+	pthread_mutex_lock(&sim->monitor_mu_cond.mutex);
 	sim->time_start = get_time();
-	pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
+	pthread_mutex_unlock(&sim->monitor_mu_cond.mutex);
 }
 
 void init_coders_deadlines(t_simulation *sim)

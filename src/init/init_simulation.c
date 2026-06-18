@@ -15,8 +15,8 @@
 void	clean_mutex_cond_simulation(t_simulation *simulation)
 {
 	pthread_mutex_destroy(&simulation->burnout_mutex);
-	destroy_mutex_cond(&simulation->coders_cnt_lock);
-	destroy_mutex_cond(&simulation->watch_lock);
+	destroy_mutex_cond(&simulation->monitor_mu_cond);
+	destroy_mutex_cond(&simulation->watch_mu_cond);
 	destroy_mutex_prints(simulation);
 }
 
@@ -33,23 +33,23 @@ bool	ft_set_simulation_intial_state(int argc, char **argv,
 	reset_simulation_vars(simulation);
 	if (parse_args(argc, argv, simulation) == false)
 		return (false);
-	if (init_mutex_cond(&simulation->coders_cnt_lock) == false)
+	if (init_mutex_cond(&simulation->monitor_mu_cond) == false)
 		return (false);
-	if (init_mutex_cond(&simulation->watch_lock) == false)
+	if (init_mutex_cond(&simulation->watch_mu_cond) == false)
 	{
-		destroy_mutex_cond(&simulation->coders_cnt_lock);
+		destroy_mutex_cond(&simulation->monitor_mu_cond);
 		return (false);
 	}
 	if (pthread_mutex_init(&simulation->burnout_mutex, NULL) != 0)
 	{
-		destroy_mutex_cond(&simulation->coders_cnt_lock);
-		destroy_mutex_cond(&simulation->watch_lock);
+		destroy_mutex_cond(&simulation->monitor_mu_cond);
+		destroy_mutex_cond(&simulation->watch_mu_cond);
 		return (false);
 	}
 	if (init_mutex_prints(simulation) == false)
 	{
-		destroy_mutex_cond(&simulation->coders_cnt_lock);
-		destroy_mutex_cond(&simulation->watch_lock);
+		destroy_mutex_cond(&simulation->monitor_mu_cond);
+		destroy_mutex_cond(&simulation->watch_mu_cond);
 		pthread_mutex_destroy(&simulation->burnout_mutex);
 		return (false);
 	}

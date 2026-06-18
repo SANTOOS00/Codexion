@@ -23,7 +23,6 @@ int	main(int argc, char **argv)
 		clean_resource(&simulation);
 		return (1);
 	}
-	printf("sssss\n");
 	join_threads(&simulation);
 	clean_resource(&simulation);
 	return (0);

@@ -30,6 +30,9 @@ void	pick_up_right_dongle(t_coder *coder)
 
 void	pick_up_dongle(t_coder *coder)
 {
-	pick_up_left_dongle(coder);
-	pick_up_right_dongle(coder);
+	if (get_status_coder(coder) != IS_BURNOUT)
+	{
+		pick_up_left_dongle(coder);
+		pick_up_right_dongle(coder);
+	}
 }

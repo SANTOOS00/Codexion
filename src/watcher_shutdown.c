@@ -30,7 +30,9 @@ void	watcher_stop_coders(t_simulation *sim)
 
 void	watcher_stop_monitor(t_simulation *sim)
 {
-	pthread_mutex_lock(&sim->coders_cnt_lock.mutex);
+	pthread_mutex_lock(&sim->watch_mu_cond.mutex);
 	sim->monitor_status = FINISHED_M;
-	pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
+	sim->is_watch_waiting = true;
+	pthread_cond_broadcast(&sim->monitor_mu_cond.cond);
+	pthread_mutex_unlock(&sim->watch_mu_cond.mutex);
 }

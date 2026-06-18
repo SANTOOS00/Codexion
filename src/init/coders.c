@@ -51,7 +51,7 @@ bool	ft_set_coders_initial_state(t_simulation *simulation)
 		coder->right_dongle = simulation->dongles[(i + 1)
 			% simulation->config.number_of_coders];
 		coder->run_coders_counter = &simulation->run_coders_counter;
-		coder->coders_cnt_lock = &simulation->coders_cnt_lock;
+		coder->watcher_mu_cond = &simulation->watch_mu_cond;
 		coder->status = START;
 		coder->queue = simulation->queue;
 		coder->sim = simulation;

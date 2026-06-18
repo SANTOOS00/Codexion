@@ -33,12 +33,12 @@ void	join_coders(t_simulation *sim, int number_coders)
 
 void	finich_monitor_and_watcher(t_simulation *sim)
 {
-	pthread_mutex_lock(&sim->coders_cnt_lock.mutex);
+	pthread_mutex_lock(&sim->monitor_mu_cond.mutex);
 	sim->monitor_status = FINISHED_M;
-	pthread_mutex_unlock(&sim->coders_cnt_lock.mutex);
-	pthread_mutex_lock(&sim->watch_lock.mutex);
+	pthread_mutex_unlock(&sim->monitor_mu_cond.mutex);
+	pthread_mutex_lock(&sim->watch_mu_cond.mutex);
 	sim->watch_status = FINISHED_W;
-	pthread_mutex_unlock(&sim->watch_lock.mutex);
+	pthread_mutex_unlock(&sim->watch_mu_cond.mutex);
 }
 
 void	join_threads(t_simulation *sim)

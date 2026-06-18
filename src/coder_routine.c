@@ -14,10 +14,10 @@
 
 void	increment_coders_counter(t_coder *coder)
 {
-	pthread_mutex_lock(&coder->coders_cnt_lock->mutex);
+	pthread_mutex_lock(&coder->watcher_mu_cond->mutex);
 	(*coder->run_coders_counter)++;
-	pthread_cond_broadcast(&coder->coders_cnt_lock->cond);
-	pthread_mutex_unlock(&coder->coders_cnt_lock->mutex);
+	pthread_cond_broadcast(&coder->watcher_mu_cond->cond);
+	pthread_mutex_unlock(&coder->watcher_mu_cond->mutex);
 }
 
 bool	wait_all_coders_created(t_coder *coder)
