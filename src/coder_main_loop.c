@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/06 03:50:54 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/17 21:57:28 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/18 08:21:52 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	update_burnout_timer(t_coder *coder)
 	pthread_mutex_unlock(&coder->mutex_cond.mutex);
 }
 
-
 void	push_queue(t_coder *coder)
 {
 	t_queue	*queue;
@@ -31,7 +30,7 @@ void	push_queue(t_coder *coder)
 	pthread_mutex_unlock(&coder->queue->mutex_queue);
 }
 
-void enqueue_coder_and_wait(t_coder *coder)
+void	enqueue_coder_and_wait(t_coder *coder)
 {
 	if (get_status_coder(coder) == START && coder->id % 2 != 0)
 		usleep(1000);
@@ -39,7 +38,7 @@ void enqueue_coder_and_wait(t_coder *coder)
 	increment_coders_counter(coder);
 	pthread_mutex_lock(&coder->mutex_cond.mutex);
 	coder->has_dongle = false;
-	while (!coder->has_dongle)	
+	while (!coder->has_dongle)
 		pthread_cond_wait(&coder->mutex_cond.cond, &coder->mutex_cond.mutex);
 	pthread_mutex_unlock(&coder->mutex_cond.mutex);
 }
@@ -49,7 +48,6 @@ bool	enqueue_coder_request(t_coder *coder)
 	pthread_mutex_lock(&coder->queue->mutex_queue);
 	push_priority_queue(coder);
 	pthread_mutex_unlock(&coder->queue->mutex_queue);
-
 	pthread_mutex_lock(&coder->mutex_cond.mutex);
 	coder->has_dongle = false;
 	while (!coder->has_dongle)
@@ -73,7 +71,7 @@ void	coder_main_loop(t_coder *coder)
 			break ;
 		if (get_status_coder(coder) == FINISHED)
 			break ;
-		if(enqueue_coder_request(coder) == false)
+		if (enqueue_coder_request(coder) == false)
 			break ;
 	}
 }

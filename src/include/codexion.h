@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/17 23:07:25 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/18 08:21:35 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,6 @@ typedef enum e_scheduler
 typedef enum e_coder_status
 {
 	START,
-	COMPILING,
-	DEBUGGING,
-	REFACTORING,
 	FINISHED,
 	IS_BURNOUT,
 	ERROR
@@ -124,22 +121,20 @@ typedef struct s_coder
 	int				id;
 	bool			is_waiting_coder;
 	long long		deadline;
-	
 	bool			*is_burnout;
 	pthread_mutex_t	*burnout_mutex;
-	
+
 	int				compilation_count;
-	
 	t_config		*config;
-	
+
 	t_dongle		*left_dongle;
 	t_dongle		*right_dongle;
-	
+
 	int				*run_coders_counter;
 	bool			has_dongle;
 	t_mutex_cond	*watcher_mu_cond;
 
-	t_queue 		*queue;
+	t_queue			*queue;
 	t_coder_status	status;
 	t_mutex_cond	mutex_cond;
 
@@ -149,13 +144,6 @@ typedef struct s_coder
 /*
 ** ================= PRIORITY QUEUE =================
 */
-
-// typedef struct s_dongle_request
-// {
-// 	t_coder		*coder;
-// 	long long	deadline;
-// 	pthread_mutex_t	mutex;
-// }	t_dongle_request;
 
 typedef struct s_queue
 {
@@ -191,8 +179,6 @@ typedef struct s_simulation
 	bool				is_watch_waiting;
 	t_mutex_cond		watch_mu_cond;
 
-	bool				is_burnout;
-	pthread_mutex_t		burnout_mutex;
 }	t_simulation;
 
 /*
@@ -224,7 +210,7 @@ void				print_coder_action(t_coder *coder, char *action);
 
 bool				ft_init_simulation(int ac, char **av, t_simulation *sim);
 void				reset_simulation_vars(t_simulation *sim);
-void 				initialize_start_time(t_simulation *sim);
+void				initialize_start_time(t_simulation *sim);
 
 bool				init_coders(t_simulation *sim);
 t_coder				**alloc_coders(int n);
@@ -285,7 +271,6 @@ t_watch_status		get_watcher_status(t_simulation *sim);
 t_monitor_status	get_status_monitor(t_simulation *sim);
 
 bool				check_coder_burnout(t_simulation *sim, int i);
-bool				is_burnout(t_simulation *sim);
 
 /*
 ** ================= THREADS MANAGEMENT =================
@@ -318,5 +303,3 @@ void				clean_queue(t_queue *q);
 void				destroy_mutex_cond(t_mutex_cond *m);
 void				free_2d_array(void **arr, int size);
 #endif
-
-

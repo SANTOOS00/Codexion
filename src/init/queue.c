@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/10 17:24:44 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/13 12:41:50 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/18 07:58:13 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	clean_queue(t_queue *queue)
 	free(queue->coders);
 	free(queue);
 }
-
 
 bool	ft_init_queue(t_simulation *sim)
 {

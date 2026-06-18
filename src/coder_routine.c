@@ -43,7 +43,6 @@ void	*coder_routine(void *arg)
 	increment_coders_counter(coder);
 	if (wait_all_coders_created(coder) == false)
 		return (NULL);
-
 	coder_main_loop(coder);
 	return (NULL);
 }

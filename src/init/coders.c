@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 22:14:14 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/07 04:21:30 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/18 08:36:03 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ bool	ft_set_coders_initial_state(t_simulation *simulation)
 		coder->id = i + 1;
 		coder->has_dongle = false;
 		coder->is_waiting_coder = false;
-		coder->is_burnout = &simulation->is_burnout;
-		coder->burnout_mutex = &simulation->burnout_mutex;
 		coder->compilation_count = 0;
 		coder->config = &simulation->config;
 		coder->left_dongle = simulation->dongles[i];

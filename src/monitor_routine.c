@@ -12,12 +12,13 @@
 
 #include "include/codexion.h"
 
-bool wait_monitor(t_simulation *sim)
+bool	wait_monitor(t_simulation *sim)
 {
 	pthread_mutex_lock(&sim->monitor_mu_cond.mutex);
 	sim->is_watch_waiting = false;
 	while (!sim->is_watch_waiting)
-		pthread_cond_wait(&sim->monitor_mu_cond.cond, &sim->monitor_mu_cond.mutex);
+		pthread_cond_wait(&sim->monitor_mu_cond.cond,
+			&sim->monitor_mu_cond.mutex);
 	if (sim->monitor_status == ERROR_W || sim->monitor_status == FINISHED_M)
 	{
 		pthread_mutex_unlock(&sim->monitor_mu_cond.mutex);
@@ -27,12 +28,11 @@ bool wait_monitor(t_simulation *sim)
 	return (true);
 }
 
-
-
 void	detect_burnout_in_coders(t_simulation *sim)
 {
 	bool	ischeckboun;
 	int		i;
+
 	ischeckboun = false;
 	while (!ischeckboun)
 	{
@@ -46,7 +46,7 @@ void	detect_burnout_in_coders(t_simulation *sim)
 				if (check_coder_burnout(sim, i))
 				{
 					ischeckboun = true;
-					break;
+					break ;
 				}
 			}
 			i++;
@@ -55,8 +55,6 @@ void	detect_burnout_in_coders(t_simulation *sim)
 			break ;
 	}
 }
-
-
 
 void	*monitor_routine(void *arg)
 {

@@ -35,10 +35,11 @@ void	monitor_stop_watcher(t_simulation *sim)
 	pthread_mutex_unlock(&sim->watch_mu_cond.mutex);
 }
 
-bool check_coder_burnout(t_simulation *sim, int i)
+bool	check_coder_burnout(t_simulation *sim, int i)
 {
-	bool burned = false;
+	bool	burned;
 
+	burned = false;
 	pthread_mutex_lock(&sim->coders[i]->mutex_cond.mutex);
 	if (sim->coders[i]->deadline != 0 && get_time() > sim->coders[i]->deadline)
 	{
@@ -50,8 +51,8 @@ bool check_coder_burnout(t_simulation *sim, int i)
 		monitor_stop_watcher(sim);
 		monitor_stop_coders(sim);
 		print_coder_action(sim->coders[i], "is burnout");
-		return true;
+		return (true);
 	}
 	usleep(50);
-	return false;
+	return (false);
 }

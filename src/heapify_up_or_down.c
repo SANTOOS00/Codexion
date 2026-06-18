@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/16 14:26:27 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/13 12:48:13 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/18 08:02:50 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,12 @@ void	heapify_up(t_queue *q, int index)
 			ft_swap(&q->coders[index], &q->coders[parent]);
 			index = parent;
 		}
-		// else if (is_same_deadline(q->coders[index], q->coders[parent])
-		// 	&& q->coders[index]->id < q->coders[parent]->id)
-		// {
-		// 	ft_swap(&q->coders[index], &q->coders[parent]);
-		// 	index = parent;
-		// }
+		else if (is_same_deadline(q->coders[index], q->coders[parent])
+			&& q->coders[index]->id < q->coders[parent]->id)
+		{
+			ft_swap(&q->coders[index], &q->coders[parent]);
+			index = parent;
+		}
 		else
 			break ;
 	}

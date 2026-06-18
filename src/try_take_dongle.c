@@ -6,13 +6,13 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 18:12:52 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/17 20:22:34 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/18 08:04:32 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/codexion.h"
 
-bool 	try_take_dongle(t_dongle *dongle)
+bool	try_take_dongle(t_dongle *dongle)
 {
 	bool	success;
 

@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 18:59:05 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/12 17:07:11 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/18 08:14:53 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	clean_mutex_cond_simulation(t_simulation *simulation)
 {
-	pthread_mutex_destroy(&simulation->burnout_mutex);
 	destroy_mutex_cond(&simulation->monitor_mu_cond);
 	destroy_mutex_cond(&simulation->watch_mu_cond);
 	destroy_mutex_prints(simulation);
@@ -40,22 +39,14 @@ bool	ft_set_simulation_intial_state(int argc, char **argv,
 		destroy_mutex_cond(&simulation->monitor_mu_cond);
 		return (false);
 	}
-	if (pthread_mutex_init(&simulation->burnout_mutex, NULL) != 0)
-	{
-		destroy_mutex_cond(&simulation->monitor_mu_cond);
-		destroy_mutex_cond(&simulation->watch_mu_cond);
-		return (false);
-	}
 	if (init_mutex_prints(simulation) == false)
 	{
 		destroy_mutex_cond(&simulation->monitor_mu_cond);
 		destroy_mutex_cond(&simulation->watch_mu_cond);
-		pthread_mutex_destroy(&simulation->burnout_mutex);
 		return (false);
 	}
 	return (true);
 }
-
 
 bool	ft_init_simulation(int argc, char **argv, t_simulation *simulation)
 {

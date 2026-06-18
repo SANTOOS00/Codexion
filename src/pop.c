@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pop_fifo.c                                         :+:      :+:    :+:   */
+/*   pop.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 18:16:29 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/17 20:36:44 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/18 09:03:53 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,9 @@ t_coder	*pop_queue_edf(t_queue *q)
 	return (NULL);
 }
 
-t_coder *pop_queue(t_simulation *sim, t_scheduler scheduler)
+t_coder	*pop_queue(t_simulation *sim, t_scheduler scheduler)
 {
 	if (scheduler == FIFO)
 		return (pop_queue_fifo(sim->queue));
-	return(pop_queue_edf(sim->queue));
+	return (pop_queue_edf(sim->queue));
 }
