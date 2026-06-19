@@ -59,7 +59,7 @@ void	heapify_down(t_queue *q, int parent)
 				q->coders[parent]))
 			index = cheld_left;
 		if (cheld_right < q->size && is_greater(q->coders[cheld_right],
-				q->coders[cheld_right]))
+				q->coders[parent]))
 			index = cheld_right;
 		if (index == parent)
 			break ;

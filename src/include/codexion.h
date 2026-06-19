@@ -251,9 +251,11 @@ void				run_fifo_or_edf_routine(t_simulation *sim);
 void				push_priority_queue(t_coder *coder);
 t_coder				*pop_queue(t_simulation *sim, t_scheduler scheduler);
 t_coder				*pop_queue_edf(t_queue *q);
+t_coder				*pop_queue_fifo(t_queue *q);
 
 void				heapify_up(t_queue *q, int index);
 void				heapify_down(t_queue *q, int parent);
+void				ft_swap(t_coder **s1, t_coder **s2);
 
 int					parent_index(int index);
 int					child_left_index(int index);
@@ -261,6 +263,7 @@ int					child_right_index(int index);
 
 bool				is_same_deadline(t_coder *coder_1, t_coder *coder_2);
 bool				is_greater(t_coder *coder_1, t_coder *coder_2);
+void				move_first_valid_coder_to_front(t_queue *q, int parent);
 
 /*
 ** ================= STATUS & CHECKS =================

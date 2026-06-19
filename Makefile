@@ -29,13 +29,15 @@ SRC = src/init/queue.c\
 	  src/monitor_routine.c\
 	  src/watcher_shutdown.c\
 	  src/get_status.c\
-	  src/perform_coding.c\
 	  src/pick_up_dongle.c\
-	  src/priority_queue.c\
+	  src/perform_coding.c\
+	  src/queue_manager.c\
+	  src/queue_pop_edf.c\
+	  src/queue_pop_fifo.c\
+	  src/queue_push.c\
 	  src/priority_queue_utils.c\
 	  src/check_coder_burnout.c\
 	  src/init_time_start.c\
-	  src/pop.c\
 	  src/return_dongles.c\
 	  src/thread_joiner.c\
 	  src/try_take_dongle.c\
