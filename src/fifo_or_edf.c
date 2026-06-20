@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fifo_or_edf.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
+/*   By: santoos <santoos@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:30:25 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/18 09:13:24 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/20 04:53:34 by santoos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	run_fifo_or_edf_routine(t_simulation *sim)
 			break ;
 		coder = pop_queue(sim, sim->config.scheduler);
 		if (!coder)
-			usleep(1000);
+			usleep(10);
 		else if (mark_coder_finished_if_done(coder, sim))
 			number_of_finished_coders++;
 		else

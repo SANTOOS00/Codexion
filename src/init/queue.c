@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   queue.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
+/*   By: santoos <santoos@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/10 17:24:44 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/18 07:58:13 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/19 23:01:09 by santoos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 void	clean_queue(t_queue *queue)
 {
-	int	i;
-
-	i = 0;
 	pthread_mutex_destroy(&queue->mutex_queue);
 	free(queue->coders);
 	free(queue);

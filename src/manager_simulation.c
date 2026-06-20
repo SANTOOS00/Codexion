@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manager_simulation.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
+/*   By: santoos <santoos@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/06 03:37:59 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/06 03:19:24 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/19 05:02:15 by santoos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ bool	create_coders(t_simulation *sim)
 				sim->coders[i]);
 		if (ret != 0)
 		{
-			fprintf(stderr, "Error: pthread_create failed: %s\n",
-				strerror(ret));
+			fprintf(stderr, "Error: pthread_create failed\n");
 			fprintf(stderr, "id coder failed %d\n", i);
 			exit_coders(sim, i);
 			return (false);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   thread_joiner.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
+/*   By: santoos <santoos@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 21:23:15 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/05 19:54:31 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/20 02:30:04 by santoos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	join_coders(t_simulation *sim, int number_coders)
 	int	i;
 
 	i = 0;
-	while (i < sim->config.number_of_coders)
+	while (i < number_coders)
 		pthread_join(sim->coders[i++]->thread, NULL);
 }
 

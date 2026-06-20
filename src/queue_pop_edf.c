@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   queue_pop_edf.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
+/*   By: santoos <santoos@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 02:40:11 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/19 02:40:13 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/20 17:47:14 by santoos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,7 @@
 t_coder	*pop_queue_edf(t_queue *q)
 {
 	t_coder		*coder;
-	int			i;
 
-	i = 0;
 	coder = NULL;
 	if (q->size == 0)
 		return (NULL);
@@ -33,9 +31,6 @@ t_coder	*pop_queue_edf(t_queue *q)
 
 void	shift_queue_elements_edf(t_queue *queue, int index_shift)
 {
-	int	i;
-
-	i = 0;
 	while (index_shift > 0)
 	{
 		queue->coders[index_shift] = queue->coders[index_shift - 1];
@@ -43,22 +38,46 @@ void	shift_queue_elements_edf(t_queue *queue, int index_shift)
 	}
 }
 
-void	move_first_valid_coder_to_front(t_queue *q, int parent)
+
+int test_name(t_coder *coder_1, bool ret, int index)
 {
-	int		index;
+	static int val_deadline;
+	static int i;
+
+	i = 0;
+	val_deadline = INT_MAX;
+	if (val_deadline > coder_1->deadline)
+	{
+		val_deadline = coder_1->deadline;
+		i = index;
+	}	
+	if (ret)
+		return (i);
+	return (0);
+}
+
+void	move_first_valid_coder_to_front(t_queue *q)
+{
+	int		best;
+	int		i;
 	t_coder	*coder;
 
-	index = 0;
-	while (index < q->size)
+	best = -1;
+	i = 0;
+	while (i < q->size)
 	{
-		if (is_valid_dongl_left_right(q->coders[index]) && index != 0)
+		if (is_valid_dongl_left_right(q->coders[i]))
 		{
-			coder = q->coders[index];
-			shift_queue_elements_edf(q, index);
-			q->coders[0] = coder;
-			return ;
+			if (best == -1
+				|| q->coders[i]->deadline < q->coders[best]->deadline)
+				best = i;
 		}
-		index++;
+		i++;
 	}
-	return ;
+	if (best == -1)
+		return ;
+	coder = q->coders[best];
+	shift_queue_elements_edf(q, best);
+	q->coders[0] = coder;
 }
+

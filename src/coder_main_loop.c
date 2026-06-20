@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   coder_main_loop.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
+/*   By: santoos <santoos@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/06 03:50:54 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/18 08:21:52 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/20 04:14:20 by santoos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,11 @@ void	coder_main_loop(t_coder *coder)
 	enqueue_coder_and_wait(coder);
 	while (1)
 	{
-		perform_coding(coder);
 		if (get_status_coder(coder) == IS_BURNOUT)
 			break ;
 		if (get_status_coder(coder) == FINISHED)
 			break ;
+		perform_coding(coder);
 		if (enqueue_coder_request(coder) == false)
 			break ;
 	}
