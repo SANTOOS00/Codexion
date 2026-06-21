@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fifo_or_edf.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: santoos <santoos@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:30:25 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/20 04:53:34 by santoos          ###   ########.fr       */
+/*   Updated: 2026/06/21 23:01:45 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ bool	set_coder_finished(t_coder *coder)
 	pthread_mutex_lock(&coder->mutex_cond.mutex);
 	coder->status = FINISHED;
 	pthread_mutex_unlock(&coder->mutex_cond.mutex);
-	return (true);
+	return (true);	
 }
 
 void	watcher_stop_monitor_and_coders(t_simulation *sim)
@@ -45,6 +45,14 @@ bool	mark_coder_finished_if_done(t_coder *coder,
 	return (false);
 }
 
+void wait_watcher_nans()
+{
+	struct timespec time;
+	time.tv_sec = 0;
+	time.tv_nsec = 100;
+	nanosleep(&time ,NULL);
+}
+
 void	run_fifo_or_edf_routine(t_simulation *sim)
 {
 	int			number_of_finished_coders;
@@ -57,7 +65,7 @@ void	run_fifo_or_edf_routine(t_simulation *sim)
 			break ;
 		coder = pop_queue(sim, sim->config.scheduler);
 		if (!coder)
-			usleep(10);
+			wait_watcher_nans();
 		else if (mark_coder_finished_if_done(coder, sim))
 			number_of_finished_coders++;
 		else

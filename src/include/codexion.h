@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: santoos <santoos@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/20 04:00:31 by santoos          ###   ########.fr       */
+/*   Updated: 2026/06/21 22:59:01 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,8 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <sys/time.h>
-# include <time.h>
 # include <stdbool.h>
 # include <limits.h>
-
 
 typedef enum e_scheduler
 {
@@ -63,10 +61,16 @@ typedef enum e_arg_type
 	dongle_cooldown
 }	t_arg_type;
 
+/*
+** ============== FORWARD DECLARATION ==============
+*/
 
 typedef struct s_queue			t_queue;
 typedef struct s_simulation		t_simulation;
 
+/*
+** ================= CONFIG =================
+*/
 
 typedef struct s_config
 {
@@ -80,6 +84,9 @@ typedef struct s_config
 	t_scheduler		scheduler;
 }	t_config;
 
+/*
+** ================= SYNC =================
+*/
 
 typedef struct s_mutex_cond
 {
@@ -87,6 +94,9 @@ typedef struct s_mutex_cond
 	pthread_cond_t	cond;
 }	t_mutex_cond;
 
+/*
+** ================= DONGLE =================
+*/
 
 typedef struct s_dongle
 {
@@ -96,6 +106,9 @@ typedef struct s_dongle
 	long long		last_release_time;
 }	t_dongle;
 
+/*
+** ================= CODER =================
+*/
 
 typedef struct s_coder
 {
@@ -123,6 +136,9 @@ typedef struct s_coder
 	t_simulation	*sim;
 }	t_coder;
 
+/*
+** ================= PRIORITY QUEUE =================
+*/
 
 typedef struct s_queue
 {
@@ -133,6 +149,9 @@ typedef struct s_queue
 	pthread_mutex_t		mutex_queue;
 }	t_queue;
 
+/*
+** ================= SIMULATION =================
+*/
 
 typedef struct s_simulation
 {
@@ -157,6 +176,9 @@ typedef struct s_simulation
 
 }	t_simulation;
 
+/*
+** ================= UTILITIES =================
+*/
 
 long long			get_time(void);
 long long			get_time_start_end(t_simulation *sim);
@@ -235,9 +257,9 @@ int					child_left_index(int index);
 int					child_right_index(int index);
 
 bool				is_same_deadline(t_coder *coder_1, t_coder *coder_2);
+bool				is_same_comp(t_coder *coder_1, t_coder *coder_2);
 bool				is_greater(t_coder *coder_1, t_coder *coder_2);
 void				move_first_valid_coder_to_front(t_queue *q);
-void				monitor_stop_coders(t_simulation *sim);
 
 /*
 ** ================= STATUS & CHECKS =================

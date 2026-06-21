@@ -55,7 +55,7 @@ $(NAME_PROGRAN): $(OBG)
 	$(CC) $(FLAGS) $(OBG) -o $(NAME_PROGRAN)
 
 %.o: %.c src/include/codexion.h
-	$(CC) $(FLAGS) -c -o $@ $<
+	$(CC) $(FLAGS) -c $< -o $@
 
 clean:
 	rm -f $(OBG)
