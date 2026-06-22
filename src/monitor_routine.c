@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 22:21:10 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/21 22:33:02 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/22 00:48:41 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,15 @@ bool	wait_monitor(t_simulation *sim)
 
 
 
-void wait_monitor_nons()
+void wait_monitor_nons(t_simulation *sim)
 {
     struct timespec ts;
 
     ts.tv_sec  = 0;
-    ts.tv_nsec = 100;
-    nanosleep(&ts, NULL);
+    ts.tv_nsec = 1000;
+	pthread_mutex_lock(&sim->monitor_mu_cond.mutex);
+	pthread_cond_timedwait(&sim->monitor_mu_cond.cond, &sim->monitor_mu_cond.mutex, &ts);
+	pthread_mutex_unlock(&sim->monitor_mu_cond.mutex);
 }
 
 void	detect_burnout_in_coders(t_simulation *sim)
@@ -62,7 +64,9 @@ void	detect_burnout_in_coders(t_simulation *sim)
 			}
 			i++;
 		}
-		wait_monitor_nons();
+		if (ischeckboun)
+			break;
+		wait_monitor_nons(sim);
 	}
 }
 

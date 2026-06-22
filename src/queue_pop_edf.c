@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 02:40:11 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/21 23:02:28 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/22 00:04:39 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,6 @@ t_coder	*pop_queue_edf(t_queue *q)
 		q->size--;
 	}
 	return (coder);
-}
-
-void	shift_queue_elements_edf(t_queue *queue, int index_shift)
-{
-	int	i;
-
-	i = 0;
-	while (index_shift > 0)
-	{
-		queue->coders[index_shift] = queue->coders[index_shift - 1];
-		index_shift--;
-	}
 }
 
 void	move_first_valid_coder_to_front(t_queue *q)
