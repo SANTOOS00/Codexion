@@ -21,6 +21,7 @@
 # include <sys/time.h>
 # include <stdbool.h>
 # include <limits.h>
+# include <errno.h>
 
 typedef enum e_scheduler
 {
@@ -134,6 +135,12 @@ typedef struct s_coder
 	t_mutex_cond	mutex_cond;
 
 	t_simulation	*sim;
+
+  bool *is_burnout_detected;
+  pthread_mutex_t *is_burnout_detected_m;
+
+  int           *finished_coders;
+  pthread_mutex_t *finished_coders_m;
 }	t_coder;
 
 /*
@@ -172,6 +179,10 @@ typedef struct s_simulation
 	t_watch_status		watch_status;
 	bool				is_watch_waiting;
 	t_mutex_cond		watch_mu_cond;
+  int           finished_coders;
+  pthread_mutex_t finished_coders_m;
+  bool is_burnout_detected;
+  pthread_mutex_t is_burnout_detected_m;
 
 }	t_simulation;
 
@@ -203,14 +214,10 @@ void				print_coder_action(t_coder *coder, char *action);
 */
 
 bool				ft_init_simulation(int ac, char **av, t_simulation *sim);
-void				reset_simulation_vars(t_simulation *sim);
 void				initialize_start_time(t_simulation *sim);
 
 bool				init_coders(t_simulation *sim);
-t_coder				**alloc_coders(int n);
-bool				ft_set_coders_initial_state(t_simulation *sim);
-
-bool				alloc_and_init_dongles(t_simulation *sim);
+bool				init_dongles(t_simulation *sim);
 bool				ft_init_queue(t_simulation *sim);
 bool				init_mutex_cond(t_mutex_cond *m);
 
@@ -223,7 +230,7 @@ bool				start_simulation(t_simulation *sim);
 void				*coder_routine(void *arg);
 void				coder_main_loop(t_coder *coder);
 void				start_coder_compilation_cycle(t_coder *coder);
-void				perform_coding(t_coder *coder);
+bool				perform_coding(t_coder *coder);
 
 void				pick_up_dongle(t_coder *coder);
 bool				try_take_dongle(t_dongle *dongle);
@@ -268,8 +275,7 @@ t_coder_status		get_status_coder(t_coder *coder);
 t_watch_status		get_watcher_status(t_simulation *sim);
 t_monitor_status	get_status_monitor(t_simulation *sim);
 
-bool				check_coder_burnout(t_simulation *sim, int i);
-
+bool				check_coder_burnout(t_coder *coder);
 /*
 ** ================= THREADS MANAGEMENT =================
 */

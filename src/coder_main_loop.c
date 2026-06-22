@@ -48,36 +48,17 @@ void	enqueue_coder_and_wait(t_coder *coder)
 	pthread_mutex_unlock(&coder->mutex_cond.mutex);
 }
 
-bool	enqueue_coder_request(t_coder *coder)
-{
-	pthread_mutex_lock(&coder->queue->mutex_queue);
-	push_priority_queue(coder);
-	pthread_mutex_unlock(&coder->queue->mutex_queue);
-	pthread_mutex_lock(&coder->mutex_cond.mutex);
-	coder->has_dongle = false;
-	while (!coder->has_dongle)
-		pthread_cond_wait(&coder->mutex_cond.cond, &coder->mutex_cond.mutex);
-	if (coder->status == IS_BURNOUT || coder->status == FINISHED)
-	{
-		pthread_mutex_unlock(&coder->mutex_cond.mutex);
-		return (false);
-	}
-	pthread_mutex_unlock(&coder->mutex_cond.mutex);
-	return (true);
-}
-
 void	coder_main_loop(t_coder *coder)
 {
 	enqueue_coder_and_wait(coder);
 	while (1)
 	{
 		update_burnout_timer(coder);
-		perform_coding(coder);
+		if (!perform_coding(coder))
+      break;
 		if (get_status_coder(coder) == IS_BURNOUT)
 			break ;
 		if (get_status_coder(coder) == FINISHED)
-			break ;
-		if (enqueue_coder_request(coder) == false)
 			break ;
 	}
 }

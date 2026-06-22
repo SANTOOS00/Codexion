@@ -40,17 +40,6 @@ bool	mark_coder_finished_if_done(t_coder *coder,
 	return (false);
 }
 
-void	wait_watcher_nans(t_simulation *sim)
-{
-	struct timespec	time;
-
-	time.tv_sec = 0;
-	time.tv_nsec = 200;
-	pthread_mutex_lock(&sim->monitor_mu_cond.mutex);
-	pthread_cond_timedwait(&sim->monitor_mu_cond.cond,
-		&sim->monitor_mu_cond.mutex, &time);
-	pthread_mutex_unlock(&sim->monitor_mu_cond.mutex);
-}
 
 void	run_fifo_or_edf_routine(t_simulation *sim)
 {
@@ -64,7 +53,7 @@ void	run_fifo_or_edf_routine(t_simulation *sim)
 			break ;
 		coder = pop_queue(sim, sim->config.scheduler);
 		if (!coder)
-			wait_watcher_nans(sim);
+      usleep(300);
 		else if (mark_coder_finished_if_done(coder, sim))
 			nbfinicoders++;
 		else

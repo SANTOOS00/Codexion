@@ -29,3 +29,14 @@ t_coder	*pop_queue(t_simulation *sim, t_scheduler scheduler)
 	pthread_mutex_unlock(&sim->queue->mutex_queue);
 	return (coder);
 }
+
+void	push_priority_queue(t_coder *coder)
+{
+	t_queue	*queue;
+
+	queue = coder->queue;
+	queue->coders[queue->size] = coder;
+	if (coder->config->scheduler == EDF)
+		heapify_up(queue, queue->size);
+	queue->size++;
+}
