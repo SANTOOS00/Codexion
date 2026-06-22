@@ -11,42 +11,11 @@
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
+#include <pthread.h>
 
-void	clean_mutex_cond_simulation(t_simulation *simulation)
-{
-	destroy_mutex_cond(&simulation->monitor_mu_cond);
-	destroy_mutex_cond(&simulation->watch_mu_cond);
-	destroy_mutex_prints(simulation);
-}
-
-bool	init_mutex_prints(t_simulation *sim)
-{
-	if (pthread_mutex_init(&sim->mutex_print, NULL) != 0)
-		return (false);
-	return (true);
-}
-
-bool	ft_set_simulation_intial_state(int argc, char **argv,
-		t_simulation *simulation)
-{
-	reset_simulation_vars(simulation);
-	if (parse_args(argc, argv, simulation) == false)
-		return (false);
-	if (init_mutex_cond(&simulation->monitor_mu_cond) == false)
-		return (false);
-	if (init_mutex_cond(&simulation->watch_mu_cond) == false)
-	{
-		destroy_mutex_cond(&simulation->monitor_mu_cond);
-		return (false);
-	}
-	if (init_mutex_prints(simulation) == false)
-	{
-		destroy_mutex_cond(&simulation->monitor_mu_cond);
-		destroy_mutex_cond(&simulation->watch_mu_cond);
-		return (false);
-	}
-	return (true);
-}
+static void	reset_simulation_vars(t_simulation *sim);
+static bool	ft_set_simulation_intial_state(int argc, char **argv,
+		t_simulation *simulation);
 
 bool	ft_init_simulation(int argc, char **argv, t_simulation *simulation)
 {
@@ -57,7 +26,7 @@ bool	ft_init_simulation(int argc, char **argv, t_simulation *simulation)
 		clean_mutex_cond_simulation(simulation);
 		return (false);
 	}
-	if (alloc_and_init_dongles(simulation) == false)
+	if (init_dongles(simulation) == false)
 	{
 		clean_mutex_cond_simulation(simulation);
 		clean_coders(simulation->coders, simulation->config.number_of_coders);
@@ -70,6 +39,58 @@ bool	ft_init_simulation(int argc, char **argv, t_simulation *simulation)
 		clean_mutex_cond_simulation(simulation);
 		return (false);
 	}
-	ft_set_coders_initial_state(simulation);
+	return (true);
+}
+
+static void	reset_simulation_vars(t_simulation *sim)
+{
+	sim->run_coders_counter = 0;
+	sim->monitor_status = START_M;
+	sim->time_start = 0;
+	sim->is_watch_waiting = false;
+	sim->watch_status = START_W;
+  sim->finished_coders = 0;
+  sim->is_burnout_detected = false;
+}
+
+void	clean_mutex_cond_simulation(t_simulation *simulation)
+{
+	destroy_mutex_cond(&simulation->monitor_mu_cond);
+	destroy_mutex_cond(&simulation->watch_mu_cond);
+	destroy_mutex_prints(simulation);
+}
+
+static bool	ft_set_simulation_intial_state(int argc, char **argv,
+		t_simulation *simulation)
+{
+	if (parse_args(argc, argv, simulation) == false)
+		return (false);
+	if (init_mutex_cond(&simulation->monitor_mu_cond) == false)
+		return (false);
+	if (init_mutex_cond(&simulation->watch_mu_cond) == false)
+	{
+		destroy_mutex_cond(&simulation->monitor_mu_cond);
+		return (false);
+	}
+	if (pthread_mutex_init(&simulation->mutex_print, NULL) != 0)
+	{
+		destroy_mutex_cond(&simulation->monitor_mu_cond);
+		destroy_mutex_cond(&simulation->watch_mu_cond);
+		return (false);
+	}
+  if (pthread_mutex_init(&simulation->is_burnout_detected_m, NULL) != 0) {
+		destroy_mutex_cond(&simulation->monitor_mu_cond);
+		destroy_mutex_cond(&simulation->watch_mu_cond);
+		pthread_mutex_destroy(&simulation->mutex_print);
+    return (false);
+  }
+  if (pthread_mutex_init(&simulation->finished_coders_m, NULL) != 0) {
+		destroy_mutex_cond(&simulation->monitor_mu_cond);
+		destroy_mutex_cond(&simulation->watch_mu_cond);
+		pthread_mutex_destroy(&simulation->mutex_print);
+		pthread_mutex_destroy(&simulation->is_burnout_detected_m);
+    return (false);
+  }
+	reset_simulation_vars(simulation);
 	return (true);
 }

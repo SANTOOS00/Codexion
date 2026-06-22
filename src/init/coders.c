@@ -12,7 +12,29 @@
 
 #include "../include/codexion.h"
 
-t_coder	**alloc_coders(int coders_number)
+static t_coder	**alloc_coders(int coders_number);
+static bool	init_mutex_cond_coders(t_coder **coders, int size);
+static bool	ft_set_coders_initial_state(t_simulation *simulation);
+
+bool	init_coders(t_simulation *simulation)
+{
+	t_coder	**coders;
+
+	coders = alloc_coders(simulation->config.number_of_coders);
+	if (!coders)
+		return (false);
+	if (init_mutex_cond_coders(coders,
+			simulation->config.number_of_coders) == false)
+	{
+		free_2d_array((void **)coders, simulation->config.number_of_coders);
+		return (false);
+	}
+	simulation->coders = coders;
+	ft_set_coders_initial_state(simulation);
+	return (true);
+}
+
+static t_coder	**alloc_coders(int coders_number)
 {
 	t_coder	**coders;
 	int		i;
@@ -31,7 +53,7 @@ t_coder	**alloc_coders(int coders_number)
 	return (coders);
 }
 
-bool	ft_set_coders_initial_state(t_simulation *simulation)
+static bool	ft_set_coders_initial_state(t_simulation *simulation)
 {
 	t_coder	*coder;
 	int		i;
@@ -52,8 +74,11 @@ bool	ft_set_coders_initial_state(t_simulation *simulation)
 		coder->watcher_mu_cond = &simulation->watch_mu_cond;
 		coder->status = START;
 		coder->queue = simulation->queue;
-		coder->sim = simulation;
 		coder->deadline = 0;
+    coder->is_burnout_detected = &simulation->is_burnout_detected;
+    coder->is_burnout_detected_m = &simulation->is_burnout_detected_m;
+    coder->finished_coders_m = &simulation->finished_coders_m;
+    coder->finished_coders = &simulation->finished_coders;
 		i++;
 	}
 	return (true);
@@ -68,7 +93,7 @@ void	destroy_mutex_cond_coders(t_coder **coders, int size)
 		destroy_mutex_cond(&coders[i++]->mutex_cond);
 }
 
-bool	init_mutex_cond_coders(t_coder **coders, int size)
+static bool	init_mutex_cond_coders(t_coder **coders, int size)
 {
 	int	i;
 
@@ -85,19 +110,3 @@ bool	init_mutex_cond_coders(t_coder **coders, int size)
 	return (true);
 }
 
-bool	init_coders(t_simulation *simulation)
-{
-	t_coder	**coders;
-
-	coders = alloc_coders(simulation->config.number_of_coders);
-	if (!coders)
-		return (false);
-	if (init_mutex_cond_coders(coders,
-			simulation->config.number_of_coders) == false)
-	{
-		free_2d_array((void **)coders, simulation->config.number_of_coders);
-		return (false);
-	}
-	simulation->coders = coders;
-	return (true);
-}
