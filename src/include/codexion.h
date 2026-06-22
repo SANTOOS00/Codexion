@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/21 22:59:01 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/22 16:41:39 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,6 @@ typedef struct s_queue
 	t_coder				**coders;
 	int					size;
 	int					capacity;
-	long long			time_burnout;
 	pthread_mutex_t		mutex_queue;
 }	t_queue;
 

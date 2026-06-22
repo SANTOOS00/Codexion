@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/10 17:24:44 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/18 07:58:13 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/22 16:42:09 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 void	clean_queue(t_queue *queue)
 {
-	int	i;
-
-	i = 0;
 	pthread_mutex_destroy(&queue->mutex_queue);
 	free(queue->coders);
 	free(queue);
@@ -39,7 +36,6 @@ bool	ft_init_queue(t_simulation *sim)
 		return (free(queue), false);
 	}
 	queue->capacity = sim->config.number_of_coders;
-	queue->time_burnout = sim->config.time_to_burnout;
 	queue->size = 0;
 	sim->queue = queue;
 	return (true);

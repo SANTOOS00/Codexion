@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 19:36:24 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/21 23:00:49 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/22 15:52:02 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	monitor_stop_coders(t_simulation *sim)
 void	monitor_stop_watcher(t_simulation *sim)
 {
 	pthread_mutex_lock(&sim->watch_mu_cond.mutex);
-	sim->watch_status = IS_BURNOUT_W;
+	sim->watch_status = FINISHED_W;
 	pthread_mutex_unlock(&sim->watch_mu_cond.mutex);
 }
 

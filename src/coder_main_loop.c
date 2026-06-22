@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/06 03:50:54 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/18 08:21:52 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/22 16:19:33 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ void	push_queue(t_coder *coder)
 
 	pthread_mutex_lock(&coder->queue->mutex_queue);
 	queue = coder->queue;
+	if (queue->size >= queue->capacity)
+	{
+		pthread_mutex_unlock(&coder->queue->mutex_queue);
+		return ;
+	}
 	queue->coders[queue->size] = coder;
 	queue->size++;
 	pthread_mutex_unlock(&coder->queue->mutex_queue);
@@ -66,6 +71,7 @@ void	coder_main_loop(t_coder *coder)
 	enqueue_coder_and_wait(coder);
 	while (1)
 	{
+		update_burnout_timer(coder);
 		perform_coding(coder);
 		if (get_status_coder(coder) == IS_BURNOUT)
 			break ;

@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 22:21:10 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/22 00:48:41 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/22 16:42:38 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ bool	wait_monitor(t_simulation *sim)
 	while (!sim->is_watch_waiting)
 		pthread_cond_wait(&sim->monitor_mu_cond.cond,
 			&sim->monitor_mu_cond.mutex);
-	if (sim->monitor_status == ERROR_W || sim->monitor_status == FINISHED_M)
+	if (sim->monitor_status == ERROR_M || sim->monitor_status == FINISHED_M)
 	{
 		pthread_mutex_unlock(&sim->monitor_mu_cond.mutex);
 		return (false);

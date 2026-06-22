@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:30:25 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/22 00:42:20 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/22 16:28:28 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 void	start_coder_compilation_cycle(t_coder *coder)
 {
+	pthread_mutex_lock(&coder->mutex_cond.mutex);
 	coder->compilation_count++;
+	pthread_mutex_unlock(&coder->mutex_cond.mutex);
 	pick_up_dongle(coder);
-	update_burnout_timer(coder);
 }
 
 void	watcher_stop_monitor_and_coders(t_simulation *sim)
@@ -75,6 +76,6 @@ void	run_fifo_or_edf_routine(t_simulation *sim)
 			pthread_mutex_unlock(&coder->mutex_cond.mutex);
 		}
 	}
-	if (get_watcher_status(sim) != IS_BURNOUT_W)
+	if (get_watcher_status(sim) != FINISHED_W)
 		watcher_stop_monitor_and_coders(sim);
 }
