@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 19:04:20 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/17 19:13:15 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/23 06:22:22 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,11 @@ bool	init_dongles(t_simulation *simulation)
 	dongles = dongles_alloc(simulation->config.number_of_coders);
 	if (!dongles)
 		return (false);
-	if (init_mutex_dongles(dongles,
-			simulation->config.number_of_coders) == false)
+	if (!init_mutex_dongles(dongles, simulation->config.number_of_coders))
+	{
 		return (free_2d_array((void **)dongles,
-				simulation->config.number_of_coders), false);
+			simulation->config.number_of_coders), false);
+	}
 	init_dongles_state(dongles, simulation->config);
 	simulation->dongles = dongles;
 	return (true);

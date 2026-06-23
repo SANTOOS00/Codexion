@@ -2,7 +2,7 @@ NAME_PROGRAN = codexion
 
 CC = cc
 
-FLAGS = -pthread -Wall -Wextra -Werror
+FLAGS =  -g3 -fsanitize=thread #-pthread -Wall -Wextra -Werror
 
 SRC = src/init/queue.c\
 	  src/init/init_simulation.c \
@@ -24,9 +24,7 @@ SRC = src/init/queue.c\
 	  src/heapify_up_or_down.c\
 	  src/main.c\
 	  src/manager_simulation.c\
-	  src/fifo_or_edf.c\
 	  src/monitor_routine.c\
-	  src/watcher_shutdown.c\
 	  src/get_status.c\
 	  src/pick_up_dongle.c\
 	  src/perform_coding.c\
@@ -35,12 +33,10 @@ SRC = src/init/queue.c\
 	  src/queue_pop_fifo.c\
 	  src/priority_queue_utils.c\
 	  src/check_coder_burnout.c\
-	  src/init_time_start.c\
 	  src/return_dongles.c\
 	  src/thread_joiner.c\
 	  src/try_take_dongle.c\
 	  src/time_utils.c\
-	  src/wake_monitor.c\
 	  src/watcher_routine.c
 
 

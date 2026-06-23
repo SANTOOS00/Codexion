@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 22:18:53 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/18 07:59:14 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/23 05:04:07 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,7 @@ void	destroy_mutex_cond(t_mutex_cond *mutex_cond)
 	pthread_cond_destroy(&mutex_cond->cond);
 }
 
-void	destroy_mutex_prints(t_simulation *sim)
-{
-	pthread_mutex_destroy(&sim->mutex_print);
-}
+
 
 void	clean_dongles(t_dongle **dongles, int size)
 {

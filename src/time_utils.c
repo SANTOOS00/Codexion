@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 22:16:27 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/21 21:29:10 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/23 06:40:50 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,11 @@ long long	get_time(void)
 	return (time_ms);
 }
 
-long long	get_time_start_end(t_simulation *sim)
+long long	get_time_start_end(t_coder *coder)
 {
 	long long	time;
 
-	pthread_mutex_lock(&sim->monitor_mu_cond.mutex);
-	time = get_time() - sim->time_start;
-	pthread_mutex_unlock(&sim->monitor_mu_cond.mutex);
+	time = get_time() - (*coder->time_start);
 	return (time);
 }
 

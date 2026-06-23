@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 18:31:06 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/17 21:18:20 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/23 05:09:11 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ int	main(int argc, char **argv)
 {
 	t_simulation	simulation;
 
-	if (ft_init_simulation(argc, argv, &simulation) == false)
+	if (!ft_init_simulation(argc, argv, &simulation))
 		return (1);
-	if (start_simulation(&simulation) == false)
+	if (!start_simulation(&simulation))
 	{
 		clean_resource(&simulation);
 		return (1);

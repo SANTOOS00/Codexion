@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/19 02:40:11 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/22 16:42:58 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/22 21:42:26 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_coder	*pop_queue_edf(t_queue *q)
 	{
 		coder = q->coders[0];
 		q->coders[0] = q->coders[q->size - 1];
-		heapify_down(q, 0);
+		heapify_down(q, 0);                                              
 		q->size--;
 	}
 	return (coder);

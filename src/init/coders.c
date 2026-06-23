@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 22:14:14 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/18 08:36:03 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/23 06:39:17 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ bool	init_coders(t_simulation *simulation)
 		return (false);
 	}
 	simulation->coders = coders;
+	printf("sssssssssssssssssssss1\n");
 	ft_set_coders_initial_state(simulation);
+	printf("sssssssssssssssssssss2\n");
 	return (true);
 }
 
@@ -75,10 +77,14 @@ static bool	ft_set_coders_initial_state(t_simulation *simulation)
 		coder->status = START;
 		coder->queue = simulation->queue;
 		coder->deadline = 0;
-    coder->is_burnout_detected = &simulation->is_burnout_detected;
-    coder->is_burnout_detected_m = &simulation->is_burnout_detected_m;
-    coder->finished_coders_m = &simulation->finished_coders_m;
-    coder->finished_coders = &simulation->finished_coders;
+
+		coder->time_start = &simulation->time_start;
+	    
+		coder->is_finished_sim = &simulation->is_finished_sim;
+    	coder->is_finished_sim_m = &simulation->is_finished_sim_m;
+		coder->mutex_print = &simulation->mutex_print;
+	    coder->finished_coders_m = &simulation->finished_coders_m;
+    	coder->finished_coders = &simulation->finished_coders;
 		i++;
 	}
 	return (true);

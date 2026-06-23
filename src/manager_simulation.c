@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/06 03:37:59 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/19 04:27:36 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/23 05:06:59 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ bool	start_simulation(t_simulation *sim)
 		exit_monitor(sim);
 		return (false);
 	}
-	if (create_coders(sim) == false)
+	if (!create_coders(sim))
 	{
 		exit_monitor(sim);
 		exit_watcher(sim);
@@ -51,3 +51,4 @@ bool	start_simulation(t_simulation *sim)
 	}
 	return (true);
 }
+	 	

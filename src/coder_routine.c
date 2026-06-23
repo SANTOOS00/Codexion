@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 21:46:11 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/05 15:56:37 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/23 05:52:56 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	*coder_routine(void *arg)
 
 	coder = (t_coder *)arg;
 	increment_coders_counter(coder);
-	if (wait_all_coders_created(coder) == false)
+	if (!wait_all_coders_created(coder))
 		return (NULL);
 	coder_main_loop(coder);
 	return (NULL);
