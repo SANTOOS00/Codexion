@@ -2,7 +2,7 @@ NAME_PROGRAN = codexion
 
 CC = cc
 
-FLAGS =  -g3 -fsanitize=thread #-pthread -Wall -Wextra -Werror
+FLAGS =  -g3 #-fsanitize=address #-pthread -Wall -Wextra -Werror
 
 SRC = src/init/queue.c\
 	  src/init/init_simulation.c \
@@ -28,9 +28,7 @@ SRC = src/init/queue.c\
 	  src/get_status.c\
 	  src/pick_up_dongle.c\
 	  src/perform_coding.c\
-	  src/queue_manager.c\
-	  src/queue_pop_edf.c\
-	  src/queue_pop_fifo.c\
+	  src/queue_pop.c\
 	  src/priority_queue_utils.c\
 	  src/check_coder_burnout.c\
 	  src/return_dongles.c\

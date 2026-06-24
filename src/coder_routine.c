@@ -6,19 +6,13 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 21:46:11 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/23 05:52:56 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/24 04:12:25 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/codexion.h"
 
-void	increment_coders_counter(t_coder *coder)
-{
-	pthread_mutex_lock(&coder->watcher_mu_cond->mutex);
-	(*coder->run_coders_counter)++;
-	pthread_cond_broadcast(&coder->watcher_mu_cond->cond);
-	pthread_mutex_unlock(&coder->watcher_mu_cond->mutex);
-}
+
 
 bool	wait_all_coders_created(t_coder *coder)
 {

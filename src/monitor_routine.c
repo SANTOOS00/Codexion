@@ -6,15 +6,14 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 22:21:10 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/23 05:43:10 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/24 04:54:58 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/codexion.h"
-#include <pthread.h>
 
 static void signal_coders_to_stop(t_coder **coders, int number_of_coders);
-static bool is_finished_watcher(t_simulation *sim);
+static bool ft_is_finished_watcher(t_simulation *sim);
 
 bool	wait_monitor(t_simulation *sim)
 {
@@ -39,6 +38,18 @@ void ft_is_burnout(bool *is_burnout_detected, pthread_mutex_t *is_burnout_detect
 	pthread_mutex_unlock(is_burnout_detected_m);
 }
 
+bool ft_is_finished_coder(t_coder *coder)
+{
+	bool is_check;
+
+	is_check = false;
+	pthread_mutex_lock(&coder->mutex_cond.mutex);
+	if (coder->compilation_count >= coder->config->number_of_compiles_required)
+		is_check = true;
+	pthread_mutex_unlock(&coder->mutex_cond.mutex);
+	return (is_check);
+}
+
 bool ft_is_burnout_detected(t_coder **coders, int number_of_coders)
 {
   	int i;
@@ -46,7 +57,7 @@ bool ft_is_burnout_detected(t_coder **coders, int number_of_coders)
   	i = 0;
   	while (i < number_of_coders)
   	{
-		if (check_coder_burnout(coders[i]))
+		if (check_coder_burnout(coders[i]) && !ft_is_finished_coder(coders[i]))
 		{
 			ft_is_burnout(coders[i]->is_finished_sim, coders[i]->is_finished_sim_m);
 			signal_coders_to_stop(coders, number_of_coders);
@@ -61,8 +72,10 @@ bool ft_is_burnout_detected(t_coder **coders, int number_of_coders)
 static void	detect_burnout_in_coders(t_simulation *sim)
 {
  	while (!ft_is_burnout_detected(sim->coders, sim->config.number_of_coders) &&
-    	!is_finished_watcher(sim))
-    	usleep(300);
+    	!ft_is_finished_watcher(sim))
+		usleep(300);
+
+	printf("monitor \n");
 }
 
 static void signal_coders_to_stop(t_coder **coders, int number_of_coders) {
@@ -79,7 +92,7 @@ static void signal_coders_to_stop(t_coder **coders, int number_of_coders) {
 	}
 }
 
-static bool is_finished_watcher(t_simulation *sim)
+static bool ft_is_finished_watcher(t_simulation *sim)
 {
 	bool is_finised;
 

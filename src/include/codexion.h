@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/23 06:41:37 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/24 04:16:19 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,8 +144,8 @@ typedef struct s_coder
 	bool			*is_finished_sim;
 	pthread_mutex_t *is_finished_sim_m;
 
-  	int				*finished_coders;
- 	pthread_mutex_t *finished_coders_m;
+  	// int				*finished_coders;
+ 	// pthread_mutex_t *finished_coders_m;
 }	t_coder;
 
 /*

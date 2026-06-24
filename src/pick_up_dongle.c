@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/09 17:11:45 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/23 06:47:27 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/24 05:00:14 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	pick_up_right_dongle(t_coder *coder)
 
 void	pick_up_dongle(t_coder *coder)
 {
+	if (ft_is_simulation_finished(coder->is_finished_sim, coder->is_finished_sim_m))
+		return ;
 	pick_up_left_dongle(coder);
 	pick_up_right_dongle(coder);
 }
