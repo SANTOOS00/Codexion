@@ -2,7 +2,7 @@ NAME_PROGRAN = codexion
 
 CC = cc
 
-FLAGS =   -fsanitize=address -pthread# -Wall -Wextra -Werror
+FLAGS = -pthread# -Wall -Wextra -Werror
 
 SRC = src/init/queue.c\
 	  src/init/init_simulation.c \

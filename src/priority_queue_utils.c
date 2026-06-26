@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   priority_queue_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
+/*   By: santoos <santoos@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 19:15:58 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/24 06:01:50 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/26 06:08:21 by santoos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	child_right_index(int index)
 
 bool	is_greater(t_coder *coder_1, t_coder *coder_2)
 {
-	return (coder_1->deadline < coder_2->deadline);
+	return (coder_1->deadline <	 coder_2->deadline);
 }
 
 bool	is_same_deadline(t_coder *coder_1, t_coder *coder_2)
@@ -41,3 +41,4 @@ bool is_same_comp(t_coder *coder_1, t_coder *coder_2)
 {
 	return (coder_1->compilation_count <= coder_2->compilation_count);
 }
+	

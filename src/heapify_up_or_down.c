@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heapify_up_or_down.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
+/*   By: santoos <santoos@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/16 14:26:27 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/24 05:33:43 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/26 06:07:02 by santoos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,45 +25,38 @@ void	heapify_up(t_queue *q, int index)
 {
 	int	parent;
 
-	while (index > 0)
+	parent = parent_index(index);
+	if (is_greater(q->coders[index], q->coders[parent]))
 	{
-		parent = parent_index(index);
-		if (is_greater(q->coders[index], q->coders[parent]))
-		{
-			ft_swap(&q->coders[index], &q->coders[parent]);
-			index = parent;
-		}
-		else if (is_same_deadline(q->coders[index], q->coders[parent])
-			&& q->coders[index]->id < q->coders[parent]->id)
-		{
-			ft_swap(&q->coders[index], &q->coders[parent]);
-			index = parent;
-		}
-		else
-			break ;
+		ft_swap(&q->coders[index], &q->coders[parent]);
+		heapify_up(q, parent);
+	}
+	else if (is_same_deadline(q->coders[index], q->coders[parent])
+		&& q->coders[index]->id < q->coders[parent]->id)
+	{
+		ft_swap(&q->coders[index], &q->coders[parent]);
+		heapify_up(q, parent);
 	}
 }
 
 void	heapify_down(t_queue *q, int parent)
 {
-	int	cheld_left;
-	int	cheld_right;
-	int	index;
+	int child_left;
+	int child_right;
+	int index;
 
-	while (parent < q->size)
+	child_left = child_left_index(parent);
+	child_right = child_right_index(parent);
+	index = parent;
+	if (child_left < q->size && is_greater(q->coders[child_left],
+			q->coders[parent]))
+		index = child_left;
+	if (child_right < q->size && is_greater(q->coders[child_right],
+			q->coders[parent]))
+		index = child_right;
+	if (index != parent)
 	{
-		cheld_left = child_left_index(parent);
-		cheld_right = child_right_index(parent);
-		index = parent;
-		if (cheld_left < q->size && is_greater(q->coders[cheld_left],
-				q->coders[parent]))
-			index = cheld_left;
-		if (cheld_right < q->size && is_greater(q->coders[cheld_right],
-				q->coders[parent]))
-			index = cheld_right;
-		if (index == parent)
-			break ;
 		ft_swap(&q->coders[index], &q->coders[parent]);
-		parent = index;
+		heapify_down(q, index);
 	}
 }
