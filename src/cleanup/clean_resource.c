@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 22:18:53 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/27 02:23:35 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/27 12:44:09 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	clean_queue(t_queue *queue)
 	free(queue);
 }
 
-void	clean_resource(t_simulation *simulation)
+void	ft_clean_resource(t_simulation *simulation)
 {
 	clean_dongles(simulation->dongles, simulation->config.number_of_coders);
 	clean_coders(simulation->coders, simulation->config.number_of_coders);

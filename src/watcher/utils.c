@@ -6,19 +6,19 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/27 04:52:11 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/27 06:08:58 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/27 12:43:21 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
 
-t_monitor_status	ft_get_status_watcher(t_simulation *sim)
+t_watch_status	ft_get_status_watcher(t_simulation *sim)
 {
-	t_monitor_status	status;
+	t_watch_status	status;
 
-	pthread_mutex_lock(&sim->monitor_mu_cond.mutex);
-	status = sim->monitor_status;
-	pthread_mutex_unlock(&sim->monitor_mu_cond.mutex);
+	pthread_mutex_lock(&sim->watch_mu_cond.mutex);
+	status = sim->watch_status;
+	pthread_mutex_unlock(&sim->watch_mu_cond.mutex);
 	return (status);
 }
 

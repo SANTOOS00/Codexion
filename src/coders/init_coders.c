@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/26 21:02:49 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/26 22:24:57 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/27 12:52:31 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,11 @@ bool	init_coders(t_simulation *simulation)
 	}
 	simulation->coders = coders;
 	ft_set_coders_initial_state(simulation);
+	if (simulation->config.number_of_coders == 1)
+	{
+		simulation->dongles[0]->is_available = false;		
+		simulation->coders[0]->deadline = get_time() + simulation->config.time_to_burnout;
+	}
 	return (true);
 }
 

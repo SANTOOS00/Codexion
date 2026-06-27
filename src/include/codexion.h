@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/27 06:13:20 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/27 12:46:09 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -276,7 +276,7 @@ bool				is_greater(t_coder *coder_1, t_coder *coder_2);
 */
 
 // t_coder_status		get_status_coder(t_coder *coder);
-t_monitor_status	ft_get_status_watcher(t_simulation *sim);
+t_watch_status	ft_get_status_watcher(t_simulation *sim);
 // t_monitor_status	get_status_monitor(t_simulation *sim);
 void ft_stop_simulation(t_simulation *sim);
 bool				ft_check_coder_burnout(t_coder *coder);
@@ -300,7 +300,7 @@ void				exit_monitor(t_simulation *sim);
 /*
 ** ================= CLEAN & DESTROY =================
 */
-void				clean_resource(t_simulation *sim);
+void				ft_clean_resource(t_simulation *sim);
 void				clean_mutex_cond_simulation(t_simulation *sim);
 // void				destroy_mutex_prints(t_simulation *sim);
 
