@@ -3,23 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   heapify_up_or_down.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: santoos <santoos@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/16 14:26:27 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/26 06:07:02 by santoos          ###   ########.fr       */
+/*   Updated: 2026/06/27 04:29:11 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/codexion.h"
+#include "../include/codexion.h"
 
-void	ft_swap(t_coder **s1, t_coder **s2)
-{
-	t_coder	*temp;
-
-	temp = *s1;
-	*s1 = *s2;
-	*s2 = temp;
-}
+static void	ft_swap(t_coder **s1, t_coder **s2);
 
 void	heapify_up(t_queue *q, int index)
 {
@@ -59,4 +52,13 @@ void	heapify_down(t_queue *q, int parent)
 		ft_swap(&q->coders[index], &q->coders[parent]);
 		heapify_down(q, index);
 	}
+}
+
+void	ft_swap(t_coder **s1, t_coder **s2)
+{
+	t_coder	*temp;
+
+	temp = *s1;
+	*s1 = *s2;
+	*s2 = temp;
 }

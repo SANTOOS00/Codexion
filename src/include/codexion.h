@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/24 04:16:19 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/27 06:13:20 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef enum e_coder_status
 	COMPILING,
 	DEBUGGING,
 	REFACTORING,
+	FINISHED,
 	ERROR
 }	t_coder_status;
 
@@ -144,8 +145,6 @@ typedef struct s_coder
 	bool			*is_finished_sim;
 	pthread_mutex_t *is_finished_sim_m;
 
-  	// int				*finished_coders;
- 	// pthread_mutex_t *finished_coders_m;
 }	t_coder;
 
 /*
@@ -192,64 +191,64 @@ typedef struct s_simulation
 	pthread_mutex_t		is_finished_sim_m;
 }	t_simulation;
 
+
 /*
-** ================= UTILITIES =================
+** ================= PARSER =================
 */
-
-long long			get_time(void);
-long long			get_time_start_end(t_coder *coder);
-struct timespec		get_time_add_time_wait(long long time_wait_ms);
-
 bool				parse_args(int ac, char **av, t_simulation *sim);
-bool				is_valid_integer(char *str);
 bool				validate_numeric_arguments(char **av);
 bool				string_to_int(char **av, t_config *config);
 bool				parser_time_val(char **av, t_config *config);
-bool				parse_required_compiles(char **av, t_config *config);
-
-long				ft_atoi(char *str);
 void				error_out_of_range(const char *arg, const char *val);
-// bool				is_burnout_detected(bool *is_burnout_detected, pthread_mutex_t *is_burnout_detected_m);
+long				ft_atoi(char *str);
+/*
+** ================= TIME =================
+*/
 
-void				update_burnout_timer(t_coder *coder);
-void				increment_coders_counter(t_coder *coder);
-bool				is_valid_dongl_left_right(t_coder *coder);
-void				print_coder_action(t_coder *coder, char *action);
+long long			get_time(void);
+long long			get_time_since_program_start(t_coder *coder);
+struct timespec		ft_get_time_add_time_wait(long long time_wait_ms);
+
+
+// void				update_burnout_timer(t_coder *coder);
+// void				increment_coders_counter(t_coder *coder);
+// bool				is_valid_dongl_left_right(t_coder *coder);
+/*
+** ================= UTILITIES =================
+*/
+void				ft_print_action(t_coder *coder, char *action);
 
 /*
 ** ================= INIT =================
 */
 
 bool				ft_init_simulation(int ac, char **av, t_simulation *sim);
-void				initialize_start_time(t_simulation *sim);
 
-bool				init_coders(t_simulation *sim);
 bool				init_dongles(t_simulation *sim);
-bool				ft_init_queue(t_simulation *sim);
+bool					init_coders(t_simulation *sim);
 bool				init_mutex_cond(t_mutex_cond *m);
+bool				ft_init_queue(t_simulation *sim);
 
 /*
 ** ================= CORE / ROUTINES =================
 */
 
-bool				start_simulation(t_simulation *sim);
+bool				ft_start_simulation(t_simulation *sim);
 
-void				*coder_routine(void *arg);
-void				coder_main_loop(t_coder *coder);
-// void				start_coder_compilation_cycle(t_coder *coder);
-bool				perform_coding(t_coder *coder);
+void				*ft_watcher_routine(void *arg);	
+void				*ft_monitor_routine(void *arg);
+void				*ft_coder_routine(void *arg);
 
+// bool				perform_coding(t_coder *coder);
+bool   				perform_coding(t_coder *coder);
+bool ft_sleep_coder(t_coder *coder, int state);
+bool ft_is_simulation_finished(bool *is_sim_finished, pthread_mutex_t *is_sim_finished_m);
+// void				coder_main_loop(t_coder *coder);
 void				pick_up_dongle(t_coder *coder);
-bool				try_take_dongle(t_dongle *dongle);
 void				return_dongles(t_coder *coder);
 
-void				*watcher_routine(void *arg);
-// void				watcher_wake_monitor(t_simulation *sim);
-// void				watcher_stop_monitor(t_simulation *sim);
-bool ft_is_simulation_finished(bool *is_sim_finished, pthread_mutex_t *is_sim_finished_m);
-// void				watcher_stop_coders(t_simulation *sim);
+// bool ft_is_simulation_finished(bool *is_sim_finished, pthread_mutex_t *is_sim_finished_m);
 
-void				*monitor_routine(void *arg);
 
 /*
 ** ================= SCHEDULER & QUEUE =================
@@ -257,31 +256,34 @@ void				*monitor_routine(void *arg);
 
 void				push_priority_queue(t_coder *coder);
 t_coder				*pop_queue(t_simulation *sim, t_scheduler scheduler);
-t_coder				*pop_queue_edf(t_queue *q);
-t_coder				*pop_queue_fifo(t_queue *q);
+void				enqueue_initial_coders(t_coder *coder);
+
+bool	is_valid_dongl_left_right(t_coder *coder);
+void	shift_queue_elements(t_queue *q);
 
 void				heapify_up(t_queue *q, int index);
 void				heapify_down(t_queue *q, int parent);
-void				ft_swap(t_coder **s1, t_coder **s2);
 
 int					parent_index(int index);
 int					child_left_index(int index);
 int					child_right_index(int index);
 
 bool				is_same_deadline(t_coder *coder_1, t_coder *coder_2);
-bool				is_same_comp(t_coder *coder_1, t_coder *coder_2);
 bool				is_greater(t_coder *coder_1, t_coder *coder_2);
-void				move_first_valid_coder_to_front(t_queue *q);
 
 /*
 ** ================= STATUS & CHECKS =================
 */
 
-t_coder_status		get_status_coder(t_coder *coder);
-t_watch_status		get_watcher_status(t_simulation *sim);
-t_monitor_status	get_status_monitor(t_simulation *sim);
+// t_coder_status		get_status_coder(t_coder *coder);
+t_monitor_status	ft_get_status_watcher(t_simulation *sim);
+// t_monitor_status	get_status_monitor(t_simulation *sim);
+void ft_stop_simulation(t_simulation *sim);
+bool				ft_check_coder_burnout(t_coder *coder);
+bool				ft_is_finished_coder(t_coder *coder);
+void				ft_is_burnout(bool *is_burnout_detected, pthread_mutex_t *is_burnout_detected_m);
+void				ft_signal_coders_to_stop(t_coder **coders, int number_of_coders);
 
-bool				check_coder_burnout(t_coder *coder);
 /*
 ** ================= THREADS MANAGEMENT =================
 */
@@ -298,12 +300,11 @@ void				exit_monitor(t_simulation *sim);
 /*
 ** ================= CLEAN & DESTROY =================
 */
-
 void				clean_resource(t_simulation *sim);
 void				clean_mutex_cond_simulation(t_simulation *sim);
-void				destroy_mutex_prints(t_simulation *sim);
+// void				destroy_mutex_prints(t_simulation *sim);
 
-void				clean_coders(t_coder **c, int size);
+// void				clean_coders(t_coder **c, int size);
 void				destroy_mutex_cond_coders(t_coder **c, int size);
 
 void				clean_dongles(t_dongle **d, int size);
@@ -311,5 +312,12 @@ void				clean_mutex_dongles(t_dongle **d, int size);
 
 void				clean_queue(t_queue *q);
 void				destroy_mutex_cond(t_mutex_cond *m);
-void				free_2d_array(void **arr, int size);
+void				ft_free_double_array(void **arr, int size);
+
+
+/*
+** ================= RUN SCHEDULER =================
+*/
+
+void	run_scheduler_loop(t_simulation *sim);
 #endif

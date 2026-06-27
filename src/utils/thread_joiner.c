@@ -6,11 +6,23 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 21:23:15 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/23 23:58:45 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/27 06:05:14 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/codexion.h"
+#include "../include/codexion.h"
+void	join_monitor(t_simulation *sim);
+void	join_watcher(t_simulation *sim);
+void	finich_monitor_and_watcher(t_simulation *sim);
+void	join_coders(t_simulation *sim, int number_coders);
+
+void	join_threads(t_simulation *sim)
+{
+	join_coders(sim, sim->config.number_of_coders);
+	finich_monitor_and_watcher(sim);
+	join_monitor(sim);
+	join_watcher(sim);
+}
 
 void	join_monitor(t_simulation *sim)
 {
@@ -41,10 +53,4 @@ void	finich_monitor_and_watcher(t_simulation *sim)
 	pthread_mutex_unlock(&sim->watch_mu_cond.mutex);
 }
 
-void	join_threads(t_simulation *sim)
-{
-	join_coders(sim, sim->config.number_of_coders);
-	finich_monitor_and_watcher(sim);
-	join_monitor(sim);
-	join_watcher(sim);
-}
+

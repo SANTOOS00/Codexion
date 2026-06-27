@@ -6,11 +6,11 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:46:14 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/05 18:01:20 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/27 03:53:44 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/codexion.h"
+#include "../include/codexion.h"
 
 void	exit_monitor(t_simulation *sim)
 {

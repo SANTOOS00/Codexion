@@ -1,24 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_compiles_required.c                          :+:      :+:    :+:   */
+/*   print_action.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/04 21:15:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/24 04:04:54 by moerrais         ###   ########.fr       */
+/*   Created: 2026/06/27 03:03:29 by moerrais          #+#    #+#             */
+/*   Updated: 2026/06/27 03:18:27 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
 
-bool	parse_required_compiles(char **av, t_config *config)
+void	ft_print_action(t_coder *coder, char *action)
 {
-	config->number_of_compiles_required = ft_atoi(av[6]);
-	if (config->number_of_compiles_required <= 0)
-	{
-		error_out_of_range("number_of_compiles_required", av[6]);
-		return (false);
-	}
-	return (true);
+  long long time;
+
+  time = get_time_since_program_start(coder);
+  pthread_mutex_lock(coder->mutex_print);
+  printf("%lld %d %s\n", time, coder->id, action);
+  pthread_mutex_unlock(coder->mutex_print);
 }

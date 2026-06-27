@@ -6,16 +6,30 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 22:21:10 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/24 04:54:58 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/27 03:21:56 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/codexion.h"
+#include "../include/codexion.h"
 
-static void signal_coders_to_stop(t_coder **coders, int number_of_coders);
 static bool ft_is_finished_watcher(t_simulation *sim);
+static bool	ft_wait_monitor(t_simulation *sim);
+static void	ft_detect_burnout_in_coders(t_simulation *sim);
+static bool ft_is_finished_watcher(t_simulation *sim);
+static bool ft_is_burnout_detected(t_coder **coders, int number_of_coder);
 
-bool	wait_monitor(t_simulation *sim)
+void	*ft_monitor_routine(void *arg)
+{
+	t_simulation	*sim;
+
+	sim = (t_simulation *)arg;
+	if (!ft_wait_monitor(sim))
+		return (NULL);
+	ft_detect_burnout_in_coders(sim);
+	return (NULL);
+}
+
+static bool	ft_wait_monitor(t_simulation *sim)
 {
 	pthread_mutex_lock(&sim->monitor_mu_cond.mutex);
 	sim->is_watch_waiting = false;
@@ -31,65 +45,30 @@ bool	wait_monitor(t_simulation *sim)
 	return (true);
 }
 
-void ft_is_burnout(bool *is_burnout_detected, pthread_mutex_t *is_burnout_detected_m)
+static void	ft_detect_burnout_in_coders(t_simulation *sim)
 {
-	pthread_mutex_lock(is_burnout_detected_m);
-	(*is_burnout_detected) = true;
-	pthread_mutex_unlock(is_burnout_detected_m);
+ 	while (!ft_is_burnout_detected(sim->coders, sim->config.number_of_coders) &&
+    	!ft_is_finished_watcher(sim))
+		usleep(300);
 }
 
-bool ft_is_finished_coder(t_coder *coder)
-{
-	bool is_check;
-
-	is_check = false;
-	pthread_mutex_lock(&coder->mutex_cond.mutex);
-	if (coder->compilation_count >= coder->config->number_of_compiles_required)
-		is_check = true;
-	pthread_mutex_unlock(&coder->mutex_cond.mutex);
-	return (is_check);
-}
-
-bool ft_is_burnout_detected(t_coder **coders, int number_of_coders)
+static bool ft_is_burnout_detected(t_coder **coders, int number_of_coders)
 {
   	int i;
 
   	i = 0;
   	while (i < number_of_coders)
   	{
-		if (check_coder_burnout(coders[i]) && !ft_is_finished_coder(coders[i]))
+		if (ft_check_coder_burnout(coders[i]) && !ft_is_finished_coder(coders[i]))
 		{
 			ft_is_burnout(coders[i]->is_finished_sim, coders[i]->is_finished_sim_m);
-			signal_coders_to_stop(coders, number_of_coders);
-			print_coder_action(coders[i], "is burnout");
+			ft_signal_coders_to_stop(coders, number_of_coders);
+			ft_print_action(coders[i], "is burnout");
 			return true;
 		}
     	i++;
   	}
   	return false;
-}
-
-static void	detect_burnout_in_coders(t_simulation *sim)
-{
- 	while (!ft_is_burnout_detected(sim->coders, sim->config.number_of_coders) &&
-    	!ft_is_finished_watcher(sim))
-		usleep(300);
-
-	printf("monitor \n");
-}
-
-static void signal_coders_to_stop(t_coder **coders, int number_of_coders) {
-	int	i;
-
-	i = 0;
-	while (i < number_of_coders)
-	{
-		pthread_mutex_lock(&coders[i]->mutex_cond.mutex);
-		coders[i]->has_dongle = true;
-		pthread_cond_broadcast(&coders[i]->mutex_cond.cond);
-		pthread_mutex_unlock(&coders[i]->mutex_cond.mutex);
-		i++;
-	}
 }
 
 static bool ft_is_finished_watcher(t_simulation *sim)
@@ -101,15 +80,4 @@ static bool ft_is_finished_watcher(t_simulation *sim)
 	is_finised = sim->is_finished_sim;
 	pthread_mutex_unlock(&sim->is_finished_sim_m);
 	return (is_finised);
-}
-
-void	*monitor_routine(void *arg)
-{
-	t_simulation	*sim;
-
-	sim = (t_simulation *)arg;
-	if (!wait_monitor(sim))
-		return (NULL);
-	detect_burnout_in_coders(sim);
-	return (NULL);
 }

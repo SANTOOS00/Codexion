@@ -6,13 +6,13 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 16:14:55 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/05 16:07:45 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/26 22:32:24 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
 
-bool	is_valid_integer(char *str_number)
+static bool	is_valid_integer(char *str_number)
 {
 	int	i;
 

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   time_utils.c                                       :+:      :+:    :+:   */
+/*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 22:16:27 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/23 06:40:50 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/27 05:01:41 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/codexion.h"
+#include "../include/codexion.h"
 
 long long	get_time(void)
 {
@@ -22,7 +22,7 @@ long long	get_time(void)
 	return (time_ms);
 }
 
-long long	get_time_start_end(t_coder *coder)
+long long	get_time_since_program_start(t_coder *coder)
 {
 	long long	time;
 
@@ -30,7 +30,7 @@ long long	get_time_start_end(t_coder *coder)
 	return (time);
 }
 
-struct timespec	get_time_add_time_wait(long long time_wait_ms)
+struct timespec	ft_get_time_add_time_wait(long long time_wait_ms)
 {
 	struct timespec	spects;
 	struct timeval	valts;

@@ -6,13 +6,13 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 21:15:36 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/05 17:23:07 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/26 22:38:14 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
 
-bool	parse_com_deb_ref(char **av, t_config *config)
+static bool	parse_com_deb_ref(char **av, t_config *config)
 {
 	config->time_to_compile = ft_atoi(av[3]);
 	if (config->time_to_compile == -1)

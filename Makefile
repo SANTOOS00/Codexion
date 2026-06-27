@@ -2,41 +2,41 @@ NAME_PROGRAN = codexion
 
 CC = cc
 
-FLAGS = -pthread# -Wall -Wextra -Werror
+FLAGS = -pthread -Wall -Wextra -Werror
 
-SRC = src/init/queue.c\
-	  src/init/init_simulation.c \
-	  src/init/coders.c \
-	  src/init/dongles.c \
-	  src/init/free_2d_array.c\
-	  src/init/init_or_destory_mutex_cond.c\
+SRC = src/main.c\
 	  src/cleanup/clean_resource.c\
-      src/parse_args/parse_args.c \
-      src/parse_args/validate_numeric_arguments.c \
-      src/parse_args/string_to_int.c \
-      src/parse_args/error_handler.c \
-      src/parse_args/parser_time_val.c \
-      src/parse_args/parse_compiles_required.c \
-      src/parse_args/ft_atoi.c \
-	  src/coder_main_loop.c\
-	  src/coder_routine.c\
-	  src/exit_threads.c\
-	  src/heapify_up_or_down.c\
-	  src/main.c\
-	  src/manager_simulation.c\
-	  src/monitor_routine.c\
-	  src/get_status.c\
-	  src/pick_up_dongle.c\
-	  src/perform_coding.c\
-	  src/queue_pop.c\
-	  src/priority_queue_utils.c\
-	  src/check_coder_burnout.c\
-	  src/return_dongles.c\
-	  src/thread_joiner.c\
-	  src/try_take_dongle.c\
-	  src/time_utils.c\
-	  src/watcher_routine.c
-
+	  src/cleanup/free_double_array.c\
+	  src/coders/coders.c \
+	  src/coders/init_coders.c \
+	  src/coders/perform_coding.c \
+	  src/coders/utils.c\
+	  src/dongles/init_dongles.c\
+	  src/dongles/pick_up_dongle.c\
+	  src/dongles/return_dongles.c\
+	  src/monitor/monitor_routine.c\
+	  src/monitor/utils.c\
+      src/parse_args/parse_args.c\
+      src/parse_args/validate_numeric_arguments.c\
+      src/parse_args/string_to_int.c\
+      src/parse_args/error_handler.c\
+      src/parse_args/parser_time_val.c\
+      src/parse_args/ft_atoi.c\
+	  src/queue/heapify_up_or_down.c\
+	  src/queue/init_queue.c\
+	  src/queue/priority_queue_utils.c\
+	  src/queue/queue.c\
+	  src/queue/utils.c\
+	  src/simulation/init_simulation.c\
+	  src/simulation/init_mutex_cond.c\
+	  src/simulation/manager_simulation.c\
+	  src/utils/exit_threads.c\
+	  src/utils/print_action.c\
+	  src/utils/thread_joiner.c\
+	  src/utils/time.c\
+	  src/watcher/run_scheduler.c\
+	  src/watcher/watcher_routine.c\
+	  src/watcher/utils.c
 
 
 OBG = $(SRC:.c=.o)
