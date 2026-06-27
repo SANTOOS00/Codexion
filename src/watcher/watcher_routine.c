@@ -11,9 +11,10 @@
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
+
 static void	watcher_wake_monitor(t_simulation *sim);
 static bool	wait_watcher(t_simulation *sim);
-static void watcher_wait_coders(t_coder **coders, int nu_of_coders);
+static void	watcher_wait_coders(t_coder **coders, int nu_of_coders);
 static void	set_simulation_start_time(t_simulation *sim);
 
 void	*ft_watcher_routine(void *arg)
@@ -59,12 +60,12 @@ static void	set_simulation_start_time(t_simulation *sim)
 	pthread_mutex_unlock(&sim->monitor_mu_cond.mutex);
 }
 
-static void watcher_wait_coders(t_coder **coders, int nu_of_coders)
+static void	watcher_wait_coders(t_coder **coders, int nu_of_coders)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(i < nu_of_coders)
+	while (i < nu_of_coders)
 	{
 		pthread_mutex_lock(&coders[i]->mutex_cond.mutex);
 		coders[i]->is_waiting_coder = true;
@@ -73,8 +74,3 @@ static void watcher_wait_coders(t_coder **coders, int nu_of_coders)
 		i++;
 	}
 }
-
-
-
-
-

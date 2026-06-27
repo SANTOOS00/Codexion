@@ -30,7 +30,8 @@ void	pick_up_right_dongle(t_coder *coder)
 
 void	pick_up_dongle(t_coder *coder)
 {
-	if (ft_is_simulation_finished(coder->is_finished_sim, coder->is_finished_sim_m))
+	if (ft_is_simulation_finished(coder->is_finished_sim,
+			coder->is_finished_sim_m))
 		return ;
 	pick_up_left_dongle(coder);
 	pick_up_right_dongle(coder);

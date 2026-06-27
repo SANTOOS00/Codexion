@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
+
 void	join_monitor(t_simulation *sim);
 void	join_watcher(t_simulation *sim);
 void	finich_monitor_and_watcher(t_simulation *sim);
@@ -52,5 +53,3 @@ void	finich_monitor_and_watcher(t_simulation *sim)
 	sim->watch_status = FINISHED_W;
 	pthread_mutex_unlock(&sim->watch_mu_cond.mutex);
 }
-
-

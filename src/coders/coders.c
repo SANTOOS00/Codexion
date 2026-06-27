@@ -40,7 +40,7 @@ static void	increment_coders_counter(t_coder *coder)
 static bool	wait_all_coders_created(t_coder *coder)
 {
 	pthread_mutex_lock(&coder->mutex_cond.mutex);
-	coder->is_waiting_coder = false;	
+	coder->is_waiting_coder = false;
 	while (!coder->is_waiting_coder)
 		pthread_cond_wait(&coder->mutex_cond.cond, &coder->mutex_cond.mutex);
 	if (coder->status == ERROR)
@@ -58,7 +58,7 @@ static void	ft_coder_main_loop(t_coder *coder)
 	while (1)
 	{
 		if (!perform_coding(coder))
-			break;
+			break ;
 	}
 }
 
@@ -73,18 +73,3 @@ static void	enqueue_initial_coder_and_wait(t_coder *coder)
 		pthread_cond_wait(&coder->mutex_cond.cond, &coder->mutex_cond.mutex);
 	pthread_mutex_unlock(&coder->mutex_cond.mutex);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

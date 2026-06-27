@@ -11,9 +11,10 @@
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
-bool ft_is_finished_coder(t_coder *coder)
+
+bool	ft_is_finished_coder(t_coder *coder)
 {
-	bool is_check;
+	bool	is_check;
 
 	is_check = false;
 	pthread_mutex_lock(&coder->mutex_cond.mutex);
@@ -35,14 +36,15 @@ bool	ft_check_coder_burnout(t_coder *coder)
 	return (burned);
 }
 
-void ft_is_burnout(bool *is_burnout_detected, pthread_mutex_t *is_burnout_detected_m)
+void	ft_is_burnout(bool *is_burnout_detected,
+		pthread_mutex_t *is_burnout_detected_m)
 {
 	pthread_mutex_lock(is_burnout_detected_m);
 	(*is_burnout_detected) = true;
 	pthread_mutex_unlock(is_burnout_detected_m);
 }
 
-void ft_signal_coders_to_stop(t_coder **coders, int number_of_coders)
+void	ft_signal_coders_to_stop(t_coder **coders, int number_of_coders)
 {
 	int	i;
 
@@ -56,6 +58,3 @@ void ft_signal_coders_to_stop(t_coder **coders, int number_of_coders)
 		i++;
 	}
 }
-
-
-

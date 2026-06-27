@@ -29,7 +29,7 @@ int	child_right_index(int index)
 
 bool	is_greater(t_coder *coder_1, t_coder *coder_2)
 {
-	return (coder_1->deadline <	 coder_2->deadline);
+	return (coder_1->deadline < coder_2->deadline);
 }
 
 bool	is_same_deadline(t_coder *coder_1, t_coder *coder_2)

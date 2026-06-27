@@ -6,11 +6,12 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 16:19:23 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/26 22:36:01 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/27 13:07:46 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
+
 static bool	parse_required_compiles(char **av, t_config *config);
 static bool	parse_number_of_coders(char **argv, t_config *config);
 

@@ -13,7 +13,7 @@
 #include "../include/codexion.h"
 
 static bool	ft_set_simulation_intial_state(int argc, char **argv,
-		t_simulation *simulation);
+				t_simulation *simulation);
 
 bool	ft_init_simulation(int argc, char **argv, t_simulation *simulation)
 {
@@ -22,7 +22,7 @@ bool	ft_init_simulation(int argc, char **argv, t_simulation *simulation)
 	if (!init_dongles(simulation))
 	{
 		clean_mutex_cond_simulation(simulation);
-		return (false);		
+		return (false);
 	}
 	if (!ft_init_queue(simulation))
 	{
@@ -60,7 +60,7 @@ void	clean_mutex_cond_simulation(t_simulation *simulation)
 	pthread_mutex_destroy(&simulation->mutex_print);
 }
 
-static bool ft_init_mutex_sim(t_simulation *sim)
+static bool	ft_init_mutex_sim(t_simulation *sim)
 {
 	if (pthread_mutex_init(&sim->mutex_print, NULL) != 0)
 	{
@@ -68,7 +68,7 @@ static bool ft_init_mutex_sim(t_simulation *sim)
 		destroy_mutex_cond(&sim->watch_mu_cond);
 		return (false);
 	}
-	if (pthread_mutex_init(&sim->is_finished_sim_m, NULL) != 0) 
+	if (pthread_mutex_init(&sim->is_finished_sim_m, NULL) != 0)
 	{
 		destroy_mutex_cond(&sim->monitor_mu_cond);
 		destroy_mutex_cond(&sim->watch_mu_cond);
@@ -83,7 +83,7 @@ static bool ft_init_mutex_sim(t_simulation *sim)
 		pthread_mutex_destroy(&sim->is_finished_sim_m);
 		return (false);
 	}
-	return (true);	
+	return (true);
 }
 
 static bool	ft_set_simulation_intial_state(int argc, char **argv,

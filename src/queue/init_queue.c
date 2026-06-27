@@ -12,7 +12,6 @@
 
 #include "../include/codexion.h"
 
-
 bool	ft_init_queue(t_simulation *sim)
 {
 	t_queue	*queue;

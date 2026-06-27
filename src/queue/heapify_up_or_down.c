@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/16 14:26:27 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/27 04:29:11 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/27 13:08:18 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ void	heapify_up(t_queue *q, int index)
 
 void	heapify_down(t_queue *q, int parent)
 {
-	int child_left;
-	int child_right;
-	int index;
+	int	child_left;
+	int	child_right;
+	int	index;
 
 	child_left = child_left_index(parent);
 	child_right = child_right_index(parent);
@@ -56,7 +56,7 @@ void	heapify_down(t_queue *q, int parent)
 
 void	ft_swap(t_coder **s1, t_coder **s2)
 {
-	t_coder	*temp;
+	t_coder		*temp;
 
 	temp = *s1;
 	*s1 = *s2;

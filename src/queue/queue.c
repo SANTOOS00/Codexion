@@ -13,11 +13,11 @@
 #include "../include/codexion.h"
 
 static t_coder	*pop_queue_edf(t_queue *q);
-static t_coder			*pop_queue_fifo(t_queue *q);
+static t_coder	*pop_queue_fifo(t_queue *q);
 
 t_coder	*pop_queue(t_simulation *sim, t_scheduler scheduler)
 {
-	t_coder		*coder;
+	t_coder	*coder;
 
 	coder = NULL;
 	pthread_mutex_lock(&sim->queue->mutex_queue);
@@ -47,7 +47,6 @@ void	enqueue_initial_coders(t_coder *coder)
 	}
 	queue->coders[queue->size] = coder;
 	queue->size++;
-
 	pthread_mutex_unlock(&coder->queue->mutex_queue);
 }
 
@@ -64,14 +63,14 @@ void	push_priority_queue(t_coder *coder)
 
 static t_coder	*pop_queue_edf(t_queue *q)
 {
-	t_coder		*coder;
-	int i;
+	t_coder	*coder;
+	int		i;
 
 	i = 0;
 	coder = NULL;
 	if (q->size == 0)
 		return (NULL);
-	while(i < q->size)
+	while (i < q->size)
 	{
 		if (is_valid_dongl_left_right(q->coders[i]))
 		{

@@ -13,8 +13,8 @@
 #include "../include/codexion.h"
 
 static t_dongle	**dongles_alloc(int dongles_number);
-static bool	init_mutex_dongles(t_dongle **dongles, int dongles_number);
-static void	init_dongles_state(t_dongle **dongles, t_config config);
+static bool		init_mutex_dongles(t_dongle **dongles, int dongles_number);
+static void		init_dongles_state(t_dongle **dongles, t_config config);
 
 bool	init_dongles(t_simulation *simulation)
 {
@@ -26,13 +26,12 @@ bool	init_dongles(t_simulation *simulation)
 	if (!init_mutex_dongles(dongles, simulation->config.number_of_coders))
 	{
 		return (ft_free_double_array((void **)dongles,
-			simulation->config.number_of_coders), false);
+				simulation->config.number_of_coders), false);
 	}
 	init_dongles_state(dongles, simulation->config);
 	simulation->dongles = dongles;
 	return (true);
 }
-
 
 void	clean_mutex_dongles(t_dongle **dongles, int size)
 {

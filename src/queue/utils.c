@@ -26,7 +26,8 @@ static bool	try_take_dongle(t_dongle *dongle)
 
 	success = false;
 	pthread_mutex_lock(&dongle->mutex);
-	if (dongle->is_available && get_time() - dongle->last_release_time >= dongle->cooldown_time)
+	if (dongle->is_available && get_time()
+		- dongle->last_release_time >= dongle->cooldown_time)
 		success = true;
 	pthread_mutex_unlock(&dongle->mutex);
 	return (success);

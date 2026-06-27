@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/26 21:02:49 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/27 12:52:31 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/27 12:54:42 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,17 @@ bool	init_coders(t_simulation *simulation)
 	if (init_mutex_cond_coders(coders,
 			simulation->config.number_of_coders) == false)
 	{
-		ft_free_double_array((void **)coders, simulation->config.number_of_coders);
+		ft_free_double_array((void **)coders,
+			simulation->config.number_of_coders);
 		return (false);
 	}
 	simulation->coders = coders;
 	ft_set_coders_initial_state(simulation);
 	if (simulation->config.number_of_coders == 1)
 	{
-		simulation->dongles[0]->is_available = false;		
-		simulation->coders[0]->deadline = get_time() + simulation->config.time_to_burnout;
+		simulation->dongles[0]->is_available = false;
+		simulation->coders[0]->deadline = get_time()
+			+ simulation->config.time_to_burnout;
 	}
 	return (true);
 }
@@ -98,7 +100,7 @@ void	destroy_mutex_cond_coders(t_coder **coders, int size)
 
 static bool	init_mutex_cond_coders(t_coder **coders, int size)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	while (i < size)

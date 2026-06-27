@@ -6,17 +6,19 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/27 03:28:54 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/27 06:13:05 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/27 13:12:40 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
-static bool ft_check_is_finished_coder(t_simulation *sim, t_coder *coder);
+
+static bool	ft_check_is_finished_coder(t_simulation *sim, t_coder *coder);
 static void	update_burnout_timer(t_coder *coder);
-static void ft_increment_compilation_counter(t_coder *coder);
+static void	ft_increment_compilation_counter(t_coder *coder);
+
 void	run_scheduler_loop(t_simulation *sim)
 {
-	t_coder		*coder;
+	t_coder	*coder;
 
 	while (ft_get_status_watcher(sim) != FINISHED_W)
 	{
@@ -24,7 +26,7 @@ void	run_scheduler_loop(t_simulation *sim)
 		if (!coder)
 			usleep(300);
 		else if (ft_check_is_finished_coder(sim, coder))
-			continue;
+			continue ;
 		else
 		{
 			pick_up_dongle(coder);
@@ -33,15 +35,15 @@ void	run_scheduler_loop(t_simulation *sim)
 			coder->has_dongle = true;
 			pthread_cond_broadcast(&coder->mutex_cond.cond);
 			pthread_mutex_unlock(&coder->mutex_cond.mutex);
-            ft_increment_compilation_counter(coder);
+			ft_increment_compilation_counter(coder);
 		}
 	}
 	ft_stop_simulation(sim);
 }
 
-static bool ft_check_is_finished_coder(t_simulation *sim, t_coder *coder)
+static bool	ft_check_is_finished_coder(t_simulation *sim, t_coder *coder)
 {
-	bool is_check;
+	bool	is_check;
 
 	is_check = false;
 	pthread_mutex_lock(&coder->mutex_cond.mutex);
@@ -49,7 +51,7 @@ static bool ft_check_is_finished_coder(t_simulation *sim, t_coder *coder)
 	{
 		is_check = true;
 		coder->has_dongle = true;
-        coder->status = FINISHED;
+		coder->status = FINISHED;
 		pthread_cond_broadcast(&coder->mutex_cond.cond);
 	}
 	pthread_mutex_unlock(&coder->mutex_cond.mutex);
@@ -62,7 +64,6 @@ static bool ft_check_is_finished_coder(t_simulation *sim, t_coder *coder)
 	return (is_check);
 }
 
-
 static void	update_burnout_timer(t_coder *coder)
 {
 	pthread_mutex_lock(&coder->mutex_cond.mutex);
@@ -70,11 +71,9 @@ static void	update_burnout_timer(t_coder *coder)
 	pthread_mutex_unlock(&coder->mutex_cond.mutex);
 }
 
-static void ft_increment_compilation_counter(t_coder *coder)
+static void	ft_increment_compilation_counter(t_coder *coder)
 {
-    pthread_mutex_lock(&coder->mutex_cond.mutex);
-    coder->compilation_count++;
-    pthread_mutex_unlock(&coder->mutex_cond.mutex);
+	pthread_mutex_lock(&coder->mutex_cond.mutex);
+	coder->compilation_count++;
+	pthread_mutex_unlock(&coder->mutex_cond.mutex);
 }
-
-
