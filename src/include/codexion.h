@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/27 13:06:02 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/28 04:50:09 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,10 @@ void			ft_print_action(t_coder *coder, char *action);
 bool			ft_init_simulation(int ac, char **av, t_simulation *sim);
 bool			init_dongles(t_simulation *sim);
 bool			init_coders(t_simulation *sim);
+
+void			init_coder_shared(t_simulation *sim, int i);
+void			init_coder_basic(t_simulation *sim, int i);
+
 bool			init_mutex_cond(t_mutex_cond *m);
 bool			ft_init_queue(t_simulation *sim);
 bool			ft_start_simulation(t_simulation *sim);

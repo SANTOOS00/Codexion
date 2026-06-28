@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/26 21:07:40 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/27 12:55:00 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/28 04:51:36 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,34 @@ int	ft_get_coder_time(t_coder *coder, t_coder_status state)
 	else if (state == DEBUGGING)
 		return (coder->config->time_to_debug);
 	return (coder->config->time_to_refactor);
+}
+
+void	init_coder_basic(t_simulation *sim, int i)
+{
+	t_coder	*coder;
+
+	coder = sim->coders[i];
+	coder->id = i + 1;
+	coder->has_dongle = false;
+	coder->is_waiting_coder = false;
+	coder->compilation_count = 0;
+	coder->status = START;
+	coder->left_dongle = sim->dongles[i];
+	coder->right_dongle = sim->dongles[(i + 1) % sim->config.number_of_coders];
+	coder->deadline = 0;
+}
+
+void	init_coder_shared(t_simulation *sim, int i)
+{
+	t_coder	*coder;
+
+	coder = sim->coders[i];
+	coder->run_coders_counter = &sim->run_coders_counter;
+	coder->watcher_mu_cond = &sim->watch_mu_cond;
+	coder->config = &sim->config;
+	coder->queue = sim->queue;
+	coder->time_start = &sim->time_start;
+	coder->mutex_print = &sim->mutex_print;
+	coder->is_finished_sim = &sim->is_finished_sim;
+	coder->is_finished_sim_m = &sim->is_finished_sim_m;
 }

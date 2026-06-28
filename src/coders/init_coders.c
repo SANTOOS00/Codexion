@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/26 21:02:49 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/27 12:54:42 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/28 04:49:19 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,29 +62,13 @@ static t_coder	**alloc_coders(int coders_number)
 
 static void	ft_set_coders_initial_state(t_simulation *simulation)
 {
-	t_coder	*coder;
-	int		i;
+	int	i;
 
 	i = 0;
 	while (i < simulation->config.number_of_coders)
 	{
-		coder = simulation->coders[i];
-		coder->id = i + 1;
-		coder->has_dongle = false;
-		coder->is_waiting_coder = false;
-		coder->compilation_count = 0;
-		coder->left_dongle = simulation->dongles[i];
-		coder->right_dongle = simulation->dongles[(i + 1)
-			% simulation->config.number_of_coders];
-		coder->deadline = 0;
-		coder->run_coders_counter = &simulation->run_coders_counter;
-		coder->watcher_mu_cond = &simulation->watch_mu_cond;
-		coder->config = &simulation->config;
-		coder->queue = simulation->queue;
-		coder->time_start = &simulation->time_start;
-		coder->mutex_print = &simulation->mutex_print;
-		coder->is_finished_sim = &simulation->is_finished_sim;
-		coder->is_finished_sim_m = &simulation->is_finished_sim_m;
+		init_coder_basic(simulation, i);
+		init_coder_shared(simulation, i);
 		i++;
 	}
 }
@@ -100,7 +84,7 @@ void	destroy_mutex_cond_coders(t_coder **coders, int size)
 
 static bool	init_mutex_cond_coders(t_coder **coders, int size)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (i < size)
