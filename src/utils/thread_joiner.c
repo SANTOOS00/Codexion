@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 21:23:15 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/29 12:51:56 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/29 12:58:53 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,7 @@ void	join_coders(t_simulation *sim, int number_coders);
 void	join_threads(t_simulation *sim)
 {
 	join_watcher(sim);
-	// printf("sss\n");
 	join_monitor(sim);
-	// finich_monitor_and_watcher(sim);
 	join_coders(sim, sim->config.number_of_coders);
 }
 

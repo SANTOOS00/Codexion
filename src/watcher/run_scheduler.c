@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/27 03:28:54 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/29 12:44:22 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/29 15:41:49 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,22 @@ static void	ft_increment_compilation_counter(t_coder *coder);
 
 bool test_name(t_simulation *sim)
 {
-	if(sim->finished_coders == sim->config.number_of_coders)
-		return (false);
-	return (true);
+	bool is_test;
+
+	is_test = false;
+	if(sim->finished_coders >= sim->config.number_of_coders)
+		return (true);
+	pthread_mutex_lock(&sim->is_finished_sim_m);
+	if (sim->is_finished_sim)
+		is_test = true;
+	pthread_mutex_unlock(&sim->is_finished_sim_m);
+	return (is_test);
 }
 void	run_scheduler_loop(t_simulation *sim)
 {
 	t_coder	*coder;
 
-	while (test_name(sim))
+	while (!test_name(sim))
 	{
 		coder = pop_queue(sim, sim->config.scheduler);
 		if (!coder)
@@ -46,7 +53,7 @@ void	run_scheduler_loop(t_simulation *sim)
 		}
 	}
 	ft_stop_simulation(sim);
-	printf("ssss\n");
+	ft_stop_coders(sim->coders);
 }
 
 static bool	ft_check_is_finished_coder(t_simulation *sim, t_coder *coder)

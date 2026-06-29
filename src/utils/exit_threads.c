@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:46:14 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/27 03:53:44 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/29 14:24:03 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	exit_coders(t_simulation *sim, int number_coders)
 	int	i;
 
 	i = 0;
-	usleep(1000);
+	usleep(3000);
 	while (i < number_coders)
 	{
 		pthread_mutex_lock(&sim->coders[i]->mutex_cond.mutex);

@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/26 21:07:40 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/29 12:33:39 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/29 15:37:17 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,15 @@
 
 int		ft_get_coder_time(t_coder *coder, t_coder_status state);
 
-bool	ft_is_simulation_finished(bool *is_sim_finished,
-		pthread_mutex_t *is_sim_finished_m)
+bool	ft_is_simulation_finished(t_coder *coder)
 {
 	bool	is_finished;
 
 	is_finished = false;
-	pthread_mutex_lock(is_sim_finished_m);
-	if (*is_sim_finished == true)
+	pthread_mutex_lock(coder->is_finished_sim_m);
+	if (*coder->is_finished_sim == true)
 		is_finished = true;
-	pthread_mutex_unlock(is_sim_finished_m);
+	pthread_mutex_unlock(coder->is_finished_sim_m);
 	return (is_finished);
 }
 
@@ -38,8 +37,7 @@ bool	ft_sleep_coder(t_coder *coder, int state)
 	if (state == REFACTORING && coder->status != FINISHED)
 		coder->has_dongle = false;
 	pthread_mutex_unlock(&coder->mutex_cond.mutex);
-  	return (!ft_is_simulation_finished(coder->is_finished_sim,
-		coder->is_finished_sim_m));
+  	return (!ft_is_simulation_finished(coder));
 }
 
 int	ft_get_coder_time(t_coder *coder, t_coder_status state)

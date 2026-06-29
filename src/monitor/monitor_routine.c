@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 22:21:10 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/29 12:48:29 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/29 15:40:34 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ void	ft_stop_coders(t_coder **coders)
 
 void monitor_finished_watcher(t_simulation *sim)
 {
-	pthread_mutex_lock(&sim->watch_mu_cond.mutex);	
-	sim->watch_status = FINISHED_W;
-	pthread_mutex_unlock(&sim->watch_mu_cond.mutex);
+	// pthread_mutex_lock(&sim->watch_mu_cond.mutex);	
+	// sim->watch_status = FINISHED_W;
+	// pthread_mutex_unlock(&sim->watch_mu_cond.mutex);
 	pthread_mutex_lock(&sim->is_finished_sim_m);
 	sim->is_finished_sim = true;
 	pthread_mutex_unlock(&sim->is_finished_sim_m);
@@ -74,9 +74,9 @@ void monitor_finished_watcher(t_simulation *sim)
 static void	ft_detect_burnout_in_coders(t_simulation *sim)
 {
 	int i = 0;
-	while (!ft_is_finished_watcher(sim) && !ft_is_burnout_detected(sim->coders, sim->config.number_of_coders)){
+	while (!ft_is_burnout_detected(sim->coders, sim->config.number_of_coders)
+		&& !ft_is_finished_watcher(sim)){
 		usleep(300);
-		printf("is finished monitor %d\n", i++);
 	}
 	monitor_finished_watcher(sim);
 	ft_stop_coders(sim->coders);
@@ -95,7 +95,6 @@ static bool	ft_is_burnout_detected(t_coder **coders, int number_of_coders)
 		{
 			ft_is_burnout(coders[i]->is_finished_sim,
 				coders[i]->is_finished_sim_m);
-			ft_stop_coders(coders);
 			ft_print_action(coders[i], "is burnout");
 			return (true);
 		}
@@ -111,7 +110,6 @@ static bool	ft_is_finished_watcher(t_simulation *sim)
 	is_finised = false;
 	pthread_mutex_lock(&sim->is_finished_sim_m);
 	is_finised = sim->is_finished_sim;
-	printf("monitor %d\n", is_finised);
 	pthread_mutex_unlock(&sim->is_finished_sim_m);
 	return (is_finised);
 }

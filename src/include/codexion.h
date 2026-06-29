@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: santoos <santoos@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/29 03:51:45 by santoos          ###   ########.fr       */
+/*   Updated: 2026/06/29 15:41:07 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,13 +170,13 @@ bool			ft_init_queue(t_simulation *sim);
 bool			ft_start_simulation(t_simulation *sim);
 
 void			*ft_watcher_routine(void *arg);
+void			ft_stop_coders(t_coder **coders);
 void			*ft_monitor_routine(void *arg);
 void			*ft_coder_routine(void *arg);
 
 bool			perform_coding(t_coder *coder);
 bool			ft_sleep_coder(t_coder *coder, int state);
-bool			ft_is_simulation_finished(bool *is_sim_finished,
-					pthread_mutex_t *is_sim_finished_m);
+bool			ft_is_simulation_finished(t_coder *coder);
 void	ft_stop_simulation(t_simulation *sim);
 
 void			pick_up_dongle(t_coder *coder);

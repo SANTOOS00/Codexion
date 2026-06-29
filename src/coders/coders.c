@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 21:46:11 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/29 10:41:22 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/29 15:51:46 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ static void	increment_coders_counter(t_coder *coder)
 static bool	wait_all_coders_created(t_coder *coder)
 {
 	pthread_mutex_lock(&coder->mutex_cond.mutex);
-	coder->is_waiting_coder = false;
 	while (!coder->is_waiting_coder)
 		pthread_cond_wait(&coder->mutex_cond.cond, &coder->mutex_cond.mutex);
 	if (coder->status == ERROR)
@@ -71,11 +70,8 @@ static void	enqueue_initial_coder_and_wait(t_coder *coder)
 {
 	if (coder->id % 2 != 0)
 		usleep(2000);
-	
 	enqueue_initial_coders(coder);
 	pthread_mutex_lock(&coder->mutex_cond.mutex);
-	
-	coder->has_dongle = false;
 	while (!coder->has_dongle)
 		pthread_cond_wait(&coder->mutex_cond.cond, &coder->mutex_cond.mutex);
 	pthread_mutex_unlock(&coder->mutex_cond.mutex);
