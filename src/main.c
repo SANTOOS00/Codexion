@@ -23,9 +23,7 @@ int	main(int argc, char **argv)
 		ft_clean_resource(&simulation);
 		return (1);
 	}
-	
 	join_threads(&simulation);
-	
 	ft_print_action(simulation.coders[1], "is compiling");
 	ft_clean_resource(&simulation);
 	return (0);

@@ -37,7 +37,7 @@ t_coder	*pop_queue(t_simulation *sim, t_scheduler scheduler)
 void	enqueue_initial_coders(t_coder *coder)
 {
 	t_queue	*queue;
-	bool wait_watcher;
+	bool	wait_watcher;
 
 	wait_watcher = false;
 	pthread_mutex_lock(&coder->queue->mutex_queue);
@@ -50,7 +50,6 @@ void	enqueue_initial_coders(t_coder *coder)
 	queue->coders[queue->size] = coder;
 	queue->size++;
 	pthread_mutex_unlock(&coder->queue->mutex_queue);
-	
 }
 
 void	push_priority_queue(t_coder *coder)

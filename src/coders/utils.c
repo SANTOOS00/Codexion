@@ -37,7 +37,7 @@ bool	ft_sleep_coder(t_coder *coder, int state)
 	if (state == REFACTORING && coder->status != FINISHED)
 		coder->has_dongle = false;
 	pthread_mutex_unlock(&coder->mutex_cond.mutex);
-  	return (!ft_is_simulation_finished(coder));
+	return (!ft_is_simulation_finished(coder));
 }
 
 int	ft_get_coder_time(t_coder *coder, t_coder_status state)

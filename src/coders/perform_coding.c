@@ -59,9 +59,8 @@ static bool	ft_refactoring_coder(t_coder *coder)
 
 static bool	enqueue_coder_request(t_coder *coder)
 {
-	int timp;
+	int	timp;
 
-	
 	pthread_mutex_lock(&coder->queue->mutex_queue);
 	push_priority_queue(coder);
 	pthread_mutex_unlock(&coder->queue->mutex_queue);
@@ -69,7 +68,8 @@ static bool	enqueue_coder_request(t_coder *coder)
 		return (true);
 	pthread_mutex_lock(&coder->mutex_cond.mutex);
 	while (!coder->has_dongle)
-		timp = pthread_cond_wait(&coder->mutex_cond.cond, &coder->mutex_cond.mutex);
+		timp = pthread_cond_wait(&coder->mutex_cond.cond,
+				&coder->mutex_cond.mutex);
 	pthread_mutex_unlock(&coder->mutex_cond.mutex);
 	return (ft_is_simulation_finished(coder));
 }

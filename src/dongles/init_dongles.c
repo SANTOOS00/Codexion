@@ -25,7 +25,8 @@ bool	init_dongles(t_simulation *simulation)
 		return (false);
 	if (!init_mutex_dongles(dongles, simulation->config.number_of_coders))
 	{
-		ft_free_double_array((void **)dongles, simulation->config.number_of_coders);
+		ft_free_double_array((void **)dongles,
+			simulation->config.number_of_coders);
 		return (false);
 	}
 	init_dongles_state(dongles, simulation->config);
@@ -93,7 +94,7 @@ static t_dongle	**dongles_alloc(int dongles_number)
 		if (!dongles[i])
 		{
 			ft_free_double_array((void **)dongles, i);
-			return ( NULL);
+			return (NULL);
 		}
 		i++;
 	}

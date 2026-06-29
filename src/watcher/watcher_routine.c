@@ -25,7 +25,7 @@ void	*ft_watcher_routine(void *arg)
 	if (!wait_watcher(sim))
 		return (NULL);
 	watcher_wake_monitor(sim);
-	watcher_wait_coders(sim->coders, sim->config.number_of_coders);	
+	watcher_wait_coders(sim->coders, sim->config.number_of_coders);
 	set_simulation_start_time(sim);
 	run_scheduler_loop(sim);
 	return (NULL);

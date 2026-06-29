@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   codexion.h                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/29 15:41:07 by moerrais         ###   ########.fr       */
-/*                                                                            */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   codexion.h										 :+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: moerrais <moerrais@student.42.fr>		  +#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2026/05/02 16:54:33 by moerrais		  #+#	#+#			 */
+/*   Updated: 2026/06/29 16:11:26 by moerrais		 ###   ########.fr	   */
+/*																			*/
 /* ************************************************************************** */
 
 #ifndef CODEXION_H
@@ -146,7 +146,8 @@ typedef struct s_simulation
 	pthread_mutex_t		is_finished_sim_m;
 }	t_simulation;
 
-bool			parse_args(int ac, char **av, t_simulation *sim);
+bool			parse_args(int ac, char **av,
+					t_simulation *sim);
 bool			validate_numeric_arguments(char **av);
 bool			string_to_int(char **av, t_config *config);
 bool			parser_time_val(char **av, t_config *config);
@@ -162,42 +163,47 @@ void			ft_print_action(t_coder *coder, char *action);
 bool			ft_init_simulation(int ac, char **av, t_simulation *sim);
 bool			init_dongles(t_simulation *sim);
 bool			init_coders(t_simulation *sim);
+bool			ft_init_queue(t_simulation *sim);
+bool			init_mutex_cond(t_mutex_cond *m);
 
 void			init_coder_basic(t_simulation *sim, int i);
 void			init_coder_shared(t_simulation *sim, int i);
-bool			init_mutex_cond(t_mutex_cond *m);
-bool			ft_init_queue(t_simulation *sim);
-bool			ft_start_simulation(t_simulation *sim);
 
-void			*ft_watcher_routine(void *arg);
-void			ft_stop_coders(t_coder **coders);
-void			*ft_monitor_routine(void *arg);
+bool			ft_start_simulation(t_simulation *sim);
+void			run_scheduler_loop(t_simulation *sim);
+
 void			*ft_coder_routine(void *arg);
+void			*ft_watcher_routine(void *arg);
+void			*ft_monitor_routine(void *arg);
 
 bool			perform_coding(t_coder *coder);
 bool			ft_sleep_coder(t_coder *coder, int state);
 bool			ft_is_simulation_finished(t_coder *coder);
-void	ft_stop_simulation(t_simulation *sim);
+
+void			ft_stop_simulation(t_simulation *sim);
+void			ft_stop_coders(t_coder **coders);
+void			monitor_finished_simulation(t_simulation *sim);
 
 void			pick_up_dongle(t_coder *coder);
 void			return_dongles(t_coder *coder);
+bool			is_valid_dongl_left_right(t_coder *coder);
 
 void			push_priority_queue(t_coder *coder);
 t_coder			*pop_queue(t_simulation *sim, t_scheduler scheduler);
 void			enqueue_initial_coders(t_coder *coder);
 
-bool			is_valid_dongl_left_right(t_coder *coder);
 void			shift_queue_elements(t_queue *q);
 void			heapify_up(t_queue *q, int index);
 void			heapify_down(t_queue *q, int parent);
+
 int				parent_index(int index);
 int				child_left_index(int index);
 int				child_right_index(int index);
+
 bool			is_same_deadline(t_coder *c1, t_coder *c2);
 bool			is_greater(t_coder *c1, t_coder *c2);
 
 t_watch_status	ft_get_status_watcher(t_simulation *sim);
-void			ft_stop_simulation(t_simulation *sim);
 bool			ft_check_coder_burnout(t_coder *coder);
 bool			ft_is_finished_coder(t_coder *coder);
 void			ft_is_burnout(bool *detected,
@@ -213,14 +219,16 @@ void			exit_watcher(t_simulation *sim);
 void			exit_monitor(t_simulation *sim);
 
 void			ft_clean_resource(t_simulation *sim);
+
 void			clean_mutex_cond_simulation(t_simulation *sim);
 void			destroy_mutex_cond_coders(t_coder **c, int size);
+
 void			clean_dongles(t_dongle **d, int size);
 void			clean_mutex_dongles(t_dongle **d, int size);
+
 void			clean_queue(t_queue *q);
+
 void			destroy_mutex_cond(t_mutex_cond *m);
 void			ft_free_double_array(void **arr, int size);
-
-void			run_scheduler_loop(t_simulation *sim);
 
 #endif

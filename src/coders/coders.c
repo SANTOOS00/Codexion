@@ -60,7 +60,7 @@ static void	ft_coder_main_loop(t_coder *coder)
 			break ;
 		pthread_mutex_lock(&coder->mutex_cond.mutex);
 		if (coder->status == FINISHED)
-			break;
+			break ;
 		pthread_mutex_unlock(&coder->mutex_cond.mutex);
 	}
 	pthread_mutex_unlock(&coder->mutex_cond.mutex);

@@ -56,7 +56,7 @@ void	heapify_down(t_queue *q, int parent)
 
 void	ft_swap(t_coder **s1, t_coder **s2)
 {
-	t_coder		*temp;
+	t_coder	*temp;
 
 	temp = *s1;
 	*s1 = *s2;
