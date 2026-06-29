@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/28 04:50:09 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/29 00:57:31 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,6 @@ typedef struct s_coder
 	int				id;
 	bool			is_waiting_coder;
 	long long		deadline;
-	bool			*is_burnout;
-	pthread_mutex_t	*burnout_mutex;
 	int				compilation_count;
 	t_config		*config;
 	long long		*time_start;
@@ -165,9 +163,8 @@ bool			ft_init_simulation(int ac, char **av, t_simulation *sim);
 bool			init_dongles(t_simulation *sim);
 bool			init_coders(t_simulation *sim);
 
-void			init_coder_shared(t_simulation *sim, int i);
 void			init_coder_basic(t_simulation *sim, int i);
-
+void			init_coder_shared(t_simulation *sim, int i);
 bool			init_mutex_cond(t_mutex_cond *m);
 bool			ft_init_queue(t_simulation *sim);
 bool			ft_start_simulation(t_simulation *sim);
@@ -204,8 +201,6 @@ bool			ft_check_coder_burnout(t_coder *coder);
 bool			ft_is_finished_coder(t_coder *coder);
 void			ft_is_burnout(bool *detected,
 					pthread_mutex_t *detected_m);
-void			ft_signal_coders_to_stop(t_coder **coders,
-					int number_of_coders);
 
 void			join_threads(t_simulation *sim);
 void			join_coders(t_simulation *sim, int n);

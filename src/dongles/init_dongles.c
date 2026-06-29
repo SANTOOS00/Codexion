@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 19:04:20 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/26 22:25:03 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/28 22:25:51 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ bool	init_dongles(t_simulation *simulation)
 		return (false);
 	if (!init_mutex_dongles(dongles, simulation->config.number_of_coders))
 	{
-		return (ft_free_double_array((void **)dongles,
-				simulation->config.number_of_coders), false);
+		ft_free_double_array((void **)dongles, simulation->config.number_of_coders);
+		return (false);
 	}
 	init_dongles_state(dongles, simulation->config);
 	simulation->dongles = dongles;
@@ -91,7 +91,10 @@ static t_dongle	**dongles_alloc(int dongles_number)
 	{
 		dongles[i] = (t_dongle *)malloc(sizeof(t_dongle));
 		if (!dongles[i])
-			return (ft_free_double_array((void **)dongles, i), NULL);
+		{
+			ft_free_double_array((void **)dongles, i);
+			return ( NULL);
+		}
 		i++;
 	}
 	return (dongles);

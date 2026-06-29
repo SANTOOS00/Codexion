@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 10:37:14 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/27 05:45:08 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/29 00:49:48 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,15 @@ static bool	enqueue_coder_request(t_coder *coder)
 	pthread_mutex_lock(&coder->queue->mutex_queue);
 	push_priority_queue(coder);
 	pthread_mutex_unlock(&coder->queue->mutex_queue);
+	if (ft_is_simulation_finished(coder->is_finished_sim,
+			coder->is_finished_sim_m))
+		return (true);
 	pthread_mutex_lock(&coder->mutex_cond.mutex);
-	coder->has_dongle = false;
+	coder->is_waiting_coder = true;
 	while (!coder->has_dongle)
 		pthread_cond_wait(&coder->mutex_cond.cond, &coder->mutex_cond.mutex);
+	coder->is_waiting_coder = false;
 	pthread_mutex_unlock(&coder->mutex_cond.mutex);
-	if (coder->status == FINISHED)
-		return (true);
 	return (ft_is_simulation_finished(coder->is_finished_sim,
 			coder->is_finished_sim_m));
 }

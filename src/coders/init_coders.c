@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/26 21:02:49 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/28 04:49:19 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/28 22:24:50 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,10 @@ static t_coder	**alloc_coders(int coders_number)
 	{
 		coders[i] = (t_coder *)malloc(sizeof(t_coder));
 		if (!coders[i])
-			return (ft_free_double_array((void **)coders, i), NULL);
+		{
+			ft_free_double_array((void **)coders, i);	
+			return (NULL);
+		}
 		i++;
 	}
 	return (coders);
@@ -84,7 +87,7 @@ void	destroy_mutex_cond_coders(t_coder **coders, int size)
 
 static bool	init_mutex_cond_coders(t_coder **coders, int size)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	while (i < size)

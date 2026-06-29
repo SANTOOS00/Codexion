@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 21:46:11 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/27 06:16:48 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/29 01:03:08 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ static void	ft_coder_main_loop(t_coder *coder)
 	{
 		if (!perform_coding(coder))
 			break ;
+		if (coder->status == FINISHED)
+			break;
 	}
 }
 
@@ -66,8 +68,10 @@ static void	enqueue_initial_coder_and_wait(t_coder *coder)
 {
 	if (coder->id % 2 != 0)
 		usleep(2000);
+	
 	enqueue_initial_coders(coder);
 	pthread_mutex_lock(&coder->mutex_cond.mutex);
+	
 	coder->has_dongle = false;
 	while (!coder->has_dongle)
 		pthread_cond_wait(&coder->mutex_cond.cond, &coder->mutex_cond.mutex);

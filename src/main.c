@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 18:31:06 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/27 12:44:20 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/28 22:29:45 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,10 @@ int	main(int argc, char **argv)
 		ft_clean_resource(&simulation);
 		return (1);
 	}
+	
 	join_threads(&simulation);
+	
+	ft_print_action(simulation.coders[1], "is compiling");
 	ft_clean_resource(&simulation);
 	return (0);
 }

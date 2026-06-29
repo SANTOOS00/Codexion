@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 16:14:55 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/26 22:32:24 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/28 22:22:06 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ static bool	is_valid_integer(char *str_number)
 	int	i;
 
 	i = 0;
+	if (str_number[i] == '+')
+		i++;
 	while (str_number[i])
 	{
-		if (str_number[i] == '+' || str_number[i] == '-')
-			i++;
 		if (!(str_number[i] >= '0' && str_number[i] <= '9'))
 			return (false);
 		i++;

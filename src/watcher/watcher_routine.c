@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 22:21:22 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/27 03:53:34 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/29 01:08:12 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	*ft_watcher_routine(void *arg)
 	if (!wait_watcher(sim))
 		return (NULL);
 	watcher_wake_monitor(sim);
+	watcher_wait_coders(sim->coders, sim->config.number_of_coders);	
 	set_simulation_start_time(sim);
-	watcher_wait_coders(sim->coders, sim->config.number_of_coders);
 	run_scheduler_loop(sim);
 	return (NULL);
 }
@@ -41,6 +41,7 @@ static bool	wait_watcher(t_simulation *sim)
 		pthread_mutex_unlock(&sim->watch_mu_cond.mutex);
 		return (false);
 	}
+	sim->run_coders_counter = 0;
 	pthread_mutex_unlock(&sim->watch_mu_cond.mutex);
 	return (true);
 }

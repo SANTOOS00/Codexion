@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/27 03:28:54 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/27 13:12:40 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/29 00:56:35 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	run_scheduler_loop(t_simulation *sim)
 			ft_increment_compilation_counter(coder);
 		}
 	}
-	ft_stop_simulation(sim);
 }
 
 static bool	ft_check_is_finished_coder(t_simulation *sim, t_coder *coder)
