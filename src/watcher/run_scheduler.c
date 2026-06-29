@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_scheduler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: santoos <santoos@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/27 03:28:54 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/29 03:50:45 by santoos          ###   ########.fr       */
+/*   Updated: 2026/06/29 12:44:22 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,18 @@ static bool	ft_check_is_finished_coder(t_simulation *sim, t_coder *coder);
 static void	update_burnout_timer(t_coder *coder);
 static void	ft_increment_compilation_counter(t_coder *coder);
 
+
+bool test_name(t_simulation *sim)
+{
+	if(sim->finished_coders == sim->config.number_of_coders)
+		return (false);
+	return (true);
+}
 void	run_scheduler_loop(t_simulation *sim)
 {
 	t_coder	*coder;
 
-	while (ft_get_status_watcher(sim) != FINISHED_W)
+	while (test_name(sim))
 	{
 		coder = pop_queue(sim, sim->config.scheduler);
 		if (!coder)
@@ -39,7 +46,7 @@ void	run_scheduler_loop(t_simulation *sim)
 		}
 	}
 	ft_stop_simulation(sim);
-
+	printf("ssss\n");
 }
 
 static bool	ft_check_is_finished_coder(t_simulation *sim, t_coder *coder)
@@ -48,7 +55,7 @@ static bool	ft_check_is_finished_coder(t_simulation *sim, t_coder *coder)
 
 	is_check = false;
 	pthread_mutex_lock(&coder->mutex_cond.mutex);
-	if (coder->compilation_count == coder->config->number_of_compiles_required)
+	if (coder->compilation_count >= coder->config->number_of_compiles_required)
 	{
 		is_check = true;
 		coder->has_dongle = true;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   coders.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: santoos <santoos@student.42.fr>            +#+  +:+       +#+        */
+/*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 21:46:11 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/29 03:44:26 by santoos          ###   ########.fr       */
+/*   Updated: 2026/06/29 10:41:22 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,12 @@ static void	ft_coder_main_loop(t_coder *coder)
 	{
 		if (!perform_coding(coder))
 			break ;
+		pthread_mutex_lock(&coder->mutex_cond.mutex);
 		if (coder->status == FINISHED)
 			break;
+		pthread_mutex_unlock(&coder->mutex_cond.mutex);
 	}
+	pthread_mutex_unlock(&coder->mutex_cond.mutex);
 }
 
 static void	enqueue_initial_coder_and_wait(t_coder *coder)

@@ -44,15 +44,15 @@ OBG = $(SRC:.c=.o)
 all: $(NAME_PROGRAN)
 
 $(NAME_PROGRAN): $(OBG)
-	$(CC) $(FLAGS) $(OBG) -o $(NAME_PROGRAN)
+	@$(CC) $(FLAGS) $(OBG) -o $(NAME_PROGRAN)
 
 %.o: %.c src/include/codexion.h
-	$(CC) $(FLAGS) -c $< -o $@
+	@$(CC) $(FLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBG)
+	@rm -f $(OBG)
 
 fclean: clean
-	rm -f $(NAME_PROGRAN)
+	@rm -f $(NAME_PROGRAN)
 
 re: fclean all

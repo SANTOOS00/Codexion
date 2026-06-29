@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/26 21:07:40 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/29 00:49:21 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/29 12:33:39 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,10 @@ bool	ft_sleep_coder(t_coder *coder, int state)
 
 	time = ft_get_time_add_time_wait(ft_get_coder_time(coder, state));
 	pthread_mutex_lock(&coder->mutex_cond.mutex);
-	coder->is_waiting_coder = true;
 	pthread_cond_timedwait(&coder->mutex_cond.cond, &coder->mutex_cond.mutex,
 		&time);
-	if (state == REFACTORING)
+	if (state == REFACTORING && coder->status != FINISHED)
 		coder->has_dongle = false;
-	coder->is_waiting_coder = false;
 	pthread_mutex_unlock(&coder->mutex_cond.mutex);
   	return (!ft_is_simulation_finished(coder->is_finished_sim,
 		coder->is_finished_sim_m));
