@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/27 02:32:58 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/29 15:58:56 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/29 17:18:54 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	ft_stop_coders(t_coder **coders)
 	nu_coders = coders[0]->config->number_of_coders;
 	while (i < nu_coders)
 	{
-		pthread_mutex_lock(&coders[i]->mutex_cond.mutex);
+		pthread_mutex_lock(&coders[i]->mutex_cond.mutex);	
 		coders[i]->has_dongle = true;
 		coders[i]->status = FINISHED;
 		pthread_cond_broadcast(&coders[i]->mutex_cond.cond);

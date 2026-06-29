@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 10:37:14 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/29 15:35:51 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/29 17:22:58 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static bool	ft_compiling_coder(t_coder *coder)
 {
 	if (ft_is_simulation_finished(coder))
 		return (false);
-	ft_print_action(coder, "is compiling");
+	// ft_print_action(coder, "is compiling");
 	if (!ft_sleep_coder(coder, COMPILING))
 		return (false);
 	return_dongles(coder);

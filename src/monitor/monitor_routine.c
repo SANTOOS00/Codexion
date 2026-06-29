@@ -6,7 +6,7 @@
 /*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 22:21:10 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/29 16:01:19 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/29 17:19:19 by moerrais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,7 @@ static void	ft_detect_burnout_in_coders(t_simulation *sim)
 	i = 0;
 	while (!ft_is_burnout_detected(sim->coders, sim->config.number_of_coders)
 		&& !ft_is_finished_watcher(sim))
-	{
 		usleep(300);
-	}
 	monitor_finished_simulation(sim);
 	ft_stop_coders(sim->coders);
 }
