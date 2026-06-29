@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor_routine.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
+/*   By: santoos <santoos@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 22:21:10 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/29 00:58:15 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/29 03:54:16 by santoos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static bool	ft_wait_monitor(t_simulation *sim)
 	pthread_mutex_unlock(&sim->monitor_mu_cond.mutex);
 	return (true);
 }
-void	ft_stop_simulation(t_simulation *sim)
+void	ft_stop_coders(t_simulation *sim)
 {
 	int i;
 
@@ -70,11 +70,10 @@ void monitor_finished_watcher(t_simulation *sim)
 static void	ft_detect_burnout_in_coders(t_simulation *sim)
 {
 	while (!ft_is_burnout_detected(sim->coders, sim->config.number_of_coders)
-		&& !ft_is_finished_watcher(sim))
+	&& !ft_is_finished_watcher(sim))
 		usleep(300);
 	monitor_finished_watcher(sim);
-	ft_stop_simulation(sim);
-
+	ft_stop_coders(sim);
 }
 
 

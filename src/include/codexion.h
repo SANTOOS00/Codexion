@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moerrais <moerrais@student.42.fr>          +#+  +:+       +#+        */
+/*   By: santoos <santoos@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/02 16:54:33 by moerrais          #+#    #+#             */
-/*   Updated: 2026/06/29 00:57:31 by moerrais         ###   ########.fr       */
+/*   Updated: 2026/06/29 03:51:45 by santoos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,6 +177,7 @@ bool			perform_coding(t_coder *coder);
 bool			ft_sleep_coder(t_coder *coder, int state);
 bool			ft_is_simulation_finished(bool *is_sim_finished,
 					pthread_mutex_t *is_sim_finished_m);
+void	ft_stop_simulation(t_simulation *sim);
 
 void			pick_up_dongle(t_coder *coder);
 void			return_dongles(t_coder *coder);
